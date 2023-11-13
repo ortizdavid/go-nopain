@@ -42,5 +42,11 @@ func TestCapacityUnits(t *testing.T) {
 }
 
 func TestWeigthUnits(t *testing.T) {
-
+	fmt.Println(GRAM)
+	fmt.Println(MILI_GRAM)
+	fmt.Println(HECTO_GRAM)
+	fmt.Println(KILO_GRAM)
+	fmt.Println(TONNE)
+	fmt.Println(POUND)
+	fmt.Println(OUNCE)
 }
