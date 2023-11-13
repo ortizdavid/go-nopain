@@ -1,10 +1,10 @@
 # go-nopain
 
-Helper ready to use in a real 
+Library that has helper functions that can be used in real systems.
 
-# Libs
-- [-] DateTime
-- [-] File Manager
-- [-] Conversion
-- [-] Random Numbers
-- [-] Mail
+# Functions
+- [ ] Date Handling
+- [ ] File Manager
+- [ ] Types Conversion
+- [ ] Random Numbers
+- [ ] Mail management
