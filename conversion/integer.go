@@ -28,7 +28,7 @@ func Int32ToFloat32(number int32) float32 {
 }
 
 // int32 -> float64
-func Int32ToFloa64(number int32) float64 {
+func Int32ToFloat64(number int32) float64 {
 	return float64(number)
 }
 
@@ -43,6 +43,6 @@ func Int64ToFloat32(number int64) float32 {
 }
 
 // int64 -> float64
-func Int64ToFloa64(number int64) float64 {
+func Int64ToFloat64(number int64) float64 {
 	return float64(number)
 }
