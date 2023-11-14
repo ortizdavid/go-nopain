@@ -2,10 +2,18 @@
 
 Library that has helper functions that can be used in real systems.
 
-# Functions
+# Packages
 - [x] Units of measurement
-- [ ] Date Handling
-- [ ] File Manager
-- [ ] Types Conversion
-- [ ] Random Numbers
+- [x] Date Handling
+- [x] File Manager
+- [x] Types Conversion
+- [x] Random Numbers
 - [ ] Mail management
+- [ ] Collections
+- [ ] Algoritms
+- [ ] Formatters (Currency, ...)
+- [ ] Reflection
+- [ ] Serialization
+- [ ] Messages
+- [ ] Logging
+- [ ] Calculations
