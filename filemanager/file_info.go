@@ -83,7 +83,7 @@ func (finfo *FileInfo) IsDir(path string) bool {
 }
 
 
-func FileExists(folder string, fileName string) bool {
+func (finfo *FileInfo) FileExists(folder string, fileName string) bool {
 	filePath := folder + "/" + fileName
 	if _, err := os.Stat(filePath); err == nil {
 		return true

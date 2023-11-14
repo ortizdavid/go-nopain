@@ -1,4 +1,4 @@
-package messages
+package filemanager
 
 const (
 	FOLDER_CREATED string = "\nFolder '%s' Created"

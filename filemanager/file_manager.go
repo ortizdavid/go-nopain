@@ -5,7 +5,6 @@ import (
 	"log"
 	"os"
 	"path/filepath"
-	"github.com/ortizdavid/go-nopain/messages"
 )
 
 type FileManager struct {}
@@ -13,7 +12,7 @@ type FileManager struct {}
 func (fm *FileManager) CreateSingleFolder(folderName string) bool {
 	err := os.Mkdir(folderName, 0777)
 	if err == nil {
-		log.Printf(messages.FOLDER_CREATED, folderName)
+		log.Printf(FOLDER_CREATED, folderName)
 		return true
 	}
 	log.Fatal(err.Error())
@@ -23,7 +22,7 @@ func (fm *FileManager) CreateSingleFolder(folderName string) bool {
 func (fm *FileManager) CreateManyFolders(folderName string) bool {
 	err := os.MkdirAll(folderName, 0777)
 	if err == nil {
-		log.Printf(messages.FOLDER_CREATED, folderName)
+		log.Printf(FOLDER_CREATED, folderName)
 		return true
 	} 
 	log.Fatal(err.Error())
@@ -33,7 +32,7 @@ func (fm *FileManager) CreateManyFolders(folderName string) bool {
 func (fm *FileManager) CreateSingleFile(dirName string, fileName string) bool {
 	file, err := os.Create(dirName +"/"+ fileName)
 	if err == nil {
-		log.Printf(messages.FILE_CREATED, file.Name())
+		log.Printf(FILE_CREATED, file.Name())
 		return true
 	}
 	log.Fatal(err)
@@ -73,7 +72,7 @@ func (fm *FileManager) WriteFile(folderName string, fileName string, content str
 func (fm *FileManager) RemoveFile(folderName string, fileName string) bool {
 	err := os.Remove(folderName+"/"+fileName)
 	if err == nil {
-		log.Printf(messages.FILE_REMOVED, folderName+"/"+fileName)
+		log.Printf(FILE_REMOVED, folderName+"/"+fileName)
 		return true
 	}
 	log.Fatal(err)
@@ -83,7 +82,7 @@ func (fm *FileManager) RemoveFile(folderName string, fileName string) bool {
 func (fm *FileManager) RemoveFolder(folderName string) bool {
 	err := os.RemoveAll(folderName)
 	if err == nil {
-		log.Printf(messages.FOLDER_REMOVED, folderName)
+		log.Printf(FOLDER_REMOVED, folderName)
 		return true
 	}
 	log.Fatal(err)

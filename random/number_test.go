@@ -14,7 +14,7 @@ func TestRandomInt32(t *testing.T) {
 }
 
 func TestRandomInt64(t *testing.T) {
-	fmt.Println(Int64(1, 100))
+	fmt.Println(Int64(1, 1030))
 }
 
 func TestRandomFloat32(t *testing.T) {
