@@ -19,6 +19,7 @@ func (fm *FileManager) CreateSingleFolder(folderName string) bool {
 	return false
 }
 
+
 func (fm *FileManager) CreateManyFolders(folderName string) bool {
 	err := os.MkdirAll(folderName, 0777)
 	if err == nil {
@@ -29,15 +30,17 @@ func (fm *FileManager) CreateManyFolders(folderName string) bool {
 	return false
 }
 
+
 func (fm *FileManager) CreateSingleFile(dirName string, fileName string) bool {
 	file, err := os.Create(dirName +"/"+ fileName)
 	if err == nil {
 		log.Printf(FILE_CREATED, file.Name())
 		return true
 	}
-	log.Fatal(err)
+	log.Fatal(err.Error())
 	return false
 }
+
 
 func (fm *FileManager) CreateManyFiles(dirName string, files ...string) bool {
 	for _, file := range files {
@@ -49,14 +52,16 @@ func (fm *FileManager) CreateManyFiles(dirName string, files ...string) bool {
 	return true
 }
 
+
 func (fm *FileManager) MoveFile(fileName string, origin string, destination string) bool {
 	err := os.Rename(origin +"/"+ fileName, destination +"/"+ fileName)
 	if err == nil {
 		return true
 	}
-	log.Fatal(err)
+	log.Fatal(err.Error())
 	return true
 }
+
 
 func (fm *FileManager) WriteFile(folderName string, fileName string, content string) bool {
 	file, err := os.OpenFile(folderName +"/"+ fileName, os.O_APPEND, 0666)
@@ -65,9 +70,10 @@ func (fm *FileManager) WriteFile(folderName string, fileName string, content str
 		file.Close()
 		return true
 	}
-	log.Fatal(err)
+	log.Fatal(err.Error())
 	return false
 }
+
 
 func (fm *FileManager) RemoveFile(folderName string, fileName string) bool {
 	err := os.Remove(folderName+"/"+fileName)
@@ -75,9 +81,10 @@ func (fm *FileManager) RemoveFile(folderName string, fileName string) bool {
 		log.Printf(FILE_REMOVED, folderName+"/"+fileName)
 		return true
 	}
-	log.Fatal(err)
+	log.Fatal(err.Error())
 	return false
 }
+
 
 func (fm *FileManager) RemoveFolder(folderName string) bool {
 	err := os.RemoveAll(folderName)
@@ -85,7 +92,7 @@ func (fm *FileManager) RemoveFolder(folderName string) bool {
 		log.Printf(FOLDER_REMOVED, folderName)
 		return true
 	}
-	log.Fatal(err)
+	log.Fatal(err.Error())
 	return false
 }
 

@@ -6,6 +6,7 @@ import (
 
 const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 
+
 func String(length int) string {
 	seedRandom()
 	if length <= 0 {

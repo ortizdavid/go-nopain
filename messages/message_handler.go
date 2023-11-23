@@ -12,6 +12,7 @@ func PrintFailOrError(err error) {
 	}
 }
 
+
 func LogFailOrError(err error) {
 	if err != nil {
 		log.Fatal(err)

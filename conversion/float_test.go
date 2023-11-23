@@ -1,8 +1,8 @@
 package conversion
 
 import (
-	"testing"
 	"fmt"
+	"testing"
 )
 
 func TestFloat32ToInt(t *testing.T) {

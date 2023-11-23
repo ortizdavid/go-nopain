@@ -12,6 +12,7 @@ type EmailService struct {
 	SMTPPort int
 }
 
+
 func NewEmailService(username string, password string, smtpHost string, smtpPort int) *EmailService {
 	return &EmailService{
 		Username: username,
@@ -20,6 +21,7 @@ func NewEmailService(username string, password string, smtpHost string, smtpPort
 		SMTPPort: smtpPort,
 	}
 }
+
 
 func (es *EmailService) SendPlainEmail(to, subject, body string) error {
 	message := fmt.Sprintf("To: %s\r\nSubject: %s\r\n\r\n%s", to, subject, body)
@@ -31,6 +33,7 @@ func (es *EmailService) SendHTMLEmail(to, subject, bodyHTML string) error {
 	message := fmt.Sprintf("To: %s\r\nSubject: %s\r\nContent-Type: text/html\r\n\r\n%s", to, subject, bodyHTML)
 	return es.sendEmail(to, message)
 }
+
 
 func (es *EmailService) sendEmail(to, message string) error {
 	auth := smtp.PlainAuth("", es.Username, es.Password, es.SMTPHost)

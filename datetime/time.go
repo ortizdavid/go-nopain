@@ -32,6 +32,7 @@ func TimeAgo(from time.Time) string {
 	}
 }
 
+
 func TimeAgoBetweenDates(start time.Time, end time.Time) string {
 	diff := end.Sub(start)
 	return TimeAgo(start) + " to " + TimeAgo(end) + " (" + diff.String() + ")"

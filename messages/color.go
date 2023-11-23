@@ -25,9 +25,11 @@ const (
 	
 )
 
+
 func Colorize(color string, text string) {
 	fmt.Println(string(color), text, string(COLOR_RESET))
 }
+
 
 func Colorizef(color string, formatedText string, values ...any) {
 	fmt.Printf(string(color), formatedText, values, string(COLOR_RESET))

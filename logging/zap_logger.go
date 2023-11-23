@@ -15,7 +15,7 @@ func NewZapLogger(logRootPath string, logFileName string, maxSize int, maxBackup
 		MaxAge:     maxAge,
 		Compress:   true,
 	}
-	// Create a zap core that writes logs to the lumberjack logger
+	
 	encoderConfig := zap.NewProductionEncoderConfig()
 	encoderConfig.EncodeTime = zapcore.ISO8601TimeEncoder
 	zapCore := zapcore.NewCore(
@@ -23,7 +23,7 @@ func NewZapLogger(logRootPath string, logFileName string, maxSize int, maxBackup
 		zapcore.AddSync(lumberjackLogger),
 		zap.DebugLevel,
 	)
-	// Create a logger with the zap core
+	
 	logger := zap.New(zapCore)
 	return logger
 }

@@ -13,6 +13,7 @@ func GenerateUUID() string {
 	return uniqueId.String()
 }
 
+
 func GenerateRandomToken() (string, error) {
 	length := 100
 	randomBytes := make([]byte, length)
@@ -24,6 +25,7 @@ func GenerateRandomToken() (string, error) {
 	token := base64.RawURLEncoding.EncodeToString(randomBytes)
 	return token, nil
 }
+
 
 func GenerateCode(prefix string) string {
 	timestamp := time.Now().Format("20060102150405") 

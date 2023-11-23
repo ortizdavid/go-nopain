@@ -2,15 +2,11 @@ package generators
 
 import (
 	"bytes"
+	"net/http"
 	"html/template"
 	"github.com/SebastiaanKlippert/go-wkhtmltopdf"
-	"github.com/gofiber/fiber/v2"
 )
 
-/*
-requires to install: wktmltopdf in Your PC
-link: https://wkhtmltopdf.org/
-*/
 
 type HtmlPdfGenenerator struct {
 }
@@ -62,9 +58,9 @@ func (gen *HtmlPdfGenenerator) LoadHtmlTemplate(filePath string) (*template.Temp
 }
 
 
-func (gen *HtmlPdfGenenerator) SetOutput(ctx *fiber.Ctx, pdfBytes []byte, fileName string) error {
-	ctx.Response().Header.SetContentType("application/pdf")
-	ctx.Response().Header.Set("Content-Disposition", "attachment; fileName=" +fileName)
-	_, err := ctx.Write(pdfBytes)
-	return err
+func (gen *HtmlPdfGenenerator) SetOutput(w http.ResponseWriter, pdfBytes []byte, fileName string) error {
+    w.Header().Set("Content-Type", "application/pdf")
+    w.Header().Set("Content-Disposition", "attachment; filename="+fileName)
+    _, err := w.Write(pdfBytes)
+    return err
 }

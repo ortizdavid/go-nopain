@@ -1,9 +1,9 @@
 package generators
 
 import (
-	"bytes"
 	"fmt"
-	"github.com/gofiber/fiber/v2"
+	"bytes"
+	"net/http"
 	"github.com/tealeg/xlsx"
 )
 
@@ -52,6 +52,7 @@ func (eg *ExcelGenerator) AddHeaderRow(columns ...string) {
 	}
 }
 
+
 func (eg *ExcelGenerator) AddDataRow(data ...interface{}) {
 	row := eg.Sheet.AddRow()
 	for idx, d := range data {
@@ -92,6 +93,7 @@ func (eg *ExcelGenerator) getCellBorderStyle() *xlsx.Style {
 	return style
 }
 
+
 // getTitleBorderStyle returns a style with title cell borders.
 func (eg *ExcelGenerator) getTitleBorderStyle() *xlsx.Style {
 	style := xlsx.NewStyle()
@@ -123,21 +125,24 @@ func (eg *ExcelGenerator) getCellBackgroundColorStyle() *xlsx.Style {
 	return style
 }
 
-func (eg *ExcelGenerator) SaveToFile(ctx *fiber.Ctx, fileName string) error {
+
+
+func (eg *ExcelGenerator) SaveToFile(w http.ResponseWriter, fileName string) error {
 	var buf bytes.Buffer
 
 	// Write the Excel data to the buffer
 	err := eg.File.Write(&buf)
 	if err != nil {
-		return ctx.Status(fiber.StatusInternalServerError).SendString("Error writing Excel data")
+		http.Error(w, "Error writing Excel data", http.StatusInternalServerError)
+		return err
 	}
 
 	// Set response headers for Excel download
-	ctx.Response().Header.Set("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
-	ctx.Response().Header.Set("Content-Disposition", "attachment; filename="+fileName+"")
+	w.Header().Set("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+	w.Header().Set("Content-Disposition", "attachment; filename="+fileName)
 
 	// Send the Excel data to the client
-	_, err = ctx.Write(buf.Bytes())
+	_, err = w.Write(buf.Bytes())
 	if err != nil {
 		return err
 	}
