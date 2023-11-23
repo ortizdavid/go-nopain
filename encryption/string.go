@@ -14,16 +14,15 @@ func GenerateUUID() string {
 }
 
 
-func GenerateRandomToken() (string, error) {
+func GenerateRandomToken() string {
 	length := 100
 	randomBytes := make([]byte, length)
 	_, err := rand.Read(randomBytes)
 	if err != nil {
-		log.Println("Error generating random bytes:", err)
-		return "", err
+		log.Fatal(err.Error())
 	}
 	token := base64.RawURLEncoding.EncodeToString(randomBytes)
-	return token, nil
+	return token
 }
 
 
