@@ -1,4 +1,4 @@
-package helpers
+package mailer
 
 import (
 	"fmt"
