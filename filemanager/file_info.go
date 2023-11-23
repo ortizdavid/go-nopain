@@ -15,7 +15,7 @@ type FileInfo struct {}
 func (finfo *FileInfo) GetFileInfo(fileName string) {
 	fileInfo, err := os.Stat(fileName)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal(err.Error())
 	}
 	fmt.Println("\nFile Name:", fileInfo.Name())  
 	fmt.Println("Extension:", finfo.GetFileExt(fileName))          
@@ -29,7 +29,7 @@ func (finfo *FileInfo) GetFileInfo(fileName string) {
 func (finfo *FileInfo) ListFiles(dir string) {
 	files, err := ioutil.ReadDir(dir)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal(err.Error())
 	}
 	fmt.Printf("\nAll Files in '%s':\n", dir)
 	printChar("-", 125)
@@ -73,7 +73,7 @@ func (finfo *FileInfo) GetFileType(ext string) string {
 func (finfo *FileInfo) IsDir(path string) bool {
 	fileInfo, err := os.Stat(path)
 	if err != nil {
-		log.Fatal("Error:", err)
+		log.Fatal(err.Error())
 	}
 	if fileInfo.IsDir() {
 		return true

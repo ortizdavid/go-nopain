@@ -31,6 +31,6 @@ func Colorize(color string, text string) {
 }
 
 
-func Colorizef(color string, formatedText string, values ...any) {
+func Colorizef(color string, formatedText string, values ...interface{}) {
 	fmt.Printf(string(color), formatedText, values, string(COLOR_RESET))
 }

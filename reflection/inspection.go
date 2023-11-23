@@ -7,5 +7,7 @@ import (
 
 
 func VarDump(variable interface{}) {
-	fmt.Printf("Type: %s, Value: %v\n", reflect.TypeOf(variable), variable)
+	t := reflect.TypeOf(variable)
+	v := reflect.ValueOf(variable)
+	fmt.Printf("Type: %t, Value: %v\n\n", t, v)
 }

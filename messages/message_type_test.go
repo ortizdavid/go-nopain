@@ -26,7 +26,7 @@ func TestWarningMessage(t *testing.T) {
 		{ message: "Application will stay down in 15 mins" },
 	}
 	for _, test := range testCases {
-		Error(test.message)
+		Warning(test.message)
 	}
 }
 
