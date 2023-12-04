@@ -28,5 +28,5 @@ func GenerateRandomToken() string {
 
 func GenerateCode(prefix string) string {
 	timestamp := time.Now().Format("20060102150405") 
-    return prefix + timestamp  
+	return prefix + timestamp  
 }

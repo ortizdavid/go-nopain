@@ -46,6 +46,7 @@ func (finfo *FileInfo) GetFileExt(path string) string {
 	return filepath.Ext(path)
 }
 
+
 func (finfo *FileInfo) GetFileType(ext string) string {
 	imageExts := []string{".png", ".gif", ".jpg", ".jiff"}
 	documentExts := []string{".txt", ".pdf", ".docx", ".ppt", ".pptx"}

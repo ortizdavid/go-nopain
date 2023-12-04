@@ -11,7 +11,6 @@ func CalculatePercentage(originalValue float32, percentage float32) float32 {
 // CalculateValueFromPercentage calculates the original value based on a given percentage and a calculated value.
 // It takes the percentage and the calculated value as parameters.
 func CalculateValueFromPercentage(percentage float32, calculatedValue float32) float32 {
-    // Rearrange the formula to solve for the original value
     // Formula: originalValue = (calculatedValue * 100) / percentage
     return (calculatedValue * hundred) / percentage
 }
