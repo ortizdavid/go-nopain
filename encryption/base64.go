@@ -6,14 +6,14 @@ import (
 )
 
 
-func StringToBase64(text string) string {
+func EncodeBase64(text string) string {
 	byteText := []byte(text)
 	encoded := base64.StdEncoding.EncodeToString(byteText)
 	return encoded
 }
 
 
-func Base64ToString(strEncoded string) string {
+func DecodeBase64(strEncoded string) string {
 	decoded, err := base64.StdEncoding.DecodeString(strEncoded)
 	if err != nil {
 		log.Fatal(err.Error())
@@ -24,6 +24,6 @@ func Base64ToString(strEncoded string) string {
 
 
 func CompareBase64Encoding(encodedStr string, originalStr string) bool {
-	decodedStr := Base64ToString(encodedStr) 
+	decodedStr := DecodeBase64(encodedStr) 
 	return encodedStr == decodedStr
 }

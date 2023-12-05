@@ -8,6 +8,7 @@ import (
 	"github.com/google/uuid"
 )
 
+
 func GenerateUUID() string {
 	uniqueId := uuid.New()
 	return uniqueId.String()

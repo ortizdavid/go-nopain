@@ -47,22 +47,22 @@ func (finfo *FileInfo) GetFileExt(path string) string {
 }
 
 
-func (finfo *FileInfo) GetFileType(ext string) string {
+func (finfo *FileInfo) GetFileType(extension string) string {
 	imageExts := []string{".png", ".gif", ".jpg", ".jiff"}
 	documentExts := []string{".txt", ".pdf", ".docx", ".ppt", ".pptx"}
 	audioExts := []string{".mp3", ".aac", ".wav", ".flac"}
 	videoExts := []string{".mp4", ".mkv", ".avi", ".flv"}
 	fileType := ""
 
-	if collections.ContainsString(imageExts, ext) {
+	if collections.ContainsString(imageExts, extension) {
 		fileType = "Image"
-	} else if collections.ContainsString(documentExts, ext) {
+	} else if collections.ContainsString(documentExts, extension) {
 		fileType = "Document"
-	} else if collections.ContainsString(audioExts, ext) {
+	} else if collections.ContainsString(audioExts, extension) {
 		fileType = "Audio"
-	} else if collections.ContainsString(documentExts, ext) {
+	} else if collections.ContainsString(documentExts, extension) {
 		fileType = "Document"
-	} else if collections.ContainsString(videoExts, ext) {
+	} else if collections.ContainsString(videoExts, extension) {
 		fileType = "Video"
 	} else {
 		fileType = "Other"
