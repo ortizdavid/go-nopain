@@ -6,7 +6,7 @@ const (
 	HECTO_METER 	float64	= METER * 100
 	KILO_METER 		float64 = METER * 1000
 	PENTA_METER 	float64 = METER * 1_000_000_000_000_000
-	
+
 	DECI_METER 		float64 = METER / 10
 	CENTI_METER 	float64 = METER / 100
 	MILI_METER 		float64 = METER / 1000
