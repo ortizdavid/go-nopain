@@ -1,5 +1,6 @@
 package units
 
+
 const (
 	GRAM 		float64 = 1
 	MILI_GRAM	float64	= GRAM / 1000
@@ -10,3 +11,4 @@ const (
 	OUNCE 		float64 = GRAM / 28.3495
 	POUND 		float64 = KILO_GRAM / 0.453592
 )
+

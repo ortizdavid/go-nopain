@@ -49,3 +49,23 @@ func StringToFloat64(strNumber string) float64 {
 	}
 	return result
 }
+
+// string -> int or nil
+func StringToIntOrNil(strNumber string) *int {
+	if strNumber == "" {
+		return nil
+	}
+	numInt, err := strconv.Atoi(strNumber)
+	if err != nil {
+		return nil
+	}
+	return &numInt
+}
+
+// string -> String or Nil
+func StringOrNil(str string) *string {
+	if str == "" {
+		return nil
+	}
+	return &str
+}
