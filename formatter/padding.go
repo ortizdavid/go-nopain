@@ -22,7 +22,7 @@ func LeftPadWithChar(originalValue string, allowedLenght int, char string) strin
 }
 
 
-// Add repeated chars to the left of a string value
+// Add repeated chars to the right of a string value
 // Returns the concatenation of Padding and Original value
 // Padding: char reptead N times
 func RightPadWithChar(originalValue string, allowedLenght int, char string) string {
@@ -40,3 +40,5 @@ func RightPadWithChar(originalValue string, allowedLenght int, char string) stri
 	padding := strings.Repeat(char, paddingLength)
 	return originalValue + padding
 }
+
+
