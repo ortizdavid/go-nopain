@@ -8,7 +8,7 @@ import (
 
 type xmlResponse struct {
 	XMLName xml.Name `xml:"response"`
-	Message string `xml:"message"`
+	Message string `xml:"message,omitempty"`
 	Status  int `xml:"status"`
 	Count   *int `xml:"count,omitempty"`
 	Data    any `data:"data,omitempty"`
