@@ -9,7 +9,7 @@ import (
 type jsonResponse struct {
 	Message string `json:"message"`
 	Status int `json:"status"`
-	Count int `json:"count,omitempty"`
+	Count *int `json:"count,omitempty"`
 	Data any `json:"data,omitempty"`
 }
 
@@ -17,7 +17,7 @@ func WriteJson(w http.ResponseWriter, statusCode int, data any, count int) {
 	writeJsonHeader(w, statusCode)
 	response := jsonResponse{
 		Status:  statusCode,
-		Count:   count,
+		Count:   &count,
 		Data:    data,
 	}
 	encodeJson(w, response)
