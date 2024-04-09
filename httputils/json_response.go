@@ -9,7 +9,7 @@ import (
 type jsonResponse struct {
 	Message string `json:"message"`
 	Status int `json:"status"`
-	Count int `json:"count"`
+	Count int `json:"count,omitempty"`
 	Data any `json:"data,omitempty"`
 }
 
