@@ -6,35 +6,47 @@ import (
 	"net/http"
 )
 
-type JsonResponse struct {
+type jsonResponse struct {
 	Message string `json:"message"`
 	Status int `json:"status"`
 	Count int `json:"count"`
-	Data any `json:"data"`
+	Data any `json:"data,omitempty"`
 }
 
-func WriteJson(w http.ResponseWriter, r *http.Request, message string, statusCode int, data any, count int) {
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(statusCode)
-	response := JsonResponse{
-		Message: message,
+func WriteJson(w http.ResponseWriter, statusCode int, data any, count int) {
+	writeJsonHeader(w, statusCode)
+	response := jsonResponse{
 		Status:  statusCode,
 		Count:   count,
 		Data:    data,
 	}
-	err := json.NewEncoder(w).Encode(response)
-	if err != nil {
-		fmt.Fprintf(w, "%s", err.Error())
+	encodeJson(w, response)
+}
+
+func WriteJsonSimple(w http.ResponseWriter, statusCode int, data any) {
+	writeJsonHeader(w, statusCode)
+	response := jsonResponse{
+		Status:  statusCode,
+		Data:    data,
 	}
+	encodeJson(w, response)
 }
 
 func WriteJsonError(w http.ResponseWriter, message string, statusCode int) {
-	w.Header().Set("Content-type", "application/json")
-	w.WriteHeader(statusCode)
-	response := JsonResponse{
+	writeJsonHeader(w, statusCode)
+	response := jsonResponse{
 		Message: message,
 		Status:  statusCode,
 	}
+	encodeJson(w, response)
+}
+
+func writeJsonHeader(w http.ResponseWriter, statusCode int) {
+	w.Header().Set("Content-type", "application/json")
+	w.WriteHeader(statusCode)
+}
+
+func encodeJson(w http.ResponseWriter, response jsonResponse) {
 	err := json.NewEncoder(w).Encode(response)
 	if err != nil {
 		fmt.Fprintf(w, "%s", err.Error())
