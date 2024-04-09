@@ -11,7 +11,7 @@ type hateoasJson struct {
 	Status int `json:"status"`
 	Count *int `json:"count,omitempty"`
 	Data any `json:"data,omitempty"`
-	links link `json:"links"`
+	Links link `json:"links"`
 }
 
 type link struct {
@@ -31,9 +31,10 @@ func WriteHateoasJson(w http.ResponseWriter, r *http.Request, statusCode int, da
 		Status:  statusCode,
 		Count:   &count,
 		Data:    data,
-		links:   link{
+		Links:   link{
 			Path: basePath,
 			Self: selfLink,
+			Rel:  "",
 		},
 	}
 	encodeHateoas(w, response)
