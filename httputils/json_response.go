@@ -7,7 +7,7 @@ import (
 )
 
 type jsonResponse struct {
-	Message string `json:"message,omitempty"`
+	Message *string `json:"message,omitempty"`
 	Status int `json:"status"`
 	Count *int `json:"count,omitempty"`
 	Data any `json:"data,omitempty"`
@@ -35,7 +35,7 @@ func WriteJsonSimple(w http.ResponseWriter, statusCode int, data any) {
 func WriteJsonError(w http.ResponseWriter, message string, statusCode int) {
 	writeJsonHeader(w, statusCode)
 	response := jsonResponse{
-		Message: message,
+		Message: &message,
 		Status:  statusCode,
 	}
 	encodeJson(w, response)

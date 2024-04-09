@@ -8,7 +8,7 @@ import (
 
 type xmlResponse struct {
 	XMLName xml.Name `xml:"response"`
-	Message string `xml:"message,omitempty"`
+	Message *string `xml:"message,omitempty"`
 	Status  int `xml:"status"`
 	Count   *int `xml:"count,omitempty"`
 	Data    any `data:"data,omitempty"`
@@ -36,7 +36,7 @@ func WriteXmlSimple(w http.ResponseWriter, statusCode int, data any) {
 func WriteXmlError(w http.ResponseWriter, message string, statusCode int) {
 	writeXmlHeader(w, statusCode)
 	response := xmlResponse{
-		Message: message,
+		Message: &message,
 		Status:  statusCode,
 	}
 	encodeXml(w, response)
