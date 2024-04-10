@@ -6,6 +6,7 @@ import (
 	"net/http"
 )
 
+
 type hateoasJson struct {
 	Message *string `json:"message,omitempty"`
 	Status int `json:"status"`
@@ -14,11 +15,13 @@ type hateoasJson struct {
 	Links link `json:"links"`
 }
 
+
 type link struct {
 	Path string `json:"path"`
 	Self string `json:"self"`
 	Rel string `json:"rel,omitempty"`
 }
+
 
 func WriteHateoasJson(w http.ResponseWriter, r *http.Request, statusCode int, data any, count int) {
 	writeJsonHeader(w, statusCode)
@@ -27,7 +30,6 @@ func WriteHateoasJson(w http.ResponseWriter, r *http.Request, statusCode int, da
 	selfLink := basePath + r.URL.Path
 	
 	response := hateoasJson{
-		Message: new(string),
 		Status:  statusCode,
 		Count:   &count,
 		Data:    data,
@@ -39,6 +41,7 @@ func WriteHateoasJson(w http.ResponseWriter, r *http.Request, statusCode int, da
 	}
 	encodeHateoas(w, response)
 }
+
 
 func encodeHateoas(w http.ResponseWriter, response hateoasJson) {
 	err := json.NewEncoder(w).Encode(response)

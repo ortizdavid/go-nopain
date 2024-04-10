@@ -8,7 +8,7 @@ Library that has helper functions that can be used in real systems.
 - [x] File Manager
 - [x] Types Conversion
 - [x] Random Numbers
-- [x] HTTP Utils
+- [x] HTTP Utils (In progress)
 - [ ] Validation
 - [ ] Mail management
 - [ ] Collections
