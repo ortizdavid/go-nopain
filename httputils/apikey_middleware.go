@@ -11,9 +11,9 @@ type ApiKeyMiddleware struct {
 	mu sync.RWMutex
 }
 
-
-func NewApiKeyMiddleWare(apiKey string) *ApiKeyMiddleware {
-	return &ApiKeyMiddleware{
+// Return a ApiKeyMiddleware object with the apiKey passed
+func NewApiKeyMiddleWare(apiKey string) ApiKeyMiddleware {
+	return ApiKeyMiddleware{
 		defaultKey: apiKey,
 	}
 }
@@ -21,15 +21,14 @@ func NewApiKeyMiddleWare(apiKey string) *ApiKeyMiddleware {
 // Apply Api Key middleware to an handler. Wraps a handler.
 // must be used for mux.Handle intead of mux.HandleFunc.
 // Example: mux.Handle("GET /protected", protectedHandler).
-func (apiMid *ApiKeyMiddleware) Apply(handler func(w http.ResponseWriter, r *http.Request)) http.Handler {
+func (apiMid ApiKeyMiddleware) Apply(handler func(w http.ResponseWriter, r *http.Request)) http.Handler {
 	return apiMid.applyMiddleware(http.HandlerFunc(handler))
 }
-
 
 // Apply Api Key middleware to a handler.
 // Get value from header X-API-Key and pass to next request.
 // X-API-Key must be valid and non empty.
-func (apiMid *ApiKeyMiddleware) applyMiddleware(next http.Handler) http.Handler {
+func (apiMid ApiKeyMiddleware) applyMiddleware(next http.Handler) http.Handler {
 	validApiKey := apiMid.getDefaultKey()
 
 	return http.HandlerFunc(func (w http.ResponseWriter, r *http.Request) {
@@ -47,7 +46,7 @@ func (apiMid *ApiKeyMiddleware) applyMiddleware(next http.Handler) http.Handler 
 }
 
 
-func (apiMid *ApiKeyMiddleware) SetDefaultKey(value string) error {
+func (apiMid ApiKeyMiddleware) SetDefaultKey(value string) error {
 	if value == "" {
 		return errors.New("API key cannot be empty")
 	}
@@ -58,7 +57,7 @@ func (apiMid *ApiKeyMiddleware) SetDefaultKey(value string) error {
 }
 
 
-func (apiMid *ApiKeyMiddleware) getDefaultKey() string {
+func (apiMid ApiKeyMiddleware) getDefaultKey() string {
 	apiMid.mu.Lock()
 	defer apiMid.mu.Unlock()
 	return apiMid.defaultKey
