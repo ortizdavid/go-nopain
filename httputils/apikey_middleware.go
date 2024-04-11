@@ -6,28 +6,29 @@ import (
 	"sync"
 )
 
+// ApiKeyMiddleware represents middleware for API key authentication.
+// It allows setting a default API key, which can be overridden by the X-API-Key header in the request.
 type ApiKeyMiddleware struct {
 	defaultKey string
 	mu sync.RWMutex
 }
 
-// Return a ApiKeyMiddleware object with the apiKey passed
+// Return a ApiKeyMiddleware object, and initialize default key with the apiKey passed
 func NewApiKeyMiddleWare(apiKey string) ApiKeyMiddleware {
 	return ApiKeyMiddleware{
 		defaultKey: apiKey,
 	}
 }
 
-// Apply Api Key middleware to an handler. Wraps a handler.
-// must be used for mux.Handle intead of mux.HandleFunc.
-// Example: mux.Handle("GET /protected", protectedHandler).
+// Apply applies the API key middleware to a handler. It wraps the handler function.
+// This method should be used with mux.Handle instead of mux.HandleFunc.
+// Example usage: mux.Handle("GET /protected", protectedHandler).
 func (apiMid *ApiKeyMiddleware) Apply(handler func(w http.ResponseWriter, r *http.Request)) http.Handler {
 	return apiMid.applyMiddleware(http.HandlerFunc(handler))
 }
 
-// Apply Api Key middleware to a handler.
-// Get value from header X-API-Key and pass to next request.
-// X-API-Key must be valid and non empty.
+// applyMiddleware applies the API key middleware to a handler function.
+// It retrieves the API key from the request header and validates it against the default key.
 func (apiMid *ApiKeyMiddleware) applyMiddleware(next http.Handler) http.Handler {
 	validApiKey := apiMid.getDefaultKey()
 
@@ -45,7 +46,8 @@ func (apiMid *ApiKeyMiddleware) applyMiddleware(next http.Handler) http.Handler 
 	})
 }
 
-
+// SetDefaultKey sets the default API key.
+// It returns an error if the provided key is empty.
 func (apiMid *ApiKeyMiddleware) SetDefaultKey(value string) error {
 	if value == "" {
 		return errors.New("API key cannot be empty")
@@ -56,7 +58,7 @@ func (apiMid *ApiKeyMiddleware) SetDefaultKey(value string) error {
 	return nil
 }
 
-
+// getDefaultKey returns the default API key.
 func (apiMid *ApiKeyMiddleware) getDefaultKey() string {
 	apiMid.mu.Lock()
 	defer apiMid.mu.Unlock()

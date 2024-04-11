@@ -6,32 +6,36 @@ import (
 	"net/http"
 )
 
+// jsonResponse represents the structure of a JSON response.
 type jsonResponse struct {
-	Message *string `json:"message,omitempty"`
-	Status int `json:"status"`
-	Count *int `json:"count,omitempty"`
-	Data any `json:"data,omitempty"`
+	Message *string `json:"message,omitempty"` // Message field for the response (optional)
+	Status  int     `json:"status"`             // Status code of the response
+	Count   *int    `json:"count,omitempty"`   // Count field for the response (optional)
+	Data    any     `json:"data,omitempty"`    // Data field for the response (optional)
 }
 
+// WriteJson writes a JSON response with the provided status code, data, and count.
 func WriteJson(w http.ResponseWriter, statusCode int, data any, count int) {
 	writeJsonHeader(w, statusCode)
 	response := jsonResponse{
-		Status:  statusCode,
-		Count:   &count,
-		Data:    data,
+		Status: statusCode,
+		Count:  &count,
+		Data:   data,
 	}
 	encodeJson(w, response)
 }
 
+// WriteJsonSimple writes a simple JSON response with the provided status code and data.
 func WriteJsonSimple(w http.ResponseWriter, statusCode int, data any) {
 	writeJsonHeader(w, statusCode)
 	response := jsonResponse{
-		Status:  statusCode,
-		Data:    data,
+		Status: statusCode,
+		Data:   data,
 	}
 	encodeJson(w, response)
 }
 
+// WriteJsonError writes a JSON error response with the provided message and status code.
 func WriteJsonError(w http.ResponseWriter, message string, statusCode int) {
 	writeJsonHeader(w, statusCode)
 	response := jsonResponse{
@@ -41,11 +45,13 @@ func WriteJsonError(w http.ResponseWriter, message string, statusCode int) {
 	encodeJson(w, response)
 }
 
+// writeJsonHeader writes the JSON content type header and sets the HTTP status code.
 func writeJsonHeader(w http.ResponseWriter, statusCode int) {
 	w.Header().Set("Content-type", "application/json")
 	w.WriteHeader(statusCode)
 }
 
+// encodeJson encodes the jsonResponse struct to JSON format and writes it to the response writer.
 func encodeJson(w http.ResponseWriter, response jsonResponse) {
 	err := json.NewEncoder(w).Encode(response)
 	if err != nil {
