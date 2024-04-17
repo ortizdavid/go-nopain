@@ -19,3 +19,4 @@ Library that has helper functions that can be used in real systems.
 - [x] Messages
 - [ ] Logging
 - [ ] Calculations
+- [ ] Publish Subscribe

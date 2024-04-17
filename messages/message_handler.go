@@ -5,13 +5,11 @@ import (
 	"log"
 )
 
-
 func PrintOnError(err error) {
 	if err != nil {
 		fmt.Println(err)
 	}
 }
-
 
 func LogFailOnError(err error) {
 	if err != nil {
@@ -19,9 +17,14 @@ func LogFailOnError(err error) {
 	}
 }
 
-
 func PanicOnError(err error) {
 	if err != nil {
 		panic(err)
+	}
+}
+
+func FailOnError(err error, msg string) {
+	if err != nil {
+		log.Panicf("%s: %s", err, msg)
 	}
 }
