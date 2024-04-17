@@ -1,4 +1,4 @@
-# encription
+# encryption
 
 Package for data encryption and random  generation
 
