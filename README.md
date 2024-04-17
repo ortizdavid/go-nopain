@@ -2,7 +2,7 @@
 
 Library that has helper functions that can be used in real systems.
 
-# Packages
+## Packages
 - [x] Units of measurement
 - [x] Date Handling
 - [x] File Manager
@@ -10,12 +10,12 @@ Library that has helper functions that can be used in real systems.
 - [x] Random Numbers
 - [x] HTTP Utils (In progress)
 - [ ] Validation
-- [ ] Mail management
+- [x] Mail management
 - [ ] Collections
-- [ ] Algoritms
+- [ ] Algorithms
 - [ ] Formatters (Currency, ...)
 - [ ] Reflection
 - [ ] Serialization
-- [ ] Messages
+- [x] Messages
 - [ ] Logging
 - [ ] Calculations

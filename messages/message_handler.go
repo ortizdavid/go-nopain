@@ -6,9 +6,6 @@ import (
 )
 
 
-type Object interface{}
-
-
 func PrintOnError(err error) {
 	if err != nil {
 		fmt.Println(err)
