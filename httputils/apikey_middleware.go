@@ -22,7 +22,7 @@ func NewApiKeyMiddleWare(apiKey string) ApiKeyMiddleware {
 
 // Apply applies the API key middleware to a handler. It wraps the handler function.
 // This method should be used with mux.Handle instead of mux.HandleFunc.
-// Example usage: mux.Handle("GET /protected", protectedHandler).
+// Example usage: mux.Handle("GET /protected", middleware.Apply(protectedHandler)).
 func (apiMid *ApiKeyMiddleware) Apply(handler func(w http.ResponseWriter, r *http.Request)) http.Handler {
 	return apiMid.applyMiddleware(http.HandlerFunc(handler))
 }

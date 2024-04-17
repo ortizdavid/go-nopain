@@ -5,8 +5,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"time"
-
-	//"github.com/ortizdavid/go-nopain/messages"
 	amqp "github.com/rabbitmq/amqp091-go"
 )
 
