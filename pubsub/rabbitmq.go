@@ -8,42 +8,10 @@ import (
 	amqp "github.com/rabbitmq/amqp091-go"
 )
 
-type RabbitMQClient struct {
-	ServerConfig ServerConfig
-	QueueConfig	QueueConfig
-}
 
-type ServerConfig struct {
-	Host     string
-	Port     int
-	User     string
-	Password string
-}
-
-type QueueConfig struct {
-	Name       string
-	Durable    bool
-	Exclusive  bool
-	AutoDelete bool
-	NoWait     bool
-	Arguments map[string]interface{}
-}
-
-type ExchangeConfig struct {
-	Name       string
-	Durable    bool
-	Exclusive  bool
-	AutoDelete bool
-	NoWait     bool
-	Arguments map[string]interface{}
-}
-
-
-
-func NewRabbitMQClient(serverConfig ServerConfig, queueConfig QueueConfig) *RabbitMQClient {
+func NewRabbitMQClient(serverConfig ServerConfig) *RabbitMQClient {
 	return &RabbitMQClient{
 		ServerConfig: serverConfig,
-		QueueConfig:  queueConfig,
 	}
 }
 
@@ -68,7 +36,8 @@ func NewRabbitMQClientDefault(queueName string) *RabbitMQClient {
 }
 
 
-func (rmq *RabbitMQClient) PublishMessage(objMessage interface{}) error {
+// PublishToQueue publishes a message to a RabbitMQ queue.
+func (rmq *RabbitMQClient) PublishToQueue(objMessage interface{}) error {
     // Establish connection to RabbitMQ
     conn, err := amqp.Dial(rmq.connectionString())
     if err != nil {
@@ -102,10 +71,10 @@ func (rmq *RabbitMQClient) PublishMessage(objMessage interface{}) error {
         return fmt.Errorf("failed to marshal message to JSON: %w", err)
     }
 
-    // Publish message
     ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
     defer cancel()
 
+    // Publish message
     err = ch.PublishWithContext(ctx,
         "",
         q.Name,
@@ -117,6 +86,71 @@ func (rmq *RabbitMQClient) PublishMessage(objMessage interface{}) error {
         })
     if err != nil {
         return fmt.Errorf("failed to publish message: %w", err)
+    }
+
+    return nil
+}
+
+
+// PublishToExchange publishes a message to a RabbitMQ exchange.
+func (rmq *RabbitMQClient) PublishToExchange(routingKey string, objMessage interface{}) error {
+    // Establish connection to RabbitMQ
+    conn, err := amqp.Dial(rmq.connectionString())
+    if err != nil {
+        return fmt.Errorf("failed to connect to RabbitMQ: %w", err)
+    }
+    defer conn.Close()
+
+    // Open channel
+    ch, err := conn.Channel()
+    if err != nil {
+        return fmt.Errorf("failed to open a channel: %w", err)
+    }
+    defer ch.Close()
+
+    // Declare exchange
+    err = ch.ExchangeDeclare(
+        rmq.ExchangeConfig.Name,                      // Exchange name
+        string(rmq.ExchangeConfig.ExType), // Exchange type
+        rmq.ExchangeConfig.Durable,        // Durable
+        rmq.ExchangeConfig.AutoDelete,     // Auto-delete
+        rmq.ExchangeConfig.Internal,       // Internal
+        rmq.ExchangeConfig.NoWait,         // No-wait
+        amqp.Table(rmq.ExchangeConfig.Arguments), // Arguments
+    )
+    if err != nil {
+        return fmt.Errorf("failed to declare exchange: %w", err)
+    }
+
+    // Marshal message to JSON
+    body, err := json.Marshal(objMessage)
+    if err != nil {
+        return fmt.Errorf("failed to marshal message to JSON: %w", err)
+    }
+
+    ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+    defer cancel()
+
+    // Determine routing key (set to empty string for fanout exchanges)
+    var key string
+    if rmq.ExchangeConfig.ExType == ExchangeFanout {
+        key = ""
+    } else {
+        key = routingKey
+    }
+  
+    // Publish message to exchange
+    err = ch.PublishWithContext(ctx, 
+        rmq.ExchangeConfig.Name, // Exchange name
+        key,           // Routing key (empty for fanout exchange)
+        false,        // Mandatory
+        false,        // Immediate
+        amqp.Publishing{
+            ContentType: "application/json",
+            Body:        body, // Serialized message body
+        })
+    if err != nil {
+        return fmt.Errorf("failed to publish message to exchange: %w", err)
     }
 
     return nil

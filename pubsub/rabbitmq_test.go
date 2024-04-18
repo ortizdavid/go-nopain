@@ -24,7 +24,9 @@ func TestPublisToQueueWithConfigs(t *testing.T) {
 		User:     "guest",
 		Password: "guest",
 	}
-	queueConf := QueueConfig{
+
+	rmq := NewRabbitMQClient(serverConf)
+	rmq.QueueConfig = QueueConfig{
 		Name:       "golang_queue",
 		Durable:    false,
 		Exclusive:  false,
@@ -32,10 +34,8 @@ func TestPublisToQueueWithConfigs(t *testing.T) {
 		NoWait:     false,
 		Arguments:  nil,
 	}
-	
-	rmq := NewRabbitMQClient(serverConf, queueConf)
 
-	if err := rmq.PublishMessage(message); err != nil {
+	if err := rmq.PublishToQueue(message); err != nil {
 		t.Error(err)
 	}
 }
@@ -49,7 +49,37 @@ func TestPublishToQueueWithDefault(t *testing.T) {
 		Boolean: true,
 	}
 	
-	if err := rmq.PublishMessage(message); err != nil {
+	if err := rmq.PublishToQueue(message); err != nil {
+		t.Error(err)
+	}
+}
+
+
+func TestPublisToExchange(t *testing.T) {
+	message := golangMessage{
+		Text:    "Message to exchange",
+		Number:  99,
+		Boolean: false,
+	}
+	serverConf := ServerConfig{
+		Host:     "127.0.0.1",
+		Port:     5672,
+		User:     "guest",
+		Password: "guest",
+	}
+
+	rmq := NewRabbitMQClient(serverConf)
+	rmq.ExchangeConfig = ExchangeConfig{
+		Name:       "golang_exchange",
+		ExType:     ExchangeFanout,
+		Durable:    false,
+		AutoDelete: false,
+		Internal:   false,
+		NoWait:     false,
+		Arguments:  map[string]interface{}{},
+	}
+
+	if err := rmq.PublishToExchange("", message); err != nil {
 		t.Error(err)
 	}
 }
