@@ -29,6 +29,16 @@ type QueueConfig struct {
 	Arguments map[string]interface{}
 }
 
+type ExchangeConfig struct {
+	Name       string
+	Durable    bool
+	Exclusive  bool
+	AutoDelete bool
+	NoWait     bool
+	Arguments map[string]interface{}
+}
+
+
 
 func NewRabbitMQClient(serverConfig ServerConfig, queueConfig QueueConfig) *RabbitMQClient {
 	return &RabbitMQClient{
