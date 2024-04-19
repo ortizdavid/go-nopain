@@ -8,16 +8,63 @@ import (
 	amqp "github.com/rabbitmq/amqp091-go"
 )
 
+// RabbitMQClient represents the RabbitMQ client configuration.
+type RabbitMQClient struct {
+	ServerConfig ServerConfig
+	QueueConfig	QueueConfig
+	ExchangeConfig ExchangeConfig
+}
 
-func NewRabbitMQClient(serverConfig ServerConfig) *RabbitMQClient {
-	return &RabbitMQClient{
+// ServerConfig contains settings for connecting to the RabbitMQ server.
+type ServerConfig struct {
+	Host string
+	Port int
+	User string
+	Password string
+}
+
+// QueueConfig contains settings for configuring RabbitMQ queues.
+type QueueConfig struct {
+	Name string
+	Durable bool
+	Exclusive bool
+	AutoDelete bool
+	NoWait bool
+	Arguments map[string]interface{}
+}
+
+// ExchangeConfig represents the configuration of a RabbitMQ exchange.
+type ExchangeConfig struct {
+	Name string
+	ExType ExchangeType
+	Durable bool
+	AutoDelete bool
+	Internal bool
+	NoWait bool
+	Arguments map[string]interface{}
+}
+
+// Type of exchanges
+type ExchangeType string
+
+// Constants defining various types of RabbitMQ exchanges.
+const (
+    ExchangeFanout ExchangeType = "fanout" 
+    ExchangeDirect ExchangeType = "direct"
+	ExchangeTopic ExchangeType = "topic"
+	ExchangeHeaders ExchangeType = "headers"
+)
+
+
+func NewRabbitMQClient(serverConfig ServerConfig) RabbitMQClient {
+	return RabbitMQClient{
 		ServerConfig: serverConfig,
 	}
 }
 
 
-func NewRabbitMQClientDefault(queueName string) *RabbitMQClient {
-	return &RabbitMQClient{
+func NewRabbitMQClientDefault(queueName string) RabbitMQClient {
+	return RabbitMQClient{
 		ServerConfig: ServerConfig{
 			Host:     "localhost",
 			Port:     5672,
@@ -37,7 +84,7 @@ func NewRabbitMQClientDefault(queueName string) *RabbitMQClient {
 
 
 // PublishToQueue publishes a message to a RabbitMQ queue.
-func (rmq *RabbitMQClient) PublishToQueue(objMessage interface{}) error {
+func (rmq RabbitMQClient) PublishToQueue(objMessage interface{}) error {
     // Establish connection to RabbitMQ
     conn, err := amqp.Dial(rmq.connectionString())
     if err != nil {
@@ -93,7 +140,7 @@ func (rmq *RabbitMQClient) PublishToQueue(objMessage interface{}) error {
 
 
 // PublishToExchange publishes a message to a RabbitMQ exchange.
-func (rmq *RabbitMQClient) PublishToExchange(routingKey string, objMessage interface{}) error {
+func (rmq RabbitMQClient) PublishToExchange(routingKey string, objMessage interface{}) error {
     // Establish connection to RabbitMQ
     conn, err := amqp.Dial(rmq.connectionString())
     if err != nil {
@@ -157,7 +204,7 @@ func (rmq *RabbitMQClient) PublishToExchange(routingKey string, objMessage inter
 }
 
 
-func (rmq *RabbitMQClient) connectionString() string {
+func (rmq RabbitMQClient) connectionString() string {
 	return fmt.Sprintf("amqp://%s:%s@%s:%d/", 
 		rmq.ServerConfig.User,
 		rmq.ServerConfig.Password,

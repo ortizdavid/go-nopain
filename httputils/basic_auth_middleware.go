@@ -18,6 +18,7 @@ type UserBasicAuth struct {
 	Password string
 }
 
+
 // NewBasicAuthMiddleware returns a new BasicAuthMiddleware object with the provided username and password.
 func NewBasicAuthMiddleware(allowedUsers []UserBasicAuth) *BasicAuthMiddleware {
     return &BasicAuthMiddleware{

@@ -6,6 +6,7 @@ import (
 	"sync"
 )
 
+
 // ApiKeyUserMiddleware represents middleware for API key authentication.
 // It maintains a list of user IDs and their corresponding API keys.
 type ApiKeyUserMiddleware struct {
@@ -19,6 +20,7 @@ type UserApiKey struct {
 	UserId	string
 	ApiKey	string
 }
+
 
 // NewApiKeyUserMiddleware creates a new instance of ApiKeyUserMiddleware with the provided list of user keys.
 func NewApiKeyUserMiddleWare(userKeyList []UserApiKey) *ApiKeyUserMiddleware {
