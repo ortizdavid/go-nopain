@@ -12,21 +12,18 @@ type golangMessage struct {
 }
 
 
-func TestPublisToQueueWithConfigs(t *testing.T) {
+
+
+func TestPublishToQueueWithDefault(t *testing.T) {
+	rmq := NewRabbitMQProducerDefault()
+	
 	message := golangMessage{
-		Text:    "Message with configs",
-		Number:  99,
-		Boolean: false,
-	}
-	serverConf := ServerConfig{
-		Host:     "127.0.0.1",
-		Port:     5672,
-		User:     "guest",
-		Password: "guest",
+		Text:    "Message with Default",
+		Number:  1097,
+		Boolean: true,
 	}
 
-	rmq := NewRabbitMQClient(serverConf)
-	rmq.QueueConfig = QueueConfig{
+	queue := QueueConfig{
 		Name:       "golang_queue",
 		Durable:    false,
 		Exclusive:  false,
@@ -34,42 +31,23 @@ func TestPublisToQueueWithConfigs(t *testing.T) {
 		NoWait:     false,
 		Arguments:  nil,
 	}
-
-	if err := rmq.PublishToQueue(message); err != nil {
-		t.Error(err)
-	}
-}
-
-
-func TestPublishToQueueWithDefault(t *testing.T) {
-	rmq := NewRabbitMQClientDefault("golang_queue")
-	message := golangMessage{
-		Text:    "Message with Default",
-		Number:  1097,
-		Boolean: true,
-	}
 	
-	if err := rmq.PublishToQueue(message); err != nil {
+	if err := rmq.PublishToQueue(queue, message); err != nil {
 		t.Error(err)
 	}
 }
 
 
-func TestPublisToExchange(t *testing.T) {
+func TestPublishToExchangeDefault(t *testing.T) {
+	rmq := NewRabbitMQProducerDefault()
+	
 	message := golangMessage{
 		Text:    "Message to exchange",
 		Number:  99,
 		Boolean: false,
 	}
-	serverConf := ServerConfig{
-		Host:     "127.0.0.1",
-		Port:     5672,
-		User:     "guest",
-		Password: "guest",
-	}
 
-	rmq := NewRabbitMQClient(serverConf)
-	rmq.ExchangeConfig = ExchangeConfig{
+	exchange := ExchangeConfig{
 		Name:       "golang_exchange",
 		ExType:     ExchangeFanout,
 		Durable:    false,
@@ -79,7 +57,7 @@ func TestPublisToExchange(t *testing.T) {
 		Arguments:  map[string]interface{}{},
 	}
 
-	if err := rmq.PublishToExchange("", message); err != nil {
+	if err := rmq.PublishToExchange(exchange, "golang_key", message); err != nil {
 		t.Error(err)
 	}
 }
