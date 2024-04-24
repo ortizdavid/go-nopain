@@ -29,6 +29,15 @@ type QueueRMQ struct {
 	Arguments map[string]interface{}
 }
 
+type BindRMQ struct {
+	reserved1  uint16
+	Queue      string
+	Exchange   string
+	RoutingKey string
+	NoWait     bool
+	Arguments  map[string]interface{}
+}
+
 // Type of exchanges
 type ExchangeType string
 

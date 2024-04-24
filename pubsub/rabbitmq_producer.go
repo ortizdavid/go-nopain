@@ -2,9 +2,10 @@ package pubsub
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"time"
+
+	"github.com/ortizdavid/go-nopain/serialization"
 	amqp "github.com/rabbitmq/amqp091-go"
 )
 
@@ -40,7 +41,7 @@ func NewRabbitMQProducerDefault() RabbitMQProducer {
 // PublishToQueue publishes a message to a RabbitMQ queue.
 func (rmq RabbitMQProducer) PublishToQueue(queue QueueRMQ, objMessage interface{}) error {
 	// Establish connection to RabbitMQ
-	conn, err := amqp.Dial(rmq.serverURI())
+	conn, err := amqp.Dial(serverURI(rmq.ServerRMQ))
 	if err != nil {
 		return fmt.Errorf("failed to connect to RabbitMQ: %w", err)
 	}
@@ -54,20 +55,13 @@ func (rmq RabbitMQProducer) PublishToQueue(queue QueueRMQ, objMessage interface{
 	defer ch.Close()
 
 	// Declare queue
-	q, err := ch.QueueDeclare(
-		queue.Name,
-		queue.Durable,
-		queue.AutoDelete,
-		queue.Exclusive,
-		queue.NoWait,
-		amqp.Table(queue.Arguments),
-	)
+	q, err := declareQueue(ch, queue)
 	if err != nil {
-		return fmt.Errorf("failed to declare a queue: %w", err)
+		return err
 	}
 
 	// Marshal message to JSON
-	body, err := json.Marshal(objMessage)
+	body, err := serialization.SerializeJson(objMessage)
 	if err != nil {
 		return fmt.Errorf("failed to marshal message to JSON: %w", err)
 	}
@@ -95,7 +89,7 @@ func (rmq RabbitMQProducer) PublishToQueue(queue QueueRMQ, objMessage interface{
 // PublishToExchange publishes a message to a RabbitMQ exchange.
 func (rmq RabbitMQProducer) PublishToExchange(exchange ExchangeRMQ, routingKey string, objMessage interface{}) error {
 	// Establish connection to RabbitMQ
-	conn, err := amqp.Dial(rmq.serverURI())
+	conn, err := amqp.Dial(serverURI(rmq.ServerRMQ))
 	if err != nil {
 		return fmt.Errorf("failed to connect to RabbitMQ: %w", err)
 	}
@@ -109,21 +103,13 @@ func (rmq RabbitMQProducer) PublishToExchange(exchange ExchangeRMQ, routingKey s
 	defer ch.Close()
 
 	// Declare exchange
-	err = ch.ExchangeDeclare(
-		exchange.Name,
-		string(exchange.ExType),
-		exchange.Durable,
-		exchange.AutoDelete,
-		exchange.Internal,
-		exchange.NoWait,
-		amqp.Table(exchange.Arguments),
-	)
+	err = declareExchange(ch, exchange)
 	if err != nil {
-		return fmt.Errorf("failed to declare exchange: %w", err)
+		return err
 	}
 
 	// Marshal message to JSON
-	body, err := json.Marshal(objMessage)
+	body, err := serialization.SerializeJson(objMessage)
 	if err != nil {
 		return fmt.Errorf("failed to marshal message to JSON: %w", err)
 	}
@@ -154,13 +140,4 @@ func (rmq RabbitMQProducer) PublishToExchange(exchange ExchangeRMQ, routingKey s
 	}
 
 	return nil
-}
-
-// serverURI returns the AMQP connection string.
-func (rmq RabbitMQProducer) serverURI() string {
-	return fmt.Sprintf("amqp://%s:%s@%s:%d/",
-		rmq.ServerRMQ.User,
-		rmq.ServerRMQ.Password,
-		rmq.ServerRMQ.Host,
-		rmq.ServerRMQ.Port)
 }

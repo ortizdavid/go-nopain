@@ -3,8 +3,6 @@ package pubsub
 import (
 	"fmt"
 	"log"
-
-	"github.com/ortizdavid/go-nopain/serialization"
 	amqp "github.com/rabbitmq/amqp091-go"
 )
 
@@ -25,6 +23,7 @@ func NewRabbitMQConsumer(host string, port int, user string, password string) Ra
 	}
 }
 
+
 // NewRabbitMQConsumerDefault creates a new RabbitMQConsumer instance with default server configuration.
 func NewRabbitMQConsumerDefault() RabbitMQConsumer {
 	return RabbitMQConsumer{
@@ -40,7 +39,7 @@ func NewRabbitMQConsumerDefault() RabbitMQConsumer {
 
 // ConsumeFromQueue consumes messages from the specified queue.
 func (rmq RabbitMQConsumer) ConsumeFromQueue(queue QueueRMQ) error {
-	conn, err := amqp.Dial(rmq.serverURI())
+	conn, err := amqp.Dial(serverURI(rmq.ServerRMQ))
 	if err != nil {
 		return fmt.Errorf("failed to connect to RabbitMQ: %w", err)
 	}
@@ -54,43 +53,20 @@ func (rmq RabbitMQConsumer) ConsumeFromQueue(queue QueueRMQ) error {
 	defer ch.Close()
 
 	// Declare queue
-	q, err := ch.QueueDeclare(
-		queue.Name,
-		queue.Durable,
-		queue.AutoDelete,
-		queue.Exclusive,
-		queue.NoWait,
-		amqp.Table(queue.Arguments),
-	)
+	q, err := declareQueue(ch, queue)
 	if err != nil {
-		return fmt.Errorf("failed to declare a queue: %w", err)
+		return err
 	}
 
-	// Consume messages from the queue
-	msgs, err := ch.Consume(
-		q.Name, // queue
-		"",     // consumer
-		true,   // auto-ack
-		false,  // exclusive
-		false,  // no-local
-		false,  // no-wait
-		nil,    // args
-	)
+	// consume the messages
+	msgs, err := consumeMessages(ch, q)
 	if err != nil {
-		return fmt.Errorf("failed to register a consumer: %w", err)
+		return err
 	}
 
 	// Process received messages
 	forever := make(chan bool)
-	go func() {
-		for msg := range msgs {
-			if err != nil {
-				fmt.Println(err)
-				continue
-			}
-			log.Printf("Received a message: %s", msg.Body)
-		}
-	}()
+	logMessages(err, msgs)
 
 	log.Printf(" [*] Waiting for messages. To exit press CTRL+C")
 	<-forever
@@ -101,7 +77,7 @@ func (rmq RabbitMQConsumer) ConsumeFromQueue(queue QueueRMQ) error {
 
 // ConsumeFromExchange consumes messages from the specified exchange with the given routing key.
 func (rmq RabbitMQConsumer) ConsumeFromExchange(exchange ExchangeRMQ, routingKey string) error {
-	conn, err := amqp.Dial(rmq.serverURI())
+	conn, err := amqp.Dial(serverURI(rmq.ServerRMQ))
 	if err != nil {
 		return fmt.Errorf("failed to connect to RabbitMQ: %w", err)
 	}
@@ -115,30 +91,15 @@ func (rmq RabbitMQConsumer) ConsumeFromExchange(exchange ExchangeRMQ, routingKey
 	defer ch.Close()
 
 	// Declare exchange
-	err = ch.ExchangeDeclare(
-		exchange.Name,                      // Exchange name
-		string(exchange.ExType),            // Exchange type
-		exchange.Durable,                   // Durable
-		exchange.AutoDelete,                // Auto-delete
-		exchange.Internal,                  // Internal
-		exchange.NoWait,                    // No-wait
-		amqp.Table(exchange.Arguments),    // Arguments
-	)
+	err = declareExchange(ch, exchange)
 	if err != nil {
-		return fmt.Errorf("failed to declare an exchange: %w", err)
+		return err
 	}
 
 	// Create a new queue
-	q, err := ch.QueueDeclare(
-		"",       // Name
-		false,    // Durable
-		false,    // Delete when unused
-		true,     // Exclusive
-		false,    // No-wait
-		nil,      // Arguments
-	)
+	q, err := declareQueueDefault(ch)
 	if err != nil {
-		return fmt.Errorf("failed to declare a queue: %w", err)
+		return err
 	}
 
 	// Bind the queue to the exchange with the routing key
@@ -154,26 +115,14 @@ func (rmq RabbitMQConsumer) ConsumeFromExchange(exchange ExchangeRMQ, routingKey
 	}
 
 	// Consume messages from the queue
-	msgs, err := ch.Consume(
-		q.Name, // Queue name
-		"",     // Consumer
-		true,   // Auto-acknowledge
-		false,  // Exclusive
-		false,  // No-local
-		false,  // No-wait
-		nil,    // Arguments
-	)
+	msgs, err := consumeMessages(ch, q)
 	if err != nil {
-		return fmt.Errorf("failed to register a consumer: %w", err)
+		return err
 	}
 
 	// Process received messages
 	forever := make(chan struct{})
-	go func() {
-		for d := range msgs {
-			log.Printf(" [x] %s", d.Body)
-		}
-	}()
+	logMessages(err, msgs)
 
 	log.Printf(" [*] Waiting for logs. To exit press CTRL+C")
 	<-forever
@@ -184,7 +133,7 @@ func (rmq RabbitMQConsumer) ConsumeFromExchange(exchange ExchangeRMQ, routingKey
 
 // ProcessMessageFromQueue consumes and processes messages from the specified queue.
 func (rmq RabbitMQConsumer) ProcessMessageFromQueue(queue QueueRMQ, fn func(message interface{}) error) error {
-	conn, err := amqp.Dial(rmq.serverURI())
+	conn, err := amqp.Dial(serverURI(rmq.ServerRMQ))
 	if err != nil {
 		return fmt.Errorf("failed to connect to RabbitMQ: %w", err)
 	}
@@ -198,52 +147,20 @@ func (rmq RabbitMQConsumer) ProcessMessageFromQueue(queue QueueRMQ, fn func(mess
 	defer ch.Close()
 
 	// Declare queue
-	q, err := ch.QueueDeclare(
-		queue.Name,
-		queue.Durable,
-		queue.AutoDelete,
-		queue.Exclusive,
-		queue.NoWait,
-		amqp.Table(queue.Arguments),
-	)
+	q, err := declareQueue(ch, queue)
 	if err != nil {
-		return fmt.Errorf("failed to declare a queue: %w", err)
+		return err
 	}
 
 	// Consume messages from the queue
-	msgs, err := ch.Consume(
-		q.Name, // queue
-		"",     // consumer
-		true,   // auto-ack
-		false,  // exclusive
-		false,  // no-local
-		false,  // no-wait
-		nil,    // args
-	)
+	msgs, err := consumeMessages(ch, q)
 	if err != nil {
-		return fmt.Errorf("failed to register a consumer: %w", err)
+		return err
 	}
 
 	// Process received messages
 	forever := make(chan bool)
-	go func() {
-		for msg := range msgs {
-			var message interface{}
-			err := serialization.UnserializeJson(msg.Body, &message)
-			if err != nil {
-				log.Printf("failed to serialize message body: %s", err)
-				continue
-			}
-			err = fn(message)
-			if err != nil {
-				log.Printf("error processing message: %s", err)
-				continue
-			}
-			log.Printf("Processed message: %+v", message)
-		}
-	}()
-
-	log.Printf(" [*] Waiting for messages. To exit press CTRL+C")
+	processMessages(msgs, fn)
 	<-forever
 
 	return nil
@@ -251,7 +168,7 @@ func (rmq RabbitMQConsumer) ProcessMessageFromQueue(queue QueueRMQ, fn func(mess
 
 // ConsumeFromExchange consumes messages from the specified exchange with the given routing key.
 func (rmq RabbitMQConsumer) ProcessMessageFromExchange(exchange ExchangeRMQ, routingKey string, fn func(message interface{}) error) error {
-	conn, err := amqp.Dial(rmq.serverURI())
+	conn, err := amqp.Dial(serverURI(rmq.ServerRMQ))
 	if err != nil {
 		return fmt.Errorf("failed to connect to RabbitMQ: %w", err)
 	}
@@ -265,30 +182,15 @@ func (rmq RabbitMQConsumer) ProcessMessageFromExchange(exchange ExchangeRMQ, rou
 	defer ch.Close()
 
 	// Declare exchange
-	err = ch.ExchangeDeclare(
-		exchange.Name,                      // Exchange name
-		string(exchange.ExType),            // Exchange type
-		exchange.Durable,                   // Durable
-		exchange.AutoDelete,                // Auto-delete
-		exchange.Internal,                  // Internal
-		exchange.NoWait,                    // No-wait
-		amqp.Table(exchange.Arguments),    // Arguments
-	)
+	err = declareExchange(ch, exchange)
 	if err != nil {
-		return fmt.Errorf("failed to declare an exchange: %w", err)
+		return err
 	}
 
 	// Create a new queue
-	q, err := ch.QueueDeclare(
-		"",       // Name
-		false,    // Durable
-		false,    // Delete when unused
-		true,     // Exclusive
-		false,    // No-wait
-		nil,      // Arguments
-	)
+	q, err := declareQueueDefault(ch)
 	if err != nil {
-		return fmt.Errorf("failed to declare a queue: %w", err)
+		return err
 	}
 
 	// Bind the queue to the exchange with the routing key
@@ -304,49 +206,15 @@ func (rmq RabbitMQConsumer) ProcessMessageFromExchange(exchange ExchangeRMQ, rou
 	}
 
 	// Consume messages from the queue
-	msgs, err := ch.Consume(
-		q.Name, // Queue name
-		"",     // Consumer
-		true,   // Auto-acknowledge
-		false,  // Exclusive
-		false,  // No-local
-		false,  // No-wait
-		nil,    // Arguments
-	)
+	msgs, err := consumeMessages(ch, q)
 	if err != nil {
-		return fmt.Errorf("failed to register a consumer: %w", err)
+		return err
 	}
 
 	// Process received messages
 	forever := make(chan struct{})
-	go func() {
-		for d := range msgs {
-			var message interface{}
-			err := serialization.UnserializeJson(d.Body, &message)
-			if err != nil {
-				log.Printf("failed to userialize message body: %s", err)
-				continue
-			}
-			err = fn(message)
-			if err != nil {
-				log.Printf("error processing message: %s", err)
-				continue
-			}
-			log.Printf("Processed message: %+v", message)
-		}
-	}()
-
+	processMessages(msgs, fn)
 	<-forever
 
 	return nil
-}
-
-
-// serverURI returns the AMQP connection string.
-func (rmq RabbitMQConsumer) serverURI() string {
-	return fmt.Sprintf("amqp://%s:%s@%s:%d/",
-		rmq.ServerRMQ.User,
-		rmq.ServerRMQ.Password,
-		rmq.ServerRMQ.Host,
-		rmq.ServerRMQ.Port)
 }
