@@ -42,7 +42,7 @@ func (ba *BasicAuthMiddleware) applyMiddleware(next http.Handler) http.Handler {
             // No Authorization header provided, request authentication
             w.Header().Set("WWW-Authenticate", `Basic realm="Restricted"`)
             w.WriteHeader(http.StatusUnauthorized)
-            fmt.Fprint(w, "Unauthorized access\n")
+            fmt.Fprintln(w, "Unauthorized access")
             return
         }
         
@@ -50,7 +50,7 @@ func (ba *BasicAuthMiddleware) applyMiddleware(next http.Handler) http.Handler {
         if !strings.HasPrefix(authHeader, "Basic ") {
             // Invalid Authorization header
             w.WriteHeader(http.StatusBadRequest)
-            fmt.Fprint(w, "Invalid Authorization header\n")
+            fmt.Fprintln(w, "Invalid Authorization header")
             return
         }
         
@@ -67,7 +67,7 @@ func (ba *BasicAuthMiddleware) applyMiddleware(next http.Handler) http.Handler {
         if len(parts) != 2 {
             // Malformed credentials
             w.WriteHeader(http.StatusBadRequest)
-            fmt.Fprint(w, "Malformed credentials\n")
+            fmt.Fprintln(w, "Malformed credentials")
             return
         }
 
@@ -76,7 +76,7 @@ func (ba *BasicAuthMiddleware) applyMiddleware(next http.Handler) http.Handler {
         if !ba.isValidUser(username, password) {
             // Incorrect username or password
             w.WriteHeader(http.StatusUnauthorized)
-            fmt.Fprint(w, "Unauthorized access\n")
+            fmt.Fprintln(w, "Unauthorized access")
             return
         }
         

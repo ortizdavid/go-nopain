@@ -5,19 +5,18 @@ import (
 	"encoding/json"
 	"fmt"
 	"time"
-
 	amqp "github.com/rabbitmq/amqp091-go"
 )
 
 // RabbitMQProducer represents the RabbitMQ producer configuration.
 type RabbitMQProducer struct {
-	ServerConfig ServerConfig
+	ServerRMQ ServerRMQ
 }
 
 // NewRabbitMQProducer creates a new RabbitMQProducer instance with custom server configuration.
 func NewRabbitMQProducer(host string, port int, user string, password string) RabbitMQProducer {
 	return RabbitMQProducer{
-		ServerConfig: ServerConfig{
+		ServerRMQ: ServerRMQ{
 			Host:     host,
 			Port:     port,
 			User:     user,
@@ -29,7 +28,7 @@ func NewRabbitMQProducer(host string, port int, user string, password string) Ra
 // NewRabbitMQProducerDefault creates a new RabbitMQProducer instance with default server configuration.
 func NewRabbitMQProducerDefault() RabbitMQProducer {
 	return RabbitMQProducer{
-		ServerConfig: ServerConfig{
+		ServerRMQ: ServerRMQ{
 			Host:     "localhost",
 			Port:     5672,
 			User:     "guest",
@@ -39,9 +38,9 @@ func NewRabbitMQProducerDefault() RabbitMQProducer {
 }
 
 // PublishToQueue publishes a message to a RabbitMQ queue.
-func (rmq RabbitMQProducer) PublishToQueue(queue QueueConfig, objMessage interface{}) error {
+func (rmq RabbitMQProducer) PublishToQueue(queue QueueRMQ, objMessage interface{}) error {
 	// Establish connection to RabbitMQ
-	conn, err := amqp.Dial(rmq.connectionString())
+	conn, err := amqp.Dial(rmq.serverURI())
 	if err != nil {
 		return fmt.Errorf("failed to connect to RabbitMQ: %w", err)
 	}
@@ -94,9 +93,9 @@ func (rmq RabbitMQProducer) PublishToQueue(queue QueueConfig, objMessage interfa
 }
 
 // PublishToExchange publishes a message to a RabbitMQ exchange.
-func (rmq RabbitMQProducer) PublishToExchange(exchange ExchangeConfig, routingKey string, objMessage interface{}) error {
+func (rmq RabbitMQProducer) PublishToExchange(exchange ExchangeRMQ, routingKey string, objMessage interface{}) error {
 	// Establish connection to RabbitMQ
-	conn, err := amqp.Dial(rmq.connectionString())
+	conn, err := amqp.Dial(rmq.serverURI())
 	if err != nil {
 		return fmt.Errorf("failed to connect to RabbitMQ: %w", err)
 	}
@@ -157,11 +156,11 @@ func (rmq RabbitMQProducer) PublishToExchange(exchange ExchangeConfig, routingKe
 	return nil
 }
 
-// connectionString returns the AMQP connection string.
-func (rmq RabbitMQProducer) connectionString() string {
+// serverURI returns the AMQP connection string.
+func (rmq RabbitMQProducer) serverURI() string {
 	return fmt.Sprintf("amqp://%s:%s@%s:%d/",
-		rmq.ServerConfig.User,
-		rmq.ServerConfig.Password,
-		rmq.ServerConfig.Host,
-		rmq.ServerConfig.Port)
+		rmq.ServerRMQ.User,
+		rmq.ServerRMQ.Password,
+		rmq.ServerRMQ.Host,
+		rmq.ServerRMQ.Port)
 }

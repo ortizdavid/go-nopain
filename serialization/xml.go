@@ -8,7 +8,7 @@ import (
 
 // SerializeXml serializes the given object to JSON
 func SerializeXml(obj interface{}) ([]byte, error) {
-	xmlData, err := xml.Marshal(obj)
+	xmlData, err := xml.MarshalIndent(obj, "", " ")
 	if err != nil {
 		return nil, err
 	}
@@ -25,7 +25,7 @@ func UnserializeXml(xmlData []byte, obj interface{}) error {
 }
 
 // EncodeXml encodes the given object as JSON and writes it to the writer
-func EncodeXml(obj interface{}, writer io.Writer) error {
+func EncodeXml(writer io.Writer, obj interface{}) error {
 	encoder := xml.NewEncoder(writer)
 	err := encoder.Encode(obj)
 	if err != nil {

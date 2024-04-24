@@ -12,8 +12,6 @@ type golangMessage struct {
 }
 
 
-
-
 func TestPublishToQueueWithDefault(t *testing.T) {
 	rmq := NewRabbitMQProducerDefault()
 	
@@ -23,7 +21,7 @@ func TestPublishToQueueWithDefault(t *testing.T) {
 		Boolean: true,
 	}
 
-	queue := QueueConfig{
+	queue := QueueRMQ{
 		Name:       "golang_queue",
 		Durable:    false,
 		Exclusive:  false,
@@ -47,7 +45,7 @@ func TestPublishToExchangeDefault(t *testing.T) {
 		Boolean: false,
 	}
 
-	exchange := ExchangeConfig{
+	exchange := ExchangeRMQ{
 		Name:       "golang_exchange",
 		ExType:     ExchangeFanout,
 		Durable:    false,

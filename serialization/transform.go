@@ -12,6 +12,7 @@ func XmlToJson(xmlData string) (string, error) {
 	return "", nil
 }
 
+// ASN1
 // JsonToAsn1 converts JSON data to ASN.1 format.
 func JsonToAsn1(jsonData string) (string, error) {
 	// Implementation will be added here
@@ -25,7 +26,7 @@ func XmlToAsn1(xmlData string) (string, error) {
 }
 
 
-// MAPS
+// Map
 // MapToJson converts a map[string]interface{} to JSON format.
 func MapToJson(data map[string]interface{}) (string, error) {
 	// Implementation will be added here
@@ -36,4 +37,18 @@ func MapToJson(data map[string]interface{}) (string, error) {
 func MapToXml(data map[string]interface{}) (string, error) {
 	// Implementation will be added here
 	return "", nil
+}
+
+
+// Struct
+// MapToStruct converts a map[string]interface{} to a struct.
+func MapToStruct(data map[string]interface{}, obj interface{}) error {
+	// Implementation will be added here
+	return nil
+}
+
+// StructToMap converts a struct to a map[string]interface{}.
+func StructToMap(obj interface{}, data map[string]interface{}) error {
+	// Implementation will be added here
+	return nil
 }

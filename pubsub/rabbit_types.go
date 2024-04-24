@@ -1,7 +1,7 @@
 package pubsub
 
-// ExchangeConfig represents the configuration of a RabbitMQ exchange.
-type ExchangeConfig struct {
+// ExchangeRMQ represents the configuration of a RabbitMQ exchange.
+type ExchangeRMQ struct {
 	Name string
 	ExType ExchangeType
 	Durable bool
@@ -11,16 +11,16 @@ type ExchangeConfig struct {
 	Arguments map[string]interface{}
 }
 
-// ServerConfig contains settings for connecting to the RabbitMQ server.
-type ServerConfig struct {
+// ServerRMQ contains settings for connecting to the RabbitMQ server.
+type ServerRMQ struct {
 	Host string
 	Port int
 	User string
 	Password string
 }
 
-// QueueConfig contains settings for configuring RabbitMQ queues.
-type QueueConfig struct {
+// QueueRMQ contains settings for configuring RabbitMQ queues.
+type QueueRMQ struct {
 	Name string
 	Durable bool
 	Exclusive bool

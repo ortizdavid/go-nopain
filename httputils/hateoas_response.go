@@ -1,9 +1,9 @@
 package httputils
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
+	"github.com/ortizdavid/go-nopain/serialization"
 )
 
 // hateoasJson represents the structure of a HATEOAS JSON response.
@@ -44,7 +44,7 @@ func WriteHateoasJson(w http.ResponseWriter, r *http.Request, statusCode int, da
 
 // encodeHateoas encodes the hateoasJson struct to JSON format and writes it to the response writer.
 func encodeHateoas(w http.ResponseWriter, response hateoasJson) {
-	err := json.NewEncoder(w).Encode(response)
+	err := serialization.EncodeJson(w, response)
 	if err != nil {
 		fmt.Fprintf(w, "%s", err.Error())
 	}

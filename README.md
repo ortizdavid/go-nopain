@@ -15,7 +15,7 @@ Library that has helper functions that can be used in real systems.
 - [ ] Algorithms
 - [ ] Formatters (Currency, ...)
 - [ ] Reflection
-- [ ] Serialization
+- [x] Serialization
 - [x] Messages
 - [ ] Logging
 - [ ] Calculations

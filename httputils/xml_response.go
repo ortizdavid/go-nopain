@@ -4,6 +4,8 @@ import (
 	"encoding/xml"
 	"fmt"
 	"net/http"
+
+	"github.com/ortizdavid/go-nopain/serialization"
 )
 
 // xmlResponse represents the structure of an XML response.
@@ -54,7 +56,7 @@ func writeXmlHeader(w http.ResponseWriter, statusCode int) {
 
 // encodeXml encodes the xmlResponse struct to XML format and writes it to the response writer.
 func encodeXml(w http.ResponseWriter, response xmlResponse) {
-	err := xml.NewEncoder(w).Encode(response)
+	err := serialization.EncodeXml(w, response)
 	if err != nil {
 		fmt.Fprintf(w, "%s", err.Error())
 	}

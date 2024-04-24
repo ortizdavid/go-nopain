@@ -1,9 +1,9 @@
 package httputils
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
+	"github.com/ortizdavid/go-nopain/serialization"
 )
 
 // jsonResponse represents the structure of a JSON response.
@@ -53,7 +53,7 @@ func writeJsonHeader(w http.ResponseWriter, statusCode int) {
 
 // encodeJson encodes the jsonResponse struct to JSON format and writes it to the response writer.
 func encodeJson(w http.ResponseWriter, response jsonResponse) {
-	err := json.NewEncoder(w).Encode(response)
+	err := serialization.EncodeJson(w, response)
 	if err != nil {
 		fmt.Fprintf(w, "%s", err.Error())
 	}
