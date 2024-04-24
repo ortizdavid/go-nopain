@@ -103,15 +103,9 @@ func (rmq RabbitMQConsumer) ConsumeFromExchange(exchange ExchangeRMQ, routingKey
 	}
 
 	// Bind the queue to the exchange with the routing key
-	err = ch.QueueBind(
-		q.Name,             // Queue name
-		routingKey,         // Routing key
-		exchange.Name,      // Exchange name
-		false,              // No-wait
-		nil,                // Arguments
-	)
+	err = bindQueue(ch, q.Name, exchange, routingKey)
 	if err != nil {
-		return fmt.Errorf("failed to bind the queue to the exchange: %w", err)
+		return err
 	}
 
 	// Consume messages from the queue
@@ -194,15 +188,9 @@ func (rmq RabbitMQConsumer) ProcessMessageFromExchange(exchange ExchangeRMQ, rou
 	}
 
 	// Bind the queue to the exchange with the routing key
-	err = ch.QueueBind(
-		q.Name,             // Queue name
-		routingKey,         // Routing key
-		exchange.Name,      // Exchange name
-		false,              // No-wait
-		nil,                // Arguments
-	)
+	err = bindQueue(ch, q.Name, exchange, routingKey)
 	if err != nil {
-		return fmt.Errorf("failed to bind the queue to the exchange: %w", err)
+		return err
 	}
 
 	// Consume messages from the queue

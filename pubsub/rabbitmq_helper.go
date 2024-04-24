@@ -58,6 +58,21 @@ func declareExchange(ch *amqp.Channel, exchange ExchangeRMQ) error {
 	return nil
 }
 
+// Bind the queue to the exchange with the routing key
+func bindQueue(ch *amqp.Channel, queueName string, exchange ExchangeRMQ, routingKey string) error {
+	err := ch.QueueBind(
+		queueName,             // Queue name
+		routingKey,         // Routing key
+		exchange.Name,      // Exchange name
+		false,              // No-wait
+		nil,                // Arguments
+	)
+	if err != nil {
+		return fmt.Errorf("failed to bind the queue to the exchange: %w", err)
+	}
+	return nil
+}
+
 // Starts consuming messages from the specified queue
 func consumeMessages(ch *amqp.Channel, q amqp.Queue) (<-chan amqp.Delivery, error) {
 	msgs, err := ch.Consume(
@@ -119,29 +134,3 @@ func serverURI(server ServerRMQ) string {
 		server.Port)
 }
 
-
-/*
-go func() {
-		for d := range msgs {
-			var message interface{}
-			err := serialization.UnserializeJson(d.Body, &message)
-			if err != nil {
-				log.Printf("failed to userialize message body: %s", err)
-				continue
-			}
-			err = fn(message)
-			if err != nil {
-				log.Printf("error processing message: %s", err)
-				continue
-			}
-			log.Printf("Processed message: %+v", message)
-		}
-	}()
-
-*/
-
-
-/*
-
-
-*/

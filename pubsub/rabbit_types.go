@@ -30,7 +30,6 @@ type QueueRMQ struct {
 }
 
 type BindRMQ struct {
-	reserved1  uint16
 	Queue      string
 	Exchange   string
 	RoutingKey string
