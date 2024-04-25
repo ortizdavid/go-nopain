@@ -63,7 +63,7 @@ func (rmq RabbitMQProducer) PublishToQueue(queue QueueRMQ, objMessage interface{
 	// Marshal message to JSON
 	body, err := serialization.SerializeJson(objMessage)
 	if err != nil {
-		return fmt.Errorf("failed to marshal message to JSON: %w", err)
+		return fmt.Errorf("failed to serialize message to JSON: %w", err)
 	}
 
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
@@ -111,7 +111,7 @@ func (rmq RabbitMQProducer) PublishToExchange(exchange ExchangeRMQ, routingKey s
 	// Marshal message to JSON
 	body, err := serialization.SerializeJson(objMessage)
 	if err != nil {
-		return fmt.Errorf("failed to marshal message to JSON: %w", err)
+		return fmt.Errorf("failed to serialize message to JSON: %w", err)
 	}
 
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)

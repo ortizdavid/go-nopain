@@ -90,7 +90,6 @@ func consumeMessages(ch *amqp.Channel, q amqp.Queue) (<-chan amqp.Delivery, erro
 	return msgs, nil
 }
 
-
 // Consumes received messages
 func logMessages(err error, msgs <-chan amqp.Delivery) {
 	go func() {
@@ -104,24 +103,23 @@ func logMessages(err error, msgs <-chan amqp.Delivery) {
 	}()
 }
 
-
 // Process received message
-func processMessages(msgs <-chan amqp.Delivery, fn func(message interface{}) error) {
+func processMessages[T any](msgs <-chan amqp.Delivery, fn func(T) error) {
 	go func() {
-		for d := range msgs {
-			var message interface{}
-			err := serialization.UnserializeJson(d.Body, &message)
-			if err != nil {
-				log.Printf("failed to userialize message body: %s", err)
-				continue
-			}
-			err = fn(message)
-			if err != nil {
-				log.Printf("error processing message: %s", err)
-				continue
-			}
-			log.Printf("Processed message: %+v", message)
+	  for d := range msgs {
+		var message T
+		err := serialization.UnserializeJson(d.Body, &message)
+		if err != nil {
+		  log.Printf("failed to unserialize message body: %s", err)
+		  continue
 		}
+		err = fn(message)
+		if err != nil {
+		  log.Printf("error processing message: %s", err)
+		  continue
+		}
+		log.Printf("Processed message: %+v", message)
+	  }
 	}()
 }
 

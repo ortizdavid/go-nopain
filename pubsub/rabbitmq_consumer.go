@@ -38,6 +38,8 @@ func NewRabbitMQConsumerDefault() RabbitMQConsumer {
 
 
 // ConsumeFromQueue consumes messages from the specified queue.
+// It establishes a connection to the RabbitMQ server, opens a channel, declares the queue,
+// consumes messages from it, and logs the received messages continuously.
 func (rmq RabbitMQConsumer) ConsumeFromQueue(queue QueueRMQ) error {
 	conn, err := amqp.Dial(serverURI(rmq.ServerRMQ))
 	if err != nil {
@@ -67,7 +69,6 @@ func (rmq RabbitMQConsumer) ConsumeFromQueue(queue QueueRMQ) error {
 	// Process received messages
 	forever := make(chan bool)
 	logMessages(err, msgs)
-
 	log.Printf(" [*] Waiting for messages. To exit press CTRL+C")
 	<-forever
 
@@ -76,6 +77,9 @@ func (rmq RabbitMQConsumer) ConsumeFromQueue(queue QueueRMQ) error {
 
 
 // ConsumeFromExchange consumes messages from the specified exchange with the given routing key.
+// It establishes a connection to the RabbitMQ server, opens a channel, declares the exchange,
+// creates a new queue, binds the queue to the exchange with the routing key,
+// consumes messages from the queue, and logs the received messages continuously.
 func (rmq RabbitMQConsumer) ConsumeFromExchange(exchange ExchangeRMQ, routingKey string) error {
 	conn, err := amqp.Dial(serverURI(rmq.ServerRMQ))
 	if err != nil {
@@ -117,7 +121,6 @@ func (rmq RabbitMQConsumer) ConsumeFromExchange(exchange ExchangeRMQ, routingKey
 	// Process received messages
 	forever := make(chan struct{})
 	logMessages(err, msgs)
-
 	log.Printf(" [*] Waiting for logs. To exit press CTRL+C")
 	<-forever
 
@@ -125,43 +128,49 @@ func (rmq RabbitMQConsumer) ConsumeFromExchange(exchange ExchangeRMQ, routingKey
 }
 
 
-// ProcessMessageFromQueue consumes and processes messages from the specified queue.
-func (rmq RabbitMQConsumer) ProcessMessageFromQueue(queue QueueRMQ, fn func(message interface{}) error) error {
+// ProcessMessageFromQueue consumes messages from the specified queue.
+// It establishes a connection to the RabbitMQ server, opens a channel, declares the queue,
+// and consumes messages from it. Each received message is processed using the provided function.
+func ProcessMessageFromQueue[T any](rmq RabbitMQConsumer, queue QueueRMQ, fn func(T) error) error {
 	conn, err := amqp.Dial(serverURI(rmq.ServerRMQ))
 	if err != nil {
-		return fmt.Errorf("failed to connect to RabbitMQ: %w", err)
+	  return fmt.Errorf("failed to connect to RabbitMQ: %w", err)
 	}
 	defer conn.Close()
-
+  
 	// Open channel
 	ch, err := conn.Channel()
 	if err != nil {
-		return fmt.Errorf("failed to open a channel: %w", err)
+	  return fmt.Errorf("failed to open a channel: %w", err)
 	}
 	defer ch.Close()
-
+  
 	// Declare queue
 	q, err := declareQueue(ch, queue)
 	if err != nil {
-		return err
+	  return err
 	}
-
+  
 	// Consume messages from the queue
 	msgs, err := consumeMessages(ch, q)
 	if err != nil {
-		return err
+	  return err
 	}
-
+  
 	// Process received messages
-	forever := make(chan bool)
+	forever := make(chan struct{})
 	processMessages(msgs, fn)
 	<-forever
-
+  
 	return nil
 }
 
-// ConsumeFromExchange consumes messages from the specified exchange with the given routing key.
-func (rmq RabbitMQConsumer) ProcessMessageFromExchange(exchange ExchangeRMQ, routingKey string, fn func(message interface{}) error) error {
+
+// ProcessMessageFromExchange consumes messages from the specified exchange with the given routing key.
+// It establishes a connection to the RabbitMQ server, opens a channel, declares the exchange,
+// creates a new queue, binds the queue to the exchange with the routing key,
+// and consumes messages from the queue. Each received message is processed using the provided function.
+func ProcessMessageFromExchange[T any](rmq RabbitMQConsumer, exchange ExchangeRMQ, routingKey string, fn func(T) error) error {
 	conn, err := amqp.Dial(serverURI(rmq.ServerRMQ))
 	if err != nil {
 		return fmt.Errorf("failed to connect to RabbitMQ: %w", err)
@@ -206,3 +215,5 @@ func (rmq RabbitMQConsumer) ProcessMessageFromExchange(exchange ExchangeRMQ, rou
 
 	return nil
 }
+
+
