@@ -4,9 +4,10 @@ import (
 	"math/rand"
 )
 
+// charset defines the characters used for generating random strings.
 const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 
-
+// String generates a random string of the specified length using characters from the charset.
 func String(length int) string {
 	seedRandom()
 	if length <= 0 {

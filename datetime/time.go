@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-
+// TimeAgo calculates the time difference from a given time to the current time and returns a human-readable string representing the duration ago.
 func TimeAgo(from time.Time) string {
 	now := time.Now()
 	diff := now.Sub(from)
@@ -32,7 +32,7 @@ func TimeAgo(from time.Time) string {
 	}
 }
 
-
+// TimeAgoBetweenDates calculates the time difference between two given times and returns a string representing the duration ago from the start time to the end time.
 func TimeAgoBetweenDates(start time.Time, end time.Time) string {
 	diff := end.Sub(start)
 	return TimeAgo(start) + " to " + TimeAgo(end) + " (" + diff.String() + ")"

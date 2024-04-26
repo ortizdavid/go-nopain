@@ -11,7 +11,7 @@ import (
 
 type FileInfo struct {}
 
-
+// GetFileInfo prints information about a file.
 func (finfo *FileInfo) GetFileInfo(fileName string) {
 	fileInfo, err := os.Stat(fileName)
 	if err != nil {
@@ -25,7 +25,7 @@ func (finfo *FileInfo) GetFileInfo(fileName string) {
 	fmt.Println("Permissions:", fileInfo.Mode())     
 }
 
-
+// ListFiles lists all files in a directory.
 func (finfo *FileInfo) ListFiles(dir string) {
 	files, err := ioutil.ReadDir(dir)
 	if err != nil {
@@ -41,12 +41,12 @@ func (finfo *FileInfo) ListFiles(dir string) {
 	}
 }
 
-
+// GetFileExt returns the extension of a file.
 func (finfo *FileInfo) GetFileExt(path string) string {
 	return filepath.Ext(path)
 }
 
-
+// GetFileType returns the type of a file based on its extension.
 func (finfo *FileInfo) GetFileType(extension string) string {
 	imageExts := []string{".png", ".gif", ".jpg", ".jiff"}
 	documentExts := []string{".txt", ".pdf", ".docx", ".ppt", ".pptx"}
@@ -70,7 +70,7 @@ func (finfo *FileInfo) GetFileType(extension string) string {
 	return fileType
 }
 
-
+// IsDir checks if a path is a directory.
 func (finfo *FileInfo) IsDir(path string) bool {
 	fileInfo, err := os.Stat(path)
 	if err != nil {
@@ -83,7 +83,7 @@ func (finfo *FileInfo) IsDir(path string) bool {
 	}
 }
 
-
+// FileExists checks if a file exists in a folder.
 func (finfo *FileInfo) FileExists(folder string, fileName string) bool {
 	filePath := folder + "/" + fileName
 	if _, err := os.Stat(filePath); err == nil {
@@ -95,7 +95,7 @@ func (finfo *FileInfo) FileExists(folder string, fileName string) bool {
 	}
 }
 
-
+// printChar prints a character multiple times.
 func printChar(ch string, chSize int) {
 	for i := 0; i < chSize; i++ {
 		fmt.Print(ch)

@@ -14,6 +14,6 @@ func TestStorageUnits(t *testing.T) {
 	fmt.Println(9 * TERA_BYTE) // 9 TB
 	fmt.Println(PETA_BYTE)
 	fmt.Println(EXA_BYTE)
-	fmt.Println(ZETA_BYTE)
-	fmt.Println(YOTA_BYTE)
+	fmt.Println(ZETTA_BYTE)
+	fmt.Println(YOTTA_BYTE)
 }
