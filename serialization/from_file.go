@@ -1,8 +1,6 @@
 package serialization
 
 import (
-	"encoding/csv"
-	"io"
 	"os"
 )
 
@@ -61,40 +59,6 @@ func FromCsvFileToJson(csvFile string, obj interface{}) error {
 		return err
 	}
 	defer file.Close()
-	// Create a CSV reader
-	reader := csv.NewReader(file)
-	// Read the CSV headers
-	headers, err := reader.Read()
-	if err != nil {
-		return err
-	}
-	// Initialize a slice to store the CSV data
-	var data []map[string]string
-	// Read the CSV records
-	for {
-		record, err := reader.Read()
-		if err == io.EOF {
-			break
-		} else if err != nil {
-			return err
-		}
-		// Create a map to store each record
-		recordMap := make(map[string]string)
-		for i, value := range record {
-			recordMap[headers[i]] = value
-		}
-		data = append(data, recordMap)
-	}
-	// Serialize the data into JSON
-	jsonData, err := SerializeJson(data)
-	if err != nil {
-		return err
-	}
-	// Deserialize JSON into the provided object
-	err = UnserializeJson(jsonData, obj)
-	if err != nil {
-		return err
-	}
 	return nil
 }
 
@@ -102,5 +66,11 @@ func FromCsvFileToJson(csvFile string, obj interface{}) error {
 // FromCsvFileToXml reads data from the specified CSV file and deserializes it into XML format.
 // The deserialized XML data is stored in the provided object.
 func FromCsvFileToXml(csvFile string, obj interface{}) error {
+	// Open the CSV file
+	file, err := os.Open(csvFile)
+	if err != nil {
+		return err
+	}
+	defer file.Close()
 	return nil
 }

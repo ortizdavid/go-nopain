@@ -1,0 +1,6 @@
+{"Id":111,"Name":"P1","Price":230.0,"Description":"New Product"}type AAA struct {
+    ID          int64  `json:"Id"`
+    Name        string `json:"Name"`
+    Price       int64  `json:"Price"`
+    Description string `json:"Description"`
+}

@@ -14,8 +14,8 @@ func main() {
 
 	mux.HandleFunc("GET /", indexHandler)
 	mux.HandleFunc("GET /public", publicHandler)
-	mux.Handle("GET /protected", middleware.Apply(protectedHandler))
-	mux.Handle("GET /protected-2", middleware.Apply(protectedHandler2))
+	mux.Handle("GET /protected-get", middleware.Apply(protectedHandler))
+	mux.Handle("DELETE /protected-delete", middleware.Apply(protectedHandler2))
 
 	fmt.Println("Listen at http://127.0.0.1:7000")
 	http.ListenAndServe(":7000", mux)
@@ -30,11 +30,11 @@ func publicHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func protectedHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintln(w, "Protected Content")
+	fmt.Fprintln(w, "Protected GET Content")
 }
 
 func protectedHandler2(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintln(w, "Protected 2 2 2 Content")
+	fmt.Fprintln(w, "Protected DELETE Content")
 }
 
 
