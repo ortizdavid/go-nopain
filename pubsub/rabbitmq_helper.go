@@ -8,6 +8,7 @@ import (
 	amqp "github.com/rabbitmq/amqp091-go"
 )
 
+
 // Declares a queue on the given channel
 func declareQueue(ch *amqp.Channel, queue QueueRMQ) (amqp.Queue, error) {
 	q, err := ch.QueueDeclare(
@@ -41,6 +42,7 @@ func declareQueueDefault(ch *amqp.Channel) (amqp.Queue, error) {
 	return q, nil
 }
 
+
 // Declare exchange on the given channel
 func declareExchange(ch *amqp.Channel, exchange ExchangeRMQ) error {
 	err := ch.ExchangeDeclare(
@@ -58,6 +60,7 @@ func declareExchange(ch *amqp.Channel, exchange ExchangeRMQ) error {
 	return nil
 }
 
+
 // Bind the queue to the exchange with the routing key
 func bindQueue(ch *amqp.Channel, queueName string, exchange ExchangeRMQ, routingKey string) error {
 	err := ch.QueueBind(
@@ -72,6 +75,7 @@ func bindQueue(ch *amqp.Channel, queueName string, exchange ExchangeRMQ, routing
 	}
 	return nil
 }
+
 
 // Starts consuming messages from the specified queue
 func consumeMessages(ch *amqp.Channel, q amqp.Queue) (<-chan amqp.Delivery, error) {
@@ -90,6 +94,7 @@ func consumeMessages(ch *amqp.Channel, q amqp.Queue) (<-chan amqp.Delivery, erro
 	return msgs, nil
 }
 
+
 // Consumes received messages
 func logMessages(err error, msgs <-chan amqp.Delivery) {
 	go func() {
@@ -102,6 +107,7 @@ func logMessages(err error, msgs <-chan amqp.Delivery) {
 		}
 	}()
 }
+
 
 // Process received message
 func processMessages[T any](msgs <-chan amqp.Delivery, fn func(T) error) {
@@ -122,6 +128,7 @@ func processMessages[T any](msgs <-chan amqp.Delivery, fn func(T) error) {
 	  }
 	}()
 }
+
 
 // serverURI returns the AMQP connection string.
 func serverURI(server ServerRMQ) string {

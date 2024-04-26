@@ -4,7 +4,8 @@ Package for data serialization
 
 
 ## Features
-- Json 
-- Xml
-- Serialization from file
-- Data Transformation
+- [x] JSON
+- [x] XML
+- [x] ASN1
+- [x] Serialization from file
+- [x] Data Transformation

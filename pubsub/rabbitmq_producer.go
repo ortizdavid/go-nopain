@@ -46,29 +46,25 @@ func (rmq RabbitMQProducer) PublishToQueue(queue QueueRMQ, objMessage interface{
 		return fmt.Errorf("failed to connect to RabbitMQ: %w", err)
 	}
 	defer conn.Close()
-
 	// Open channel
 	ch, err := conn.Channel()
 	if err != nil {
 		return fmt.Errorf("failed to open a channel: %w", err)
 	}
 	defer ch.Close()
-
 	// Declare queue
 	q, err := declareQueue(ch, queue)
 	if err != nil {
 		return err
 	}
-
 	// Marshal message to JSON
 	body, err := serialization.SerializeJson(objMessage)
 	if err != nil {
 		return fmt.Errorf("failed to serialize message to JSON: %w", err)
 	}
-
+	// Create context
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
-
 	// Publish message
 	err = ch.PublishWithContext(ctx,
 		"",
@@ -94,29 +90,25 @@ func (rmq RabbitMQProducer) PublishToExchange(exchange ExchangeRMQ, routingKey s
 		return fmt.Errorf("failed to connect to RabbitMQ: %w", err)
 	}
 	defer conn.Close()
-
 	// Open channel
 	ch, err := conn.Channel()
 	if err != nil {
 		return fmt.Errorf("failed to open a channel: %w", err)
 	}
 	defer ch.Close()
-
 	// Declare exchange
 	err = declareExchange(ch, exchange)
 	if err != nil {
 		return err
 	}
-
-	// Marshal message to JSON
+	// Serialize message to JSON
 	body, err := serialization.SerializeJson(objMessage)
 	if err != nil {
 		return fmt.Errorf("failed to serialize message to JSON: %w", err)
 	}
-
+	// Create Context
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
-
 	// Determine routing key
 	var key string
 	if exchange.ExType == ExchangeFanout {
@@ -124,7 +116,6 @@ func (rmq RabbitMQProducer) PublishToExchange(exchange ExchangeRMQ, routingKey s
 	} else {
 		key = routingKey
 	}
-
 	// Publish message to exchange
 	err = ch.PublishWithContext(ctx,
 		exchange.Name,

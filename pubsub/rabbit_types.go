@@ -29,6 +29,7 @@ type QueueRMQ struct {
 	Arguments map[string]interface{}
 }
 
+// BindRMQ contains settings for configuring RabbitMQ bindings.
 type BindRMQ struct {
 	Queue      string
 	Exchange   string

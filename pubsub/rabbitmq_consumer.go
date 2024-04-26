@@ -46,26 +46,22 @@ func (rmq RabbitMQConsumer) ConsumeFromQueue(queue QueueRMQ) error {
 		return fmt.Errorf("failed to connect to RabbitMQ: %w", err)
 	}
 	defer conn.Close()
-
 	// Open channel
 	ch, err := conn.Channel()
 	if err != nil {
 		return fmt.Errorf("failed to open a channel: %w", err)
 	}
 	defer ch.Close()
-
 	// Declare queue
 	q, err := declareQueue(ch, queue)
 	if err != nil {
 		return err
 	}
-
 	// consume the messages
 	msgs, err := consumeMessages(ch, q)
 	if err != nil {
 		return err
 	}
-
 	// Process received messages
 	forever := make(chan bool)
 	logMessages(err, msgs)
@@ -86,38 +82,32 @@ func (rmq RabbitMQConsumer) ConsumeFromExchange(exchange ExchangeRMQ, routingKey
 		return fmt.Errorf("failed to connect to RabbitMQ: %w", err)
 	}
 	defer conn.Close()
-
 	// Open channel
 	ch, err := conn.Channel()
 	if err != nil {
 		return fmt.Errorf("failed to open a channel: %w", err)
 	}
 	defer ch.Close()
-
 	// Declare exchange
 	err = declareExchange(ch, exchange)
 	if err != nil {
 		return err
 	}
-
 	// Create a new queue
 	q, err := declareQueueDefault(ch)
 	if err != nil {
 		return err
 	}
-
 	// Bind the queue to the exchange with the routing key
 	err = bindQueue(ch, q.Name, exchange, routingKey)
 	if err != nil {
 		return err
 	}
-
 	// Consume messages from the queue
 	msgs, err := consumeMessages(ch, q)
 	if err != nil {
 		return err
 	}
-
 	// Process received messages
 	forever := make(chan struct{})
 	logMessages(err, msgs)
@@ -137,26 +127,22 @@ func ProcessMessageFromQueue[T any](rmq RabbitMQConsumer, queue QueueRMQ, fn fun
 	  return fmt.Errorf("failed to connect to RabbitMQ: %w", err)
 	}
 	defer conn.Close()
-  
 	// Open channel
 	ch, err := conn.Channel()
 	if err != nil {
 	  return fmt.Errorf("failed to open a channel: %w", err)
 	}
 	defer ch.Close()
-  
 	// Declare queue
 	q, err := declareQueue(ch, queue)
 	if err != nil {
 	  return err
 	}
-  
 	// Consume messages from the queue
 	msgs, err := consumeMessages(ch, q)
 	if err != nil {
 	  return err
 	}
-  
 	// Process received messages
 	forever := make(chan struct{})
 	processMessages(msgs, fn)
@@ -176,38 +162,32 @@ func ProcessMessageFromExchange[T any](rmq RabbitMQConsumer, exchange ExchangeRM
 		return fmt.Errorf("failed to connect to RabbitMQ: %w", err)
 	}
 	defer conn.Close()
-
 	// Open channel
 	ch, err := conn.Channel()
 	if err != nil {
 		return fmt.Errorf("failed to open a channel: %w", err)
 	}
 	defer ch.Close()
-
 	// Declare exchange
 	err = declareExchange(ch, exchange)
 	if err != nil {
 		return err
 	}
-
 	// Create a new queue
 	q, err := declareQueueDefault(ch)
 	if err != nil {
 		return err
 	}
-
 	// Bind the queue to the exchange with the routing key
 	err = bindQueue(ch, q.Name, exchange, routingKey)
 	if err != nil {
 		return err
 	}
-
 	// Consume messages from the queue
 	msgs, err := consumeMessages(ch, q)
 	if err != nil {
 		return err
 	}
-
 	// Process received messages
 	forever := make(chan struct{})
 	processMessages(msgs, fn)

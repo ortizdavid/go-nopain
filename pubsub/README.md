@@ -7,7 +7,7 @@ Handle Publish and Subscribe to a message broker
 - [x] RabbitMQ
 
 ## Features
-- Queue and Exchange Configuration (RabbitMQ)
-- Publish messages
-- Subscribe messages
-- Process Messages
+- [x] Queue and Exchange configuration (RabbitMQ)
+- [x] Publish Messages
+- [x] Subscribe Messages
+- [x] Process Messages from Queue and Exchange

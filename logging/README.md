@@ -3,4 +3,4 @@
 Package that handles logging
 
 ## Supported loggers
-- log/slog package 
+- [x] log/slog package 

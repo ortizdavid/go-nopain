@@ -3,6 +3,6 @@
 Handles message formatting
 
 ## Features
-- Coloring messages
-- Message types
-- Message handling (Fail, Log, Print)
+- [x] Coloring messages
+- [x] Message types
+- [x] Message handling (Fail, Log, Print)
