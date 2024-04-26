@@ -25,7 +25,6 @@ type link struct {
 // WriteHateoasJson writes a HATEOAS JSON response with the provided status code, data, and count.
 func WriteHateoasJson(w http.ResponseWriter, r *http.Request, statusCode int, data any, count int) {
 	writeJsonHeader(w, statusCode)
-	
 	basePath := fmt.Sprintf("%s://%s", r.URL.Scheme, r.URL.Host)
 	selfLink := basePath + r.URL.Path
 	

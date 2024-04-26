@@ -31,7 +31,6 @@ func (apiMid *ApiKeyMiddleware) Apply(handler func(w http.ResponseWriter, r *htt
 // It retrieves the API key from the request header and validates it against the default key.
 func (apiMid *ApiKeyMiddleware) applyMiddleware(next http.Handler) http.Handler {
 	validApiKey := apiMid.getDefaultKey()
-
 	return http.HandlerFunc(func (w http.ResponseWriter, r *http.Request) {
 		apiKey := r.Header.Get("X-API-Key")
 		if apiKey == "" {

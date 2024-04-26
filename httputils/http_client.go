@@ -22,6 +22,7 @@ type Response struct {
 	Headers    map[string][]string `json:"headers"`                // Response headers
 }
 
+
 // NewHttpClient creates a new instance of HttpClient.
 func NewHttpClient() *HttpClient {
 	return &HttpClient{
@@ -30,10 +31,12 @@ func NewHttpClient() *HttpClient {
 	}
 }
 
+
 // SetHeader sets a custom header on the HTTP client.
-func (cl *HttpClient) SetHeader(key, value string) {
+func (cl *HttpClient) SetHeader(key string, value string) {
 	cl.headers[key] = value
 }
+
 
 // Get performs an HTTP GET request to the specified URL with custom headers and returns a Response.
 func (cl *HttpClient) Get(url string) (*Response, error) {
@@ -104,7 +107,6 @@ func (cl *HttpClient) Post(url string, data interface{}) (*Response, error) {
 		Headers:    resp.Header,
 	}, nil
 }
-
 
 
 // Put performs an HTTP PUT request to the specified URL with the provided data and returns a Response.

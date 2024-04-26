@@ -14,6 +14,7 @@ type ApiKeyUserMiddleware struct {
 	mu			sync.Mutex // Mutex for thread safety
 }
 
+
 // UserApiKey represents a user ID and its associated API key.
 // This struct is used to store user credentials.
 type UserApiKey struct {
@@ -37,6 +38,7 @@ func (apiMid *ApiKeyUserMiddleware) Apply(handler func(w http.ResponseWriter, r 
 	return apiMid.applyMiddleware(http.HandlerFunc(handler))
 }
 
+
 // applyMiddleware applies the API key middleware to a handler function.
 // It retrieves the API key from the request header and validates it.
 // The X-API-Key header must be valid and non-empty for authentication to succeed.
@@ -47,13 +49,11 @@ func (apiMid *ApiKeyUserMiddleware) applyMiddleware(next http.Handler) http.Hand
 			http.Error(w, "Unauthorized. User Id missing", http.StatusUnauthorized)
 			return
 		}
-
 		apiKey, err := apiMid.GetApiKey(userId)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusUnauthorized)
 			return
 		}
-
 		requestedAPIKey := r.Header.Get("X-API-KEY")
 		if requestedAPIKey == "" {
 			http.Error(w, "Unauthorized. API Key missing", http.StatusUnauthorized)
@@ -66,6 +66,7 @@ func (apiMid *ApiKeyUserMiddleware) applyMiddleware(next http.Handler) http.Hand
 		next.ServeHTTP(w, r)
 	})
 }
+
 
 // GetApiKey retrieves the API key for a specific user ID.
 // It searches the list of user API keys maintained by the middleware.

@@ -5,6 +5,7 @@ import (
     "io"
 )
 
+
 // SerializeAsn1 serializes the given object to ASN.1 format.
 func SerializeAsn1(obj interface{}) ([]byte, error) {
     asn1Data, err := asn1.Marshal(obj)
@@ -13,6 +14,7 @@ func SerializeAsn1(obj interface{}) ([]byte, error) {
     }
     return asn1Data, nil
 }
+
 
 // UnserializeAsn1 deserializes ASN.1 data into the given data structure.
 func UnserializeAsn1(asn1Data []byte, obj interface{}) error {

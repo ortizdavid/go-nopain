@@ -26,17 +26,18 @@ func NewBasicAuthMiddleware(allowedUsers []UserBasicAuth) *BasicAuthMiddleware {
     }
 }
 
+
 // NewBasicAuthMiddleware returns a new BasicAuthMiddleware object with the provided username and password.
 func (ba *BasicAuthMiddleware) Apply(handler func(w http.ResponseWriter, r *http.Request)) http.Handler {
 	return ba.applyMiddleware(http.HandlerFunc(handler))
 }
+
 
 // applyMiddleware applies the basic authentication middleware.
 func (ba *BasicAuthMiddleware) applyMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		// Get the Authorization header
         authHeader := r.Header.Get("Authorization")
-        
         // Check if the Authorization header is set
         if authHeader == "" {
             // No Authorization header provided, request authentication
@@ -45,7 +46,6 @@ func (ba *BasicAuthMiddleware) applyMiddleware(next http.Handler) http.Handler {
             fmt.Fprintln(w, "Unauthorized access")
             return
         }
-        
         // Check if the Authorization header starts with "Basic"
         if !strings.HasPrefix(authHeader, "Basic ") {
             // Invalid Authorization header
@@ -53,7 +53,6 @@ func (ba *BasicAuthMiddleware) applyMiddleware(next http.Handler) http.Handler {
             fmt.Fprintln(w, "Invalid Authorization header")
             return
         }
-        
         // Decode the base64-encoded credentials
         credentials, err := base64.StdEncoding.DecodeString(authHeader[len("Basic "):])
         if err != nil {
@@ -61,7 +60,6 @@ func (ba *BasicAuthMiddleware) applyMiddleware(next http.Handler) http.Handler {
             fmt.Fprintf(w, "Error decoding credentials: %v\n", err)
             return
         }
-        
         // Split the credentials into username and password
         parts := strings.SplitN(string(credentials), ":", 2)
         if len(parts) != 2 {
@@ -70,7 +68,6 @@ func (ba *BasicAuthMiddleware) applyMiddleware(next http.Handler) http.Handler {
             fmt.Fprintln(w, "Malformed credentials")
             return
         }
-
         // Check if the provided username and password are valid
         username, password := parts[0], parts[1]
         if !ba.isValidUser(username, password) {
@@ -79,10 +76,10 @@ func (ba *BasicAuthMiddleware) applyMiddleware(next http.Handler) http.Handler {
             fmt.Fprintln(w, "Unauthorized access")
             return
         }
-        
 		next.ServeHTTP(w, r)
 	})
 }
+
 
 // isValidUser checks if the provided username and password are valid
 func (ba *BasicAuthMiddleware) isValidUser(username, password string) bool {
