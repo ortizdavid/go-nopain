@@ -82,7 +82,6 @@ func (upl Uploader) UploadSingleFile(r *http.Request, formFile string) (UploadIn
 	if !upl.isValidExtension(fileExt) {
 	  return UploadInfo{}, fmt.Errorf("invalid file extension. allowed: %v", upl.AllowedExtensions)
 	}
-	// Generate unique filename
 	fileName := upl.generateUniqueFileName(fileHeader.Filename)
 	// Save the file
 	err = upl.saveUploadedFile(file, fileName)
@@ -106,7 +105,6 @@ func (upl Uploader) UploadMultipleFiles(r *http.Request, formFile string) ([]Upl
 	r.ParseMultipartForm(upl.MaxSize) // Parse the multipart form with a maximum size limit
 
 	var uploadInfos []UploadInfo
-
 	// Retrieve the files from the form data
 	files := r.MultipartForm.File[formFile]
 
@@ -210,14 +208,17 @@ func (upl Uploader) saveUploadedFile(file multipart.File, fileName string) error
 }
 
 
+// generateUniqueFileName generates a unique file name by appending a UUID to the original file name's extension.
 func (upl Uploader) generateUniqueFileName(originalName string) string {
-	return encryption.GenerateUUID() + filepath.Ext(originalName)
+    return encryption.GenerateUUID() + filepath.Ext(originalName)
 }
 
+// getFileExtension retrieves the file extension from the original file name and converts it to lowercase.
 func (upl Uploader) getFileExtension(originalFileName string) string {
     return strings.ToLower(filepath.Ext(originalFileName))
 }
 
+// isValidExtension checks if the provided file extension is valid based on the allowed extensions.
 func (upl Uploader) isValidExtension(fileExt string) bool {
     return fileExt != "" && slices.Contains(upl.AllowedExtensions, fileExt)
 }

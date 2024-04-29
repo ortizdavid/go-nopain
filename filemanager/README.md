@@ -7,3 +7,5 @@ Package for file handling
 - [x] Create Files
 - [x] Write into files
 - [x] Zip Files
+- [x] Upload Files
+- [ ] Download Files
