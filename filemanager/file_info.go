@@ -83,6 +83,18 @@ func (finfo *FileInfo) IsDir(path string) bool {
 	}
 }
 
+// ExistsDir checks if a directory exists at the specified path.
+func (finfo *FileInfo) ExistsDir(path string) bool {
+    if fileInfo, err := os.Stat(path); err != nil {
+        if os.IsNotExist(err) {
+            return false
+        }
+    } else {
+        return fileInfo.IsDir()
+    }
+    return false
+}
+
 // FileExists checks if a file exists in a folder.
 func (finfo *FileInfo) FileExists(folder string, fileName string) bool {
 	filePath := folder + "/" + fileName
