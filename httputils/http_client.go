@@ -37,6 +37,15 @@ func (cl *HttpClient) SetHeader(key string, value string) {
 	cl.headers[key] = value
 }
 
+//GetHeader return all headers on the GTTP client
+func (cl *HttpClient) GetHeader(key string) string {
+	return cl.headers[key]
+}
+
+//GetAllHeaders return all headers on the HTTP client
+func (cl *HttpClient) GetAllHeaders() map[string]string {
+	return cl.headers
+}
 
 // Get performs an HTTP GET request to the specified URL with custom headers and returns a Response.
 func (cl *HttpClient) Get(url string) (*Response, error) {
