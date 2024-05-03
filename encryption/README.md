@@ -8,3 +8,4 @@ Package for data encryption and random  generation
 - [x] Password hashing
 - [x] UUID
 - [x] Random Token
+- [x] Tests

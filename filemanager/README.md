@@ -8,4 +8,5 @@ Package for file handling
 - [x] Write into files
 - [x] Zip Files
 - [x] Upload Files
-- [ ] Download Files
+- [x] Download Files
+- [ ] Tests
