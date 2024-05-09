@@ -12,7 +12,7 @@ type fileOrFolder struct {
 
 var fileZip FileZip
 
-func TestZipFile(t *testing.T) {
+func Test_ZipFile(t *testing.T) {
 	testCases := [] fileOrFolder {
 		{ source: "Files/file.csv", target: "Files/file.csv.zip", expected: nil },
 		{ source: "Files/file.txt", target: "Files/file.txt.zip", expected: nil },
@@ -27,7 +27,7 @@ func TestZipFile(t *testing.T) {
 	}
 }
 
-func TestZipFolder(t *testing.T) {
+func Test_ZipFolder(t *testing.T) {
 	testCases := [] fileOrFolder {
 		{ source: "Documents", target: "Documents.zip", expected: nil },
 		{ source: "Images", target: "Images.zip", expected: nil },

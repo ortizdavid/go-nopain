@@ -18,7 +18,7 @@ type fileTest struct {
 
 var fileManager FileManager
 
-func TestCreateSingleFolder(t *testing.T) {
+func Test_CreateSingleFolder(t *testing.T) {
 	testCases := [] folderTest {
 		{ folderName: "Files", expected: true },
 		{ folderName: "Moved", expected: true },
@@ -34,7 +34,7 @@ func TestCreateSingleFolder(t *testing.T) {
 	}
 }
 
-func TestCreateManyFolders(t *testing.T) {
+func Test_CreateManyFolders(t *testing.T) {
 	testCases := [] folderTest {
 		{ folderName: "Folder/f1/f2/f3", expected: true },
 		{ folderName: "Musics/mp3", expected: true },
@@ -52,7 +52,7 @@ func TestCreateManyFolders(t *testing.T) {
 	}
 }
 
-func TestCreateSingleFile(t *testing.T) {
+func Test_CreateSingleFile(t *testing.T) {
 	dirName := "Files"
 	testCases := [] fileTest {
 		{ fileName: "file.csv", folderName: dirName, expected: true },
@@ -70,7 +70,7 @@ func TestCreateSingleFile(t *testing.T) {
 	}
 }
 
-func TestCreateManyFiles(t *testing.T) {
+func Test_CreateManyFiles(t *testing.T) {
 	dirName := "Many-Files"
 	got := fileManager.CreateManyFiles(dirName, "file.txt", "file.log", "file.csv", "file.docx", "file.json")
 	expected := true
@@ -79,7 +79,7 @@ func TestCreateManyFiles(t *testing.T) {
 	}
 }
 
-func TestWriteFile(t *testing.T) {
+func Test_WriteFile(t *testing.T) {
 	dirName := "Files"
 	testCases := [] fileTest {
 		{ fileName: "file.txt",  folderName: dirName, content: "Hello World", expected: true },
@@ -95,7 +95,7 @@ func TestWriteFile(t *testing.T) {
 	}
 }
 
-func TestRemoveFolder(t *testing.T) {
+func Test_RemoveFolder(t *testing.T) {
 	testCases := [] folderTest {
 		{ folderName: "Musics/mp3", expected: true },
 		{ folderName: "Images/jpg/", expected: true },
@@ -111,7 +111,7 @@ func TestRemoveFolder(t *testing.T) {
 }
 
 
-func TestRemoveFile(t *testing.T) {
+func Test_RemoveFile(t *testing.T) {
 	dirName := "For-Remove"
 	testCases := [] fileTest {
 		{ fileName: "remove1.txt", folderName: dirName, expected: true },
@@ -125,7 +125,7 @@ func TestRemoveFile(t *testing.T) {
 	}
 }
 
-func TestMoveFile(t *testing.T) {
+func Test_MoveFile(t *testing.T) {
 	origin := "Files"
 	destination := "Moved"
 	testCases := [] fileTest {

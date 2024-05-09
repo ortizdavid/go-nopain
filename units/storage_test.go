@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-func TestStorageUnits(t *testing.T) {
+func Test_StorageUnits(t *testing.T) {
 	fmt.Println(8 * BIT) // 8 bits
 	fmt.Println(4 * BYTE) // 4 B
 	fmt.Println(45 * KILO_BYTE) // 45 KB

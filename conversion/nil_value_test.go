@@ -4,7 +4,7 @@ import (
 	"testing"
 )
 
-func TestStringToIntOrNil(t *testing.T) {
+func Test_StringToIntOrNil(t *testing.T) {
 	// Test cases where string is convertible to int
 	validStr := "123"
 	if val := StringToIntOrNil(validStr); val == nil || *val != 123 {
@@ -24,7 +24,7 @@ func TestStringToIntOrNil(t *testing.T) {
 	}
 }
 
-func TestStringToInt32OrNil(t *testing.T) {
+func Test_StringToInt32OrNil(t *testing.T) {
 	// Test cases where string is convertible to int32
 	validStr := "123"
 	if val := StringToInt32OrNil(validStr); val == nil || *val != 123 {
@@ -44,7 +44,7 @@ func TestStringToInt32OrNil(t *testing.T) {
 	}
 }
 
-func TestStringToInt64OrNil(t *testing.T) {
+func Test_StringToInt64OrNil(t *testing.T) {
 	// Test cases where string is convertible to int64
 	validStr := "123"
 	if val := StringToInt64OrNil(validStr); val == nil || *val != 123 {
@@ -64,7 +64,7 @@ func TestStringToInt64OrNil(t *testing.T) {
 	}
 }
 
-func TestStringToFloat32OrNil(t *testing.T) {
+func Test_StringToFloat32OrNil(t *testing.T) {
 	// Test cases where string is convertible to float32
 	validStr := "123.45"
 	if val := StringToFloat32OrNil(validStr); val == nil || *val != 123.45 {
@@ -84,7 +84,7 @@ func TestStringToFloat32OrNil(t *testing.T) {
 	}
 }
 
-func TestStringToFloat64OrNil(t *testing.T) {
+func Test_StringToFloat64OrNil(t *testing.T) {
 	// Test cases where string is convertible to float64
 	validStr := "123.45"
 	if val := StringToFloat64OrNil(validStr); val == nil || *val != 123.45 {
@@ -104,7 +104,7 @@ func TestStringToFloat64OrNil(t *testing.T) {
 	}
 }
 
-func TestStringOrNil(t *testing.T) {
+func Test_StringOrNil(t *testing.T) {
 	// Test cases where string is not empty
 	str := "test"
 	if val := StringOrNil(str); val == nil || *val != str {
@@ -118,7 +118,7 @@ func TestStringOrNil(t *testing.T) {
 	}
 }
 
-func TestIntOrNilToString(t *testing.T) {
+func Test_IntOrNilToString(t *testing.T) {
 	// Test cases where int is not nil
 	num := 123
 	if val := IntOrNilToString(&num); val != "123" {
@@ -132,7 +132,7 @@ func TestIntOrNilToString(t *testing.T) {
 	}
 }
 
-func TestInt32OrNilToString(t *testing.T) {
+func Test_Int32OrNilToString(t *testing.T) {
 	// Test cases where int32 is not nil
 	num := int32(123)
 	if val := Int32OrNilToString(&num); val != "123" {
@@ -146,7 +146,7 @@ func TestInt32OrNilToString(t *testing.T) {
 	}
 }
 
-func TestInt64OrNilToString(t *testing.T) {
+func Test_Int64OrNilToString(t *testing.T) {
 	// Test cases where int64 is not nil
 	num := int64(123)
 	if val := Int64OrNilToString(&num); val != "123" {
@@ -160,7 +160,7 @@ func TestInt64OrNilToString(t *testing.T) {
 	}
 }
 
-func TestFloat32OrNilToString(t *testing.T) {
+func Test_Float32OrNilToString(t *testing.T) {
 	// Test cases where float32 is not nil
 	num := float32(123.45)
 	if val := Float32OrNilToString(&num); val != "123.45" {
@@ -174,7 +174,7 @@ func TestFloat32OrNilToString(t *testing.T) {
 	}
 }
 
-func TestFloat64OrNilToString(t *testing.T) {
+func Test_Float64OrNilToString(t *testing.T) {
 	// Test cases where float64 is not nil
 	num := float64(123.45)
 	if val := Float64OrNilToString(&num); val != "123.45" {

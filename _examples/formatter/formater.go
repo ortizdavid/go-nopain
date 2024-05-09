@@ -8,7 +8,7 @@ import (
 // It takes a float64 amount and a string symbol as input and returns the formatted currency string.
 func FormatCurrency(amount float64, symbol string) string {
 	// Format the amount with two decimal places and append the currency symbol.
-	return fmt.Sprintf("%.2f %s", amount, symbol)
+	return fmt.Sprintf("%s %.2f", symbol, amount)
 }
 
 func main() {

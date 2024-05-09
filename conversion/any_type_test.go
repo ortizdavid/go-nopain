@@ -2,7 +2,7 @@ package conversion
 
 import "testing"
 
-func TestConvertAnyToString(t *testing.T) {
+func Test_ConvertAnyToString(t *testing.T) {
     // Test case for int
     var intValue interface{} = 123
     expectedInt := "123"

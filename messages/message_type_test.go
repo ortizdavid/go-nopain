@@ -8,7 +8,7 @@ type messageTypeTest struct {
 	message string
 }
 
-func TestErrorMessage(t *testing.T) {
+func Test_ErrorMessage(t *testing.T) {
 	testCases := [] messageTypeTest {
 		{ message: "Error While Loading Module" },
 		{ message: "Application Crashed" },
@@ -19,7 +19,7 @@ func TestErrorMessage(t *testing.T) {
 	}
 }
 
-func TestWarningMessage(t *testing.T) {
+func Test_WarningMessage(t *testing.T) {
 	testCases := [] messageTypeTest {
 		{ message: "Please, Check your provider!" },
 		{ message: "Warning: unautorized" },
@@ -30,7 +30,7 @@ func TestWarningMessage(t *testing.T) {
 	}
 }
 
-func TestInfoMessage(t *testing.T) {
+func Test_InfoMessage(t *testing.T) {
 	testCases := [] messageTypeTest {
 		{ message: "This Application is starting!" },
 		{ message: "Welcome to Appgen" },
@@ -41,7 +41,7 @@ func TestInfoMessage(t *testing.T) {
 	}
 }
 
-func TestSuccessMessage(t *testing.T) {
+func Test_SuccessMessage(t *testing.T) {
 	testCases := [] messageTypeTest {
 		{ message: "Project Created!" },
 		{ message: "User Logged in Successfully!" },

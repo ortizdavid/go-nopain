@@ -2,7 +2,7 @@ package conversion
 
 import "testing"
 
-func TestStringToInt(t *testing.T) {
+func Test_StringToInt(t *testing.T) {
     // Test case for a valid integer string
     str := "123"
     expected := 123
@@ -21,7 +21,7 @@ func TestStringToInt(t *testing.T) {
     StringToInt(str)
 }
 
-func TestStringToInt32(t *testing.T) {
+func Test_StringToInt32(t *testing.T) {
     // Test case for a valid int32 string
     str := "123"
     expected := int32(123)
@@ -40,7 +40,7 @@ func TestStringToInt32(t *testing.T) {
     StringToInt32(str)
 }
 
-func TestStringToInt64(t *testing.T) {
+func Test_StringToInt64(t *testing.T) {
     // Test case for a valid int64 string
     str := "123"
     expected := int64(123)
@@ -59,7 +59,7 @@ func TestStringToInt64(t *testing.T) {
     StringToInt64(str)
 }
 
-func TestStringToFloat32(t *testing.T) {
+func Test_StringToFloat32(t *testing.T) {
     // Test case for a valid float32 string
     str := "123.45"
     expected := float32(123.45)
@@ -78,7 +78,7 @@ func TestStringToFloat32(t *testing.T) {
     StringToFloat32(str)
 }
 
-func TestStringToFloat64(t *testing.T) {
+func Test_StringToFloat64(t *testing.T) {
     // Test case for a valid float64 string
     str := "123.45"
     expected := 123.45

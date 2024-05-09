@@ -5,6 +5,6 @@ import (
 	"testing"
 )
 
-func Test(t *testing.T) {
+func Test_Currency(t *testing.T) {
 	fmt.Println(FormatCurrency(6598721324, "USD"))
 }

@@ -4,6 +4,6 @@ import (
 	"testing"
 )
 
-func TestFileInfo(t *testing.T) {
+func Test_FileInfo(t *testing.T) {
 	
 }

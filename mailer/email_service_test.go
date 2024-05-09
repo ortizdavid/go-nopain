@@ -4,7 +4,7 @@ import (
 	"testing"
 )
 
-func TestSendEmail(t *testing.T) {
+func Test_SendEmail(t *testing.T) {
 	// Initialize EmailService with test SMTP server details
 	es := NewEmailService("testuser", "testpassword", "test.smtp.com", 587)
 

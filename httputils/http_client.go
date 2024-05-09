@@ -47,6 +47,7 @@ func (cl *HttpClient) GetAllHeaders() map[string]string {
 	return cl.headers
 }
 
+
 // Get performs an HTTP GET request to the specified URL with custom headers and returns a Response.
 func (cl *HttpClient) Get(url string) (*Response, error) {
 	// Create a new HTTP GET request
@@ -187,6 +188,7 @@ func (cl *HttpClient) Delete(url string) (*Response, error) {
 		Headers:    resp.Header,
 	}, nil
 }
+
 
 // getBodyReader returns an io.Reader for the provided data.
 // It converts the data to a reader based on its type.

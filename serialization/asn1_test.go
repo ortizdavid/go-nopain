@@ -12,7 +12,7 @@ type testAsn1Struct struct {
 	Email string
 }
 
-func TestSerializeAsn1(t *testing.T) {
+func Test_SerializeAsn1(t *testing.T) {
 	
 	obj := testAsn1Struct{Name: "John", Age: 30, Email: "john@example.com"}
 
@@ -34,7 +34,7 @@ func TestSerializeAsn1(t *testing.T) {
 	}
 }
 
-func TestUnserializeAsn1(t *testing.T) {
+func Test_UnserializeAsn1(t *testing.T) {
 	
 	obj := testAsn1Struct{Name: "John", Age: 30, Email: "john@example.com"}
 	asn1Data, err := SerializeAsn1(obj)
@@ -55,7 +55,7 @@ func TestUnserializeAsn1(t *testing.T) {
 	}
 }
 
-func TestEncodeAsn1(t *testing.T) {
+func Test_EncodeAsn1(t *testing.T) {
 	
 	obj := testAsn1Struct{Name: "John", Age: 30, Email: "john@example.com"}
 
@@ -78,7 +78,7 @@ func TestEncodeAsn1(t *testing.T) {
 	}
 }
 
-func TestDecodeAsn1(t *testing.T) {
+func Test_DecodeAsn1(t *testing.T) {
 
 	obj := testAsn1Struct{Name: "John", Age: 30, Email: "john@example.com"}
 	var buf bytes.Buffer

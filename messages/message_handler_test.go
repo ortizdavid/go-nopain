@@ -9,7 +9,7 @@ type messageHandlerTest struct {
 	err error 
 }
 
-func TestLogFailOnError(t *testing.T) {
+func Test_LogFailOnError(t *testing.T) {
 	testCases := [] messageHandlerTest {
 		{ err: errors.New("Error Loading Application") },
 		{ err: errors.New("Application Crashed") },
@@ -20,7 +20,7 @@ func TestLogFailOnError(t *testing.T) {
 	}
 }
 
-func TestPrintOnError(t *testing.T) {
+func Test_PrintOnError(t *testing.T) {
 	testCases := [] messageHandlerTest {
 		{ err: errors.New("Error Loading Application") },
 		{ err: errors.New("Your Application Crashed") },
@@ -33,7 +33,7 @@ func TestPrintOnError(t *testing.T) {
 }
 
 
-func TestPanicOnError(t *testing.T) {
+func Test_PanicOnError(t *testing.T) {
 	testCases := [] messageHandlerTest {
 		{ err: errors.New("Error Loading Application") },
 		{ err: errors.New("Your Application Crashed") },

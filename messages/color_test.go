@@ -10,7 +10,7 @@ type colorTest struct {
 }
 
 
-func TestPrintColorizeText(t *testing.T) {
+func Test_PrintColorizeText(t *testing.T) {
 	testCases := []colorTest {
 		{ color: COLOR_BLACK, text: "Black Text" },
 		{ color: COLOR_WHITE, text: "White Text" },

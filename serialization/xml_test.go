@@ -13,7 +13,7 @@ type testXmlStruct struct {
 }
 
 
-func TestSerializeXml(t *testing.T) {
+func Test_SerializeXml(t *testing.T) {
 	obj := testXmlStruct{Name: "John", Age: 30, Email: "john@example.com"}
 
 	xmlData, err := SerializeXml(obj)
@@ -34,7 +34,7 @@ func TestSerializeXml(t *testing.T) {
 	}
 }
 
-func TestUnserializeXml(t *testing.T) {
+func Test_UnserializeXml(t *testing.T) {
 
 	obj := testXmlStruct{Name: "John", Age: 30, Email: "john@example.com"}
 	xmlData, err := SerializeXml(obj)
@@ -55,7 +55,7 @@ func TestUnserializeXml(t *testing.T) {
 	}
 }
 
-func TestEncodeXml(t *testing.T) {
+func Test_EncodeXml(t *testing.T) {
 
 	obj := testXmlStruct{Name: "John", Age: 30, Email: "john@example.com"}
 
@@ -78,7 +78,7 @@ func TestEncodeXml(t *testing.T) {
 	}
 }
 
-func TestDecodeXml(t *testing.T) {
+func Test_DecodeXml(t *testing.T) {
 	
 	obj := testXmlStruct{Name: "John", Age: 30, Email: "john@example.com"}
 	var buf bytes.Buffer

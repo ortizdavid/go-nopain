@@ -4,7 +4,7 @@ import (
     "testing"
 )
 
-func TestFloat32ToString(t *testing.T) {
+func Test_Float32ToString(t *testing.T) {
     // Test case for positive float32
     var num1 float32 = 123.45
     expected1 := "123.45"
@@ -20,7 +20,7 @@ func TestFloat32ToString(t *testing.T) {
     }
 }
 
-func TestFloat32ToInt(t *testing.T) {
+func Test_Float32ToInt(t *testing.T) {
     // Test case for positive float32
     var num1 float32 = 123.45
     expected1 := 123
@@ -36,7 +36,7 @@ func TestFloat32ToInt(t *testing.T) {
     }
 }
 
-func TestFloat32ToInt32(t *testing.T) {
+func Test_Float32ToInt32(t *testing.T) {
     // Test case for positive float32
     var num1 float32 = 123.45
     expected1 := int32(123)
@@ -52,7 +52,7 @@ func TestFloat32ToInt32(t *testing.T) {
     }
 }
 
-func TestFloat32ToInt64(t *testing.T) {
+func Test_Float32ToInt64(t *testing.T) {
     // Test case for positive float32
     var num1 float32 = 123.45
     expected1 := int64(123)
@@ -68,7 +68,7 @@ func TestFloat32ToInt64(t *testing.T) {
     }
 }
 
-func TestFloat64ToString(t *testing.T) {
+func Test_Float64ToString(t *testing.T) {
     // Test case for positive float64
     var num1 float64 = 123.45
     expected1 := "123.45"
@@ -84,7 +84,7 @@ func TestFloat64ToString(t *testing.T) {
     }
 }
 
-func TestFloat64ToInt(t *testing.T) {
+func Test_Float64ToInt(t *testing.T) {
     // Test case for positive float64
     var num1 float64 = 123.45
     expected1 := 123
@@ -100,7 +100,7 @@ func TestFloat64ToInt(t *testing.T) {
     }
 }
 
-func TestFloat64ToInt32(t *testing.T) {
+func Test_Float64ToInt32(t *testing.T) {
     // Test case for positive float64
     var num1 float64 = 123.45
     expected1 := int32(123)
@@ -116,7 +116,7 @@ func TestFloat64ToInt32(t *testing.T) {
     }
 }
 
-func TestFloat64ToInt64(t *testing.T) {
+func Test_Float64ToInt64(t *testing.T) {
     // Test case for positive float64
     var num1 float64 = 123.45
     expected1 := int64(123)

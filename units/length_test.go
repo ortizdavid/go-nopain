@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-func TestLenghtUnits(t *testing.T) {
+func Test_LenghtUnits(t *testing.T) {
 	fmt.Println(1 * METER) //1 m
 	fmt.Println(5 * KILO_METER) //5 Km
 	fmt.Println(0.7 * HECTO_METER) //0.7Hm

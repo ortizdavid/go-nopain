@@ -12,7 +12,7 @@ type testJsonStruct struct {
 	Email string
 }
 
-func TestSerializeJson(t *testing.T) {
+func Test_SerializeJson(t *testing.T) {
 	obj := testJsonStruct{Name: "John", Age: 30, Email: "john@example.com"}
 
 	jsonData, err := SerializeJson(obj)
@@ -33,7 +33,7 @@ func TestSerializeJson(t *testing.T) {
 	}
 }
 
-func TestUnserializeJson(t *testing.T) {
+func Test_UnserializeJson(t *testing.T) {
 
 	obj := testJsonStruct{Name: "John", Age: 30, Email: "john@example.com"}
 	jsonData, err := SerializeJson(obj)
@@ -54,7 +54,7 @@ func TestUnserializeJson(t *testing.T) {
 	}
 }
 
-func TestEncodeJson(t *testing.T) {
+func Test_EncodeJson(t *testing.T) {
 	obj := testJsonStruct{Name: "John", Age: 30, Email: "john@example.com"}
 
 	var buf bytes.Buffer
@@ -76,7 +76,7 @@ func TestEncodeJson(t *testing.T) {
 	}
 }
 
-func TestDecodeJson(t *testing.T) {
+func Test_DecodeJson(t *testing.T) {
 
 	obj := testJsonStruct{Name: "John", Age: 30, Email: "john@example.com"}
 	var buf bytes.Buffer

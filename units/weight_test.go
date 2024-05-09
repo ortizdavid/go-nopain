@@ -6,7 +6,7 @@ import (
 )
 
 
-func TestWeigthUnits(t *testing.T) {
+func Test_WeigthUnits(t *testing.T) {
 	fmt.Println(1 * GRAM) // 1 g
 	fmt.Println(2 * MILI_GRAM) // 2 mg
 	fmt.Println(HECTO_GRAM)

@@ -6,7 +6,7 @@ import (
 	"testing"
 )
 
-func TestFromJsonFile(t *testing.T) {
+func Test_FromJsonFile(t *testing.T) {
 	type TestStruct struct {
 		Name  string
 		Age   int
@@ -31,7 +31,7 @@ func TestFromJsonFile(t *testing.T) {
 	}
 }
 
-func TestFromXmlFile(t *testing.T) {
+func Test_FromXmlFile(t *testing.T) {
 	type TestStruct struct {
 		Name  string
 		Age   int
@@ -56,7 +56,7 @@ func TestFromXmlFile(t *testing.T) {
 	}
 }
 
-func TestFromAsnFile(t *testing.T) {
+func Test_FromAsnFile(t *testing.T) {
 	type TestStruct struct {
 		Name  string
 		Age   int

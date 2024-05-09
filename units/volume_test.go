@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-func TestCapacityUnits(t *testing.T) {
+func Test_CapacityUnits(t *testing.T) {
 	fmt.Println(1 * LITER) // 1 l
 	fmt.Println(DECI_LITER)
 	fmt.Println(33 * CENTI_LITER) // 33 cl
