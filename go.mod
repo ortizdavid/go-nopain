@@ -7,4 +7,7 @@ require (
 	golang.org/x/crypto v0.22.0
 )
 
-require github.com/rabbitmq/amqp091-go v1.9.0
+require (
+	github.com/SebastiaanKlippert/go-wkhtmltopdf v1.9.2
+	github.com/rabbitmq/amqp091-go v1.9.0
+)
