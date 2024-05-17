@@ -2,45 +2,45 @@ package conversion
 
 import "testing"
 
-func Test_ConvertAnyToString(t *testing.T) {
+func Test_AnyToString(t *testing.T) {
     // Test case for int
     var intValue interface{} = 123
     expectedInt := "123"
-    resultInt := ConvertAnyToString(intValue)
+    resultInt := AnyToString(intValue)
     if resultInt != expectedInt {
-        t.Errorf("ConvertAnyToString(%v) returned %s, expected %s", intValue, resultInt, expectedInt)
+        t.Errorf("AnyToString(%v) returned %s, expected %s", intValue, resultInt, expectedInt)
     }
 
     // Test case for float
     var floatValue interface{} = 123.45
     expectedFloat := "123.45"
-    resultFloat := ConvertAnyToString(floatValue)
+    resultFloat := AnyToString(floatValue)
     if resultFloat != expectedFloat {
-        t.Errorf("ConvertAnyToString(%v) returned %s, expected %s", floatValue, resultFloat, expectedFloat)
+        t.Errorf("AnyToString(%v) returned %s, expected %s", floatValue, resultFloat, expectedFloat)
     }
 
     // Test case for string
     var strValue interface{} = "hello"
     expectedStr := "hello"
-    resultStr := ConvertAnyToString(strValue)
+    resultStr := AnyToString(strValue)
     if resultStr != expectedStr {
-        t.Errorf("ConvertAnyToString(%v) returned %s, expected %s", strValue, resultStr, expectedStr)
+        t.Errorf("AnyToString(%v) returned %s, expected %s", strValue, resultStr, expectedStr)
     }
 
     // Test case for boolean
     var boolValue interface{} = true
     expectedBool := "true"
-    resultBool := ConvertAnyToString(boolValue)
+    resultBool := AnyToString(boolValue)
     if resultBool != expectedBool {
-        t.Errorf("ConvertAnyToString(%v) returned %s, expected %s", boolValue, resultBool, expectedBool)
+        t.Errorf("AnyToString(%v) returned %s, expected %s", boolValue, resultBool, expectedBool)
     }
 
     // Test case for slice
     var sliceValue interface{} = []int{1, 2, 3}
     expectedSlice := "[1 2 3]"
-    resultSlice := ConvertAnyToString(sliceValue)
+    resultSlice := AnyToString(sliceValue)
     if resultSlice != expectedSlice {
-        t.Errorf("ConvertAnyToString(%v) returned %s, expected %s", sliceValue, resultSlice, expectedSlice)
+        t.Errorf("AnyToString(%v) returned %s, expected %s", sliceValue, resultSlice, expectedSlice)
     }
 
     // Test case for struct
@@ -50,8 +50,8 @@ func Test_ConvertAnyToString(t *testing.T) {
     }
     var structValue interface{} = testStruct{Name: "John", Age: 30}
     expectedStruct := "{John 30}"
-    resultStruct := ConvertAnyToString(structValue)
+    resultStruct := AnyToString(structValue)
     if resultStruct != expectedStruct {
-        t.Errorf("ConvertAnyToString(%v) returned %s, expected %s", structValue, resultStruct, expectedStruct)
+        t.Errorf("AnyToString(%v) returned %s, expected %s", structValue, resultStruct, expectedStruct)
     }
 }
