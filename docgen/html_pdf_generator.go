@@ -1,4 +1,4 @@
-package helpers
+package docgen
 
 import (
 	"bytes"
@@ -9,9 +9,24 @@ import (
 )
 
 type HtmlPdfGenerator struct {
+	FooterFontSize	uint
+	PageZoom	float64
+	Dpi			uint
+	Grayscale	bool	
 }
 
-func (gen *HtmlPdfGenerator) GeneratePDF(htmlTemplate string, data map[string]interface{}) ([]byte, error) {
+
+func NewHtmlPdfGenerator() *HtmlPdfGenerator {
+	return &HtmlPdfGenerator{
+		FooterFontSize: 10,
+		PageZoom: 0.95,
+		Dpi:      100,
+		Grayscale: true,
+	}
+}
+
+
+func (gen HtmlPdfGenerator) GeneratePDF(htmlTemplate string, data map[string]interface{}) ([]byte, error) {
 	var buf bytes.Buffer
 	// Load HTML template
 	tmpl, err := gen.LoadHtmlTemplate(htmlTemplate)
@@ -29,15 +44,15 @@ func (gen *HtmlPdfGenerator) GeneratePDF(htmlTemplate string, data map[string]in
 		return nil, err
 	}
 	// Set global options
-	pdfGen.Dpi.Set(100)
+	pdfGen.Dpi.Set(gen.Dpi)
 	pdfGen.Orientation.Set(wkhtmltopdf.OrientationPortrait)
-	pdfGen.Grayscale.Set(true)
+	pdfGen.Grayscale.Set(gen.Grayscale)
 	// Create a new input page from HTML content
 	page := wkhtmltopdf.NewPageReader(&buf)
 	// Set options for this page
 	page.FooterRight.Set("[page]")
-	page.FooterFontSize.Set(10)
-	page.Zoom.Set(0.95)
+	page.FooterFontSize.Set(gen.FooterFontSize)
+	page.Zoom.Set(gen.PageZoom)
 	// Add to the document
 	pdfGen.AddPage(page)
 	// Create PDF document in the internal buffer
@@ -50,12 +65,14 @@ func (gen *HtmlPdfGenerator) GeneratePDF(htmlTemplate string, data map[string]in
 	return pdfBytes, nil
 }
 
-func (gen *HtmlPdfGenerator) LoadHtmlTemplate(filePath string) (*template.Template, error) {
+
+func (gen HtmlPdfGenerator) LoadHtmlTemplate(filePath string) (*template.Template, error) {
 	tmpl, err := template.ParseFiles(filePath)
 	return tmpl, err
 }
 
-func (gen *HtmlPdfGenerator) SetOutput(w http.ResponseWriter, pdfBytes []byte, fileName string) error {
+
+func (gen HtmlPdfGenerator) SetOutput(w http.ResponseWriter, pdfBytes []byte, fileName string) error {
 	w.Header().Set("Content-Type", "application/pdf")
 	w.Header().Set("Content-Disposition", "attachment; filename="+fileName)
 	_, err := w.Write(pdfBytes)
