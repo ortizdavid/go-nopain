@@ -9,6 +9,9 @@ require (
 
 require (
 	github.com/SebastiaanKlippert/go-wkhtmltopdf v1.9.2
+	github.com/gorilla/sessions v1.2.2
 	github.com/rabbitmq/amqp091-go v1.9.0
 	github.com/tealeg/xlsx v1.0.5
 )
+
+require github.com/gorilla/securecookie v1.1.2 // indirect

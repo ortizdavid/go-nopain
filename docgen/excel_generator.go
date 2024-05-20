@@ -9,15 +9,15 @@ import (
 
 
 type ExcelGenerator struct {
-	File						*xlsx.File
-	Sheet						*xlsx.Sheet
-	HeaderColor					string
-	TitleSize					int
-	TitleFont					string
-	CellPatterType				string
-	CellFgColor					string
-	CellBgColor					string
-	ColMultiplier				float64
+	File			*xlsx.File
+	Sheet			*xlsx.Sheet
+	HeaderColor		string
+	TitleSize		int
+	TitleFont		string
+	CellPatterType	string
+	CellFgColor		string
+	CellBgColor		string
+	ColMultiplier	float64
 }
 
 
@@ -25,9 +25,9 @@ func NewExcelGenerator() *ExcelGenerator {
 	file := xlsx.NewFile()
 	sheet, _ := file.AddSheet("Sheet1")
 	return &ExcelGenerator{
-		File:        file,
-		Sheet:       sheet,
-		HeaderColor: "CC9F26",
+		File:        	file,
+		Sheet:       	sheet,
+		HeaderColor: 	"CC9F26",
 		TitleSize: 		12,
 		TitleFont: 		"Arial",
 		CellPatterType: "solid",
@@ -75,7 +75,6 @@ func (eg *ExcelGenerator) AddDataRow(data ...interface{}) {
 		eg.adjustColumnWidth(idx, textLength)
 	}
 }
-
 
 // getHeaderBorderStyle returns a style with header cell borders.
 func (eg *ExcelGenerator) getHeaderBorderStyle() *xlsx.Style {
