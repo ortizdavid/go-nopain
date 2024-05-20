@@ -15,7 +15,7 @@ type SessionGorilla struct {
 	store sessions.Store
 	name string
 	secretKey string
-	expiration time.Duration //expiration in minutes
+	expiration time.Duration //expiration time
 }
 
 // NewGorillaStore creates a new gorilla session store with a secret key
@@ -39,7 +39,7 @@ func NewSessionGorillaDefault() *SessionGorilla {
 		store: store,
 		name:  random.String(15),
 		secretKey: secretKey,
-		expiration: 10 * time.Minute,
+		expiration: 15 * time.Minute,
 	}
 }
 
