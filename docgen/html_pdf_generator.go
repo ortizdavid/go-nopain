@@ -21,7 +21,7 @@ func NewHtmlPdfGenerator() *HtmlPdfGenerator {
 		FooterFontSize:	10,
 		PageZoom:		0.95,
 		Dpi:			100,
-		Grayscale:		true,
+		Grayscale:		false,
 	}
 }
 

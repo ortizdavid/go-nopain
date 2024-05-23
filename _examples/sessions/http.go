@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"net/http"
 	"time"
-
 	"github.com/ortizdavid/go-nopain/httputils"
 )
 
