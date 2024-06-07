@@ -107,6 +107,17 @@ func (finfo *FileInfo) FileExists(folder string, fileName string) bool {
 	}
 }
 
+
+// Current dir
+func (finfo *FileInfo) CurrentFolder() (string, error) {
+	cwd, err := os.Getwd()
+    if err != nil {
+        return "", nil
+    }
+    folderName := filepath.Base(cwd)
+	return folderName, nil
+}
+
 // printChar prints a character multiple times.
 func printChar(ch string, chSize int) {
 	for i := 0; i < chSize; i++ {

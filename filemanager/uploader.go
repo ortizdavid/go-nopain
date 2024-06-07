@@ -55,7 +55,7 @@ func NewUploader(destinationPath string, maxSize int, allowedExts FileExtensions
 	if destinationPath == "" {
 		panic("destinationPath cannot be empty")
 	}
-	if !upFileInfo.ExistsDir(destinationPath){
+	if !upFileInfo.ExistsDir(destinationPath) {
 		upFileManager.CreateSingleFolder(destinationPath)
 	}
 	return Uploader{
