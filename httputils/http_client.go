@@ -5,7 +5,6 @@ import (
 	"io"
 	"net/http"
 	"strings"
-
 	"github.com/ortizdavid/go-nopain/serialization"
 )
 
@@ -17,9 +16,9 @@ type HttpClient struct {
 
 // Response represents an HTTP response.
 type Response struct {
-	StatusCode int                `json:"statusCode"`             // HTTP status code of the response
-	Body       []byte             `json:"body"`                   // Response body as a byte array
-	Headers    map[string][]string `json:"headers"`                // Response headers
+	StatusCode int `json:"status_code"`// HTTP status code of the response
+	Body       []byte `json:"body"` // Response body as a byte array
+	Headers    map[string][]string`json:"headers"` // Response headers
 }
 
 
