@@ -1,6 +1,7 @@
 package httputils
 
 import (
+	"encoding/xml"
 	"fmt"
 	"math"
 	"net/http"
@@ -10,49 +11,62 @@ import (
 
 type Pagination[T any] struct {
 	Items           []T `json:"items"`
-	PageIndex       int `json:"page_index"`
-	TotalItems      int `json:"total_items"`
-	TotalPages      int `json:"total_pages"`
-	PreviousPageUrl string `json:"previous_page_url"`
-	NextPageUrl     string `json:"next_page_url"`
+	MetaData			MetaData `json:"pagination"`
 }
 
-func NewPagination[T any](r *http.Request, items []T, count int, pageIndex int, pageSize int) (*Pagination[T], error) {
-	if pageIndex < 0 {
-		return nil, fmt.Errorf("page index must be >= 0")
+type MetaData struct {
+	XMLName         xml.Name `json:"-" xml:"metadata"`
+	CurrentPage     int      `json:"current_page" xml:"currentPage"`
+	TotalItems      int      `json:"total_items" xml:"totalItems"`
+	TotalPages      int      `json:"total_pages" xml:"totalPages"`
+	FirstPageUrl    string   `json:"first_page_url" xml:"firstPageUrl"`
+	PreviousPageUrl string   `json:"previous_page_url" xml:"previousPageUrl"`
+	NextPageUrl     string   `json:"next_page_url" xml:"nextPageUrl"`
+	LastPageUrl     string   `json:"last_page_url" xml:"lastPageUrl"`
+}
+
+func NewPagination[T any](r *http.Request, items []T, count int, currentPage int, limit int) (*Pagination[T], error) {
+	if currentPage < 0 {
+		return nil, fmt.Errorf("current page must be >= 0")
 	}
-	if pageSize < 1 {
+	if limit < 1 {
 		return nil, fmt.Errorf("page size must be >= 1")
 	}
 	pagination := Pagination[T]{
 		Items:           items,
-		PageIndex:       pageIndex,
-		TotalItems:      count,
-		TotalPages:      int(math.Ceil(float64(count) / float64(pageSize))),
-		PreviousPageUrl: "",
-		NextPageUrl:     "",
+		MetaData:	MetaData{
+			CurrentPage:     currentPage,
+			TotalItems:      count,
+			TotalPages:      int(math.Ceil(float64(count) / float64(limit))),
+			FirstPageUrl: 	 "",
+			PreviousPageUrl: "",
+			NextPageUrl:     "",
+			LastPageUrl:	 "",
+		},
 	}
-	pagination.calculateUrls(r, pageIndex, pageSize)
+	pagination.calculateUrls(r, currentPage, limit)
 	return &pagination, nil
 }
 
 func (p *Pagination[T]) HasNextPage() bool {
-	return p.PageIndex < p.TotalPages - 1
+	return p.MetaData.CurrentPage < p.MetaData.TotalPages - 1
 }
 
 func (p *Pagination[T]) HasPreviousPage() bool {
-	return p.PageIndex > 0
+	return p.MetaData.CurrentPage > 0
 }
 
-func (p *Pagination[T]) calculateUrls(r *http.Request, pageIndex, pageSize int) {
+func (p *Pagination[T]) calculateUrls(r *http.Request, currentPage, limit int) {
 	baseUrl := getRequestBaseUrl(r)
-
-	if pageIndex < p.TotalPages {
-		p.NextPageUrl = getPageUrl(baseUrl, pageIndex+1, pageSize)
+	
+	p.MetaData.FirstPageUrl = getPageUrl(baseUrl, 1, limit)
+	if currentPage < p.MetaData.TotalPages {
+		p.MetaData.NextPageUrl = getPageUrl(baseUrl, currentPage+1, limit)
 	}
-	if pageIndex > 1 {
-		p.PreviousPageUrl = getPageUrl(baseUrl, pageIndex-1, pageSize)
+	if currentPage > 1 {
+		p.MetaData.PreviousPageUrl = getPageUrl(baseUrl, currentPage-1, limit)
 	}
+	p.MetaData.LastPageUrl = getPageUrl(baseUrl, p.MetaData.TotalPages, limit)
 }
 
 func getRequestBaseUrl(r *http.Request) string {
@@ -63,6 +77,6 @@ func getRequestBaseUrl(r *http.Request) string {
 	return scheme + "://" + r.Host + r.URL.Path
 }
 
-func getPageUrl(baseUrl string, pageNumber, pageSize int) string {
-	return baseUrl + "?pageIndex=" + conversion.IntToString(pageNumber) + "&pageSize=" + conversion.IntToString(pageSize)
+func getPageUrl(baseUrl string, pageNumber, limit int) string {
+	return baseUrl + "?current_page=" + conversion.IntToString(pageNumber) + "&limit=" + conversion.IntToString(limit)
 }

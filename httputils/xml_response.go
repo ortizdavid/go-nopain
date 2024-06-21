@@ -17,19 +17,23 @@ type xmlResponse struct {
 	Data    any      `data:"data,omitempty"`     // Data field for the response (optional)
 }
 
-// WriteXml writes an XML response with the provided status code, data, and count.
-func WriteXml(w http.ResponseWriter, statusCode int, data any, count int) {
+// WriteXmlPaginated writes a paginated XML response to the provided http.ResponseWriter.
+// It includes the provided status code, paginated items, pagination metadata,
+// and handles potential errors during pagination or XML encoding.
+func WriteXmlPaginated[T any](w http.ResponseWriter, r *http.Request, statusCode int, items []T, count int, currentPage int, limit int) {
 	writeXmlHeader(w, statusCode)
-	response := xmlResponse{
-		Status: statusCode,
-		Count:  &count,
-		Data:   data,
+	paginationXML, err := NewPaginationXML(r, items, count, currentPage, limit)
+	if err != nil {
+		WriteXmlError(w, err.Error(), http.StatusInternalServerError)
+		return
 	}
-	encodeXml(w, response)
+	if err := serialization.EncodeXml(w, paginationXML); err != nil {
+		fmt.Fprintf(w, "%s", err.Error())
+	}
 }
 
-// WriteXmlSimple writes a simple XML response with the provided status code and data.
-func WriteXmlSimple(w http.ResponseWriter, statusCode int, data any) {
+// WriteXml writes a simple XML response with the provided status code and data.
+func WriteXml(w http.ResponseWriter, statusCode int, data any) {
 	writeXmlHeader(w, statusCode)
 	response := xmlResponse{
 		Status: statusCode,

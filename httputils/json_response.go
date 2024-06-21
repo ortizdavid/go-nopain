@@ -14,25 +14,29 @@ type jsonResponse struct {
 	Data    any     `json:"data,omitempty"`    // Data field for the response (optional)
 }
 
-// WriteJson writes a JSON response with the provided status code, data, and count.
-func WriteJson(w http.ResponseWriter, statusCode int, data any, count int) {
+// WriteJson writes a simple JSON response with the provided status code and data.
+func WriteJson(w http.ResponseWriter, statusCode int, data any) {
 	writeJsonHeader(w, statusCode)
 	response := jsonResponse{
 		Status: statusCode,
-		Count:  &count,
 		Data:   data,
 	}
 	encodeJson(w, response)
 }
 
-// WriteJsonSimple writes a simple JSON response with the provided status code and data.
-func WriteJsonSimple(w http.ResponseWriter, statusCode int, data any) {
+
+// WriteJsonPaginated writes a paginated JSON response to the provided http.ResponseWriter.
+// It includes the provided status code, paginated items, pagination metadata,
+// and handles potential errors during pagination or JSON encoding.
+func WriteJsonPaginated[T any](w http.ResponseWriter, r *http.Request, statusCode int, items []T, count int, currentPage int, limit int) {
 	writeJsonHeader(w, statusCode)
-	response := jsonResponse{
-		Status: statusCode,
-		Data:   data,
+	pagination, err := NewPagination(r, items, count, currentPage, limit)
+	if err != nil {
+		WriteJsonError(w, err.Error(), http.StatusInternalServerError)
 	}
-	encodeJson(w, response)
+	if err := serialization.EncodeJson(w, pagination); err != nil {
+		fmt.Fprintf(w, "%s", err.Error())
+	}
 }
 
 // WriteJsonError writes a JSON error response with the provided message and status code.
