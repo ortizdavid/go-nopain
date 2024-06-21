@@ -61,7 +61,7 @@ func listProductHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	httputils.WriteXmlPaginated(w, r, http.StatusOK, products, count, index, size)
+	httputils.WriteXmlPaginated(w, r, products, count, index, size)
 }
 
 func main() {

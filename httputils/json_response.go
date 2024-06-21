@@ -26,10 +26,10 @@ func WriteJson(w http.ResponseWriter, statusCode int, data any) {
 
 
 // WriteJsonPaginated writes a paginated JSON response to the provided http.ResponseWriter.
-// It includes the provided status code, paginated items, pagination metadata,
+// It includes the paginated items, pagination metadata,
 // and handles potential errors during pagination or JSON encoding.
-func WriteJsonPaginated[T any](w http.ResponseWriter, r *http.Request, statusCode int, items []T, count int, currentPage int, limit int) {
-	writeJsonHeader(w, statusCode)
+func WriteJsonPaginated[T any](w http.ResponseWriter, r *http.Request, items []T, count int, currentPage int, limit int) {
+	writeJsonHeader(w, 200)
 	pagination, err := NewPagination(r, items, count, currentPage, limit)
 	if err != nil {
 		WriteJsonError(w, err.Error(), http.StatusInternalServerError)

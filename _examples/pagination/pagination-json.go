@@ -60,7 +60,7 @@ func getProductsHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	count := len(productList)
-	httputils.WriteJsonPaginated(w, r, http.StatusOK, products, count, index, size)
+	httputils.WriteJsonPaginated(w, r, products, count, index, size)
 }
 
 // Start the server
