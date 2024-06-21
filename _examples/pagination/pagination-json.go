@@ -2,11 +2,11 @@ package main
 
 import (
 	"fmt"
-	"math/rand"
 	"net/http"
 	"time"
 	"github.com/ortizdavid/go-nopain/conversion"
 	"github.com/ortizdavid/go-nopain/httputils"
+	"github.com/ortizdavid/go-nopain/random"
 )
 
 type Product struct {
@@ -18,13 +18,12 @@ type Product struct {
 var productList []Product
 
 func GenerateProducts(qtd int) error {
-	rand.Seed(time.Now().UnixNano())
 	var products []Product
 	for i := 1; i <= qtd; i++ {
 		product := Product{
 			Id:    i,
 			Name:  fmt.Sprintf("Product %d", i),
-			Price: rand.Float32() * 100,
+			Price: float32(random.Float64(100.5, 12977.99)),
 		}
 		products = append(products, product)
 	}
@@ -39,16 +38,12 @@ func getProductsLimit(start int, end int) ([]Product, error) {
 	return productList[start:end], nil
 }
 
-func listProductHandler(w http.ResponseWriter, r *http.Request) {
+func getProductsHandler(w http.ResponseWriter, r *http.Request) {
 	currentPage := r.URL.Query().Get("current_page")
 	limit := r.URL.Query().Get("limit")
 
-	if currentPage == "" {
-		currentPage = "1"
-	}
-	if limit == "" {
-		limit = "10"
-	}
+	if currentPage == "" { currentPage = "1" }
+	if limit == "" { limit = "5" }
 
 	GenerateProducts(20)
 
@@ -65,12 +60,14 @@ func listProductHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	count := len(productList)
-
 	httputils.WriteJsonPaginated(w, r, http.StatusOK, products, count, index, size)
 }
 
+// Start the server
 func main() {
 	mux := http.NewServeMux()
-	mux.HandleFunc("/products", listProductHandler)
+
+	mux.HandleFunc("/products", getProductsHandler)
+
 	http.ListenAndServe(":4000", mux)
 }

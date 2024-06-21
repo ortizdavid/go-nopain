@@ -43,12 +43,8 @@ func listProductHandler(w http.ResponseWriter, r *http.Request) {
 	currentPage := r.URL.Query().Get("current_page")
 	limit := r.URL.Query().Get("limit")
 
-	if currentPage == "" {
-		currentPage = "1"
-	}
-	if limit == "" {
-		limit = "10"
-	}
+	if currentPage == "" { currentPage = "1" }
+	if limit == "" { limit = "5" }
 
 	GenerateProducts(20)
 
@@ -57,14 +53,13 @@ func listProductHandler(w http.ResponseWriter, r *http.Request) {
 
 	start := (index - 1) * size
 	end := start + size
+	count := len(productList)
 
 	products, err := getProductsLimit(start, end)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-
-	count := len(productList)
 
 	httputils.WriteXmlPaginated(w, r, http.StatusOK, products, count, index, size)
 }
