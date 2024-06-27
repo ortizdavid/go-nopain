@@ -11,7 +11,7 @@ func main() {
 	
 	data := "files/patterns.png"
 	  
-	// Example GET request
+	// Example Post request
 	response, err := client.Post("http://localhost:8080/upload", data)
 	if err != nil {
 	  fmt.Println("Error:", err)

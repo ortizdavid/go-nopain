@@ -7,18 +7,21 @@ import (
 
 func main() {
 	client := httputils.NewHttpClient()
-	//client.SetHeader("X-API-KEY", "key123")
-	
+
 	data :=  `
 	{
-		"UserId": 123,
-		"TaskName": "Other",
-		"StartDate": "2024-01-01",
-		"EndDate": "20024-01-01"
+		"customerType": 1,
+		"customerName": "Kelson Firmino",
+		"identificationNumber": "Q3D95FS672HOA",
+		"gender": "Female",
+		"birthDate": "1997-08-01",
+		"email": "eliandra@gmail.com",
+		"phone": "+2493698765",
+		"address": "Luanda, Viana, Zango"
 	}`
 	  
-	// Example GET request
-	response, err := client.Post("http://localhost:8000/tasks", data)
+	// Example Post request
+	response, err := client.Post("http://localhost:5062/api/customers", data)
 	if err != nil {
 	  fmt.Println("Error:", err)
 	  return

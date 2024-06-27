@@ -33,7 +33,7 @@ func NewPagination[T any](r *http.Request, items []T, count int, currentPage int
 		return nil, fmt.Errorf("page size must be >= 1")
 	}
 	pagination := Pagination[T]{
-		Items:           items,
+		Items:      items,
 		MetaData:	MetaData{
 			CurrentPage:     currentPage,
 			TotalItems:      count,
