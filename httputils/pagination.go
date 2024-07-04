@@ -59,7 +59,7 @@ func (p *Pagination[T]) HasPreviousPage() bool {
 func (p *Pagination[T]) calculateUrls(r *http.Request, currentPage, limit int) {
 	baseUrl := getRequestBaseUrl(r)
 	
-	p.MetaData.FirstPageUrl = getPageUrl(baseUrl, 1, limit)
+	p.MetaData.FirstPageUrl = getPageUrl(baseUrl, 0, limit)
 	if currentPage < p.MetaData.TotalPages {
 		p.MetaData.NextPageUrl = getPageUrl(baseUrl, currentPage+1, limit)
 	}
