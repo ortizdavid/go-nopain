@@ -11,7 +11,7 @@ import (
 
 type Pagination[T any] struct {
 	Items           []T `json:"items"`
-	MetaData			MetaData `json:"pagination"`
+	MetaData			MetaData `json:"metadata"`
 }
 
 type MetaData struct {
