@@ -5,45 +5,51 @@ import (
 	"net/http"
 
 	"github.com/ortizdavid/go-nopain/httputils"
+	//"gorm.io/gorm"
 )
 
 
 func main() {
 
+	// Create a new ServeMux
 	mux := http.NewServeMux()
 
+	// Retrieve user API keys
 	userApiKeys := GetAllUserKeys()
 
-	middleware := httputils.NewApiKeyUserMiddleWare(userApiKeys)
+	// Initialize the API key middleware
+	middleware := httputils.NewApiKeyUserMiddleware(userApiKeys)
 
-	mux.HandleFunc("GET /", indexHandler2)
-	mux.HandleFunc("GET /public", publicHandler2)
-	mux.Handle("GET /protected", middleware.Apply(protectedHandler3))
-	mux.Handle("GET /protected-2", middleware.Apply(protectedHandler4))
+	// Set up routes
+	mux.HandleFunc("/", indexHandler)
+	mux.HandleFunc("/public", publicHandler)
+	mux.Handle("/protected-1", middleware.Apply(protectedHandler1))
+	mux.Handle("/protected-2", middleware.Apply(protectedHandler2))
 
-	fmt.Println("Listen at http://127.0.0.1:7000")
+	// Start the server
+	fmt.Println("Listening at http://127.0.0.1:7000")
 	http.ListenAndServe(":7000", mux)
 }
 
-func indexHandler2(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintln(w, "Index")
+func indexHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintln(w, "Example of API KEY In Go")
 }
 
-func publicHandler2(w http.ResponseWriter, r *http.Request) {
+func publicHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintln(w, "Public Content")
 }
 
-func protectedHandler3(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintln(w, "Protected Content")
+func protectedHandler1(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintln(w, "Protected 1 Content")
 }
 
-func protectedHandler4(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintln(w, "Protected 2 2 2 Content")
+func protectedHandler2(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintln(w, "Protected 2 Content")
 }
 
-/*
-func GetAllUserKeys() []httputils.UserApiKey{
-
+// GetAllUserKeysFromDB returns a list of API keys and user IDs stored in a database.
+// This function connects to a PostgreSQL database and queries the 'api_key_users' table to retrieve the data.
+/*func GetAllUserKeysFromDB() []httputils.UserApiKey{
 	dsn := "host=localhost user=yourusername password=yourpassword dbname=yourdbname port=5432 sslmode=disable"
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
@@ -54,7 +60,8 @@ func GetAllUserKeys() []httputils.UserApiKey{
 	return userKeys
 }*/
 
-
+// GetAllUserKeys returns a list of API keys and user IDs from hardcoded values.
+// This function uses values directly encoded in the code.
 func GetAllUserKeys() []httputils.UserApiKey{
 	return []httputils.UserApiKey{
 		{UserId: "user1", ApiKey: "key1"},

@@ -15,7 +15,7 @@ type endpointTest struct {
 func TestApiKeyUser(t *testing.T) {
     // Setup
     userApiKeys := getAllUserKeys()
-    middleware := NewApiKeyUserMiddleWare(userApiKeys)
+    middleware := NewApiKeyUserMiddleware(userApiKeys)
     mux := http.NewServeMux()
     mux.HandleFunc("/", indexHandler2)
     mux.HandleFunc("/public", publicHandler2)

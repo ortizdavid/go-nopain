@@ -24,7 +24,7 @@ type UserApiKey struct {
 
 
 // NewApiKeyUserMiddleware creates a new instance of ApiKeyUserMiddleware with the provided list of user keys.
-func NewApiKeyUserMiddleWare(userKeyList []UserApiKey) *ApiKeyUserMiddleware {
+func NewApiKeyUserMiddleware(userKeyList []UserApiKey) *ApiKeyUserMiddleware {
 	return &ApiKeyUserMiddleware{
 		userApikeys: userKeyList,
 		mu:          sync.Mutex{},
