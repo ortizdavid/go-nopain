@@ -21,10 +21,13 @@ type HttpClient struct {
 
 // Response represents an HTTP response.
 type Response struct {
-	StatusCode int `json:"status_code"`// HTTP status code of the response
-	Body       []byte `json:"body"` // Response body as a byte array
-	Headers    map[string][]string`json:"headers"` // Response headers
-	TimesTamp time.Time
+	StatusCode  int               `json:"status_code"`  // HTTP status code of the response
+	Body        []byte            `json:"body"`         // Response body as a byte array
+	Headers     map[string][]string `json:"headers"`      // Response headers
+	Method      string            `json:"method"`       // HTTP method used for the request
+	URL         string            `json:"url"`          // URL of the request
+	StartTime   time.Time         `json:"start_time"`    // Time the response was received
+	ElapsedTime time.Duration     `json:"elapsed_time"` // Time taken to get the response
 }
 
 // NewHttpClient creates a new instance of HttpClient.
@@ -32,7 +35,12 @@ func NewHttpClient() *HttpClient {
 	return &HttpClient{
 		client: &http.Client{},
 		headers: map[string]string{
-			"Content-Type": "application/json",
+			"Content-Type": 	"application/json",
+			"Accept": 			"application/json",
+			"User-Agent":      	"go-nopain/HttpClient", 
+			"Accept-Encoding": 	"gzip, deflate",
+			"Cache-Control":   	"no-cache",
+			"Connection":      	"keep-alive",
 		},
 		timeout: 10 * time.Second,
 	}
@@ -129,6 +137,7 @@ func (cl *HttpClient) Head(url string) (*Response, error) {
 
 // doRequest performs an HTTP request with the provided method, URL, and data.
 func (cl *HttpClient) doRequest(ctx context.Context, url string, method string, data interface{}) (*Response, error) {
+	startTime := time.Now()
 	bodyReader, err := cl.getBodyReader(data)
 	if err != nil {
 		return nil, err
@@ -157,12 +166,17 @@ func (cl *HttpClient) doRequest(ctx context.Context, url string, method string, 
 	if err != nil {
 		return nil, err
 	}
+	// Calculate the elapsed time
+	elapsedTime := time.Since(startTime)
 	// Create and return the response object
 	return &Response{
-		StatusCode: resp.StatusCode,
-		Body:       respBody,
-		Headers:    resp.Header,
-		TimesTamp: time.Now(),
+		StatusCode:  resp.StatusCode,
+		Body:        respBody,
+		Headers:     resp.Header,
+		Method:      method,
+		URL:         url,
+		StartTime:   startTime,
+		ElapsedTime: elapsedTime,
 	}, nil
 }
 
