@@ -2,6 +2,7 @@ package httputils
 
 import (
 	"errors"
+	"log"
 	"net/http"
 	"sync"
 )
@@ -34,10 +35,12 @@ func (apiMid *ApiKeyMiddleware) applyMiddleware(next http.Handler) http.Handler 
 	return http.HandlerFunc(func (w http.ResponseWriter, r *http.Request) {
 		apiKey := r.Header.Get("X-API-Key")
 		if apiKey == "" {
+			log.Printf("Unauthorized request. API Key missing, URL: %s", r.URL.Path)
 			http.Error(w, "Unauthorized. API Key missing", http.StatusUnauthorized)
 			return
 		}
 		if apiKey != validApiKey {
+			log.Printf("Unauthorized request. Invalid API Key, URL: %s", r.URL.Path)
 			http.Error(w, "Unauthorized. Invalid API Key", http.StatusUnauthorized)
 			return
 		}

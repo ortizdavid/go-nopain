@@ -8,7 +8,9 @@ import (
 	"strings"
 	"sync"
 	"time"
+
 	"github.com/ortizdavid/go-nopain/serialization"
+	"golang.org/x/time/rate"
 )
 
 // HttpClient represents an HTTP request.
@@ -17,17 +19,18 @@ type HttpClient struct {
 	headers map[string]string
 	timeout time.Duration
 	mu sync.Mutex
+	rateLimiter *rate.Limiter
 }
 
 // Response represents an HTTP response.
 type Response struct {
-	StatusCode  int               `json:"status_code"`  // HTTP status code of the response
-	Body        []byte            `json:"body"`         // Response body as a byte array
+	StatusCode  int `json:"status_code"`  // HTTP status code of the response
+	Body        []byte `json:"body"`         // Response body as a byte array
 	Headers     map[string][]string `json:"headers"`      // Response headers
-	Method      string            `json:"method"`       // HTTP method used for the request
-	URL         string            `json:"url"`          // URL of the request
-	StartTime   time.Time         `json:"start_time"`    // Time the response was received
-	ElapsedTime time.Duration     `json:"elapsed_time"` // Time taken to get the response
+	Method      string `json:"method"`       // HTTP method used for the request
+	URL         string `json:"url"`          // URL of the request
+	StartTime   time.Time `json:"start_time"`    // Time the response was received
+	ElapsedTime time.Duration `json:"elapsed_time"` // Time taken to get the response
 }
 
 // NewHttpClient creates a new instance of HttpClient.
@@ -43,6 +46,7 @@ func NewHttpClient() *HttpClient {
 			"Connection":      	"keep-alive",
 		},
 		timeout: 10 * time.Second,
+		rateLimiter: nil,
 	}
 }
 
@@ -84,6 +88,15 @@ func (cl *HttpClient) SetTimeout(newTimeout time.Duration) {
 	cl.mu.Lock()
 	defer cl.mu.Unlock()
 	cl.timeout = newTimeout
+}
+
+// SetRateLimiter sets or updates the rate limiter for the HTTP client
+func (cl *HttpClient) SetRateLimiter(rateLimitDuration time.Duration, brust int) {
+	cl.mu.Lock()
+	defer cl.mu.Unlock()
+	rateLimit := rate.Every(rateLimitDuration)
+	newRateLimiter := rate.NewLimiter(rateLimit, brust)
+	cl.rateLimiter = newRateLimiter
 }
 
 // Get performs an HTTP GET request to the specified URL with custom headers and returns a Response.
@@ -138,6 +151,13 @@ func (cl *HttpClient) Head(url string) (*Response, error) {
 // doRequest performs an HTTP request with the provided method, URL, and data.
 func (cl *HttpClient) doRequest(ctx context.Context, url string, method string, data interface{}) (*Response, error) {
 	startTime := time.Now()
+	// Wait for rate limiter
+	if cl.rateLimiter != nil {
+		if err := cl.rateLimiter.Wait(ctx); err != nil {
+			return nil, err
+		}
+	}
+	//Get Body Reader
 	bodyReader, err := cl.getBodyReader(data)
 	if err != nil {
 		return nil, err
