@@ -24,6 +24,12 @@ func WriteJson(w http.ResponseWriter, statusCode int, data any) {
 	encodeJson(w, response)
 }
 
+// WriteJsonSimple writes a simple JSON response with the provided status code
+func WriteJsonSimple(w http.ResponseWriter, statusCode int, data any) {
+	writeJsonHeader(w, statusCode)
+	encodeJson(w, data)
+}
+
 
 // WriteJsonPaginated writes a paginated JSON response to the provided http.ResponseWriter.
 // It includes the paginated items, pagination metadata,
@@ -56,7 +62,7 @@ func writeJsonHeader(w http.ResponseWriter, statusCode int) {
 }
 
 // encodeJson encodes the jsonResponse struct to JSON format and writes it to the response writer.
-func encodeJson(w http.ResponseWriter, response jsonResponse) {
+func encodeJson(w http.ResponseWriter, response interface{}) {
 	err := serialization.EncodeJson(w, response)
 	if err != nil {
 		fmt.Fprintf(w, "%s", err.Error())

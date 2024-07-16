@@ -81,7 +81,6 @@ func (apiMid *ApiKeyUserMiddleware) applyMiddleware(next http.Handler) http.Hand
 func (apiMid *ApiKeyUserMiddleware) GetApiKey(userId string) (string, error) {
 	apiMid.mu.RLock()
 	defer apiMid.mu.RUnlock()
-
 	apiKey, exists := apiMid.userApikeys[userId]
 	if !exists {
 		return "", fmt.Errorf("key not found for user %s", userId)
