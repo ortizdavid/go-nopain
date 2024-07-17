@@ -39,6 +39,7 @@ func WriteJsonPaginated[T any](w http.ResponseWriter, r *http.Request, items []T
 	pagination, err := NewPagination(r, items, count, currentPage, limit)
 	if err != nil {
 		WriteJsonError(w, err.Error(), http.StatusInternalServerError)
+		return
 	}
 	if err := serialization.EncodeJson(w, pagination); err != nil {
 		fmt.Fprintf(w, "%s", err.Error())
