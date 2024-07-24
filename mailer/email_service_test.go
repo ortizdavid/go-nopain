@@ -6,7 +6,7 @@ import (
 
 func Test_SendEmail(t *testing.T) {
 	// Initialize EmailService with test SMTP server details
-	es := NewEmailService("testuser", "testpassword", "test.smtp.com", 587)
+	es := NewEmailService("testuser", "testpassword", "test.smtp.com", "587")
 
 	// Test valid email sending
 	err := es.SendPlainEmail("recipient@example.com", "Test Subject", "Test Body")
