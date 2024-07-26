@@ -20,7 +20,7 @@ type xmlResponse struct {
 // WriteXmlPaginated writes a paginated XML response to the provided http.ResponseWriter.
 // It includes the provided status code, paginated items, pagination metadata,
 // and handles potential errors during pagination or XML encoding.
-func WriteXmlPaginated[T any](w http.ResponseWriter, r *http.Request, items []T, count int, currentPage int, limit int) {
+func WriteXmlPaginated[T any](w http.ResponseWriter, r *http.Request, items []T, count int64, currentPage int, limit int) {
 	writeXmlHeader(w, 200)
 	paginationXML, err := NewPaginationXML(r, items, count, currentPage, limit)
 	if err != nil {

@@ -17,7 +17,7 @@ type Pagination[T any] struct {
 type MetaData struct {
 	XMLName         xml.Name `json:"-" xml:"metadata"`
 	CurrentPage     int      `json:"current_page" xml:"currentPage"`
-	TotalItems      int      `json:"total_items" xml:"totalItems"`
+	TotalItems      int64     `json:"total_items" xml:"totalItems"`
 	TotalPages      int      `json:"total_pages" xml:"totalPages"`
 	FirstPageUrl    string   `json:"first_page_url" xml:"firstPageUrl"`
 	PreviousPageUrl string   `json:"previous_page_url" xml:"previousPageUrl"`
@@ -25,7 +25,7 @@ type MetaData struct {
 	LastPageUrl     string   `json:"last_page_url" xml:"lastPageUrl"`
 }
 
-func NewPagination[T any](r *http.Request, items []T, count int, currentPage int, limit int) (*Pagination[T], error) {
+func NewPagination[T any](r *http.Request, items []T, count int64, currentPage int, limit int) (*Pagination[T], error) {
 	if currentPage < 0 {
 		return nil, fmt.Errorf("current page must be >= 0")
 	}

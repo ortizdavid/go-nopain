@@ -12,7 +12,7 @@ type PaginationXML struct {
 }
 
 // NewPaginationXML creates a Pagination object for XML response.
-func NewPaginationXML[T any](r *http.Request, items []T, count int, currentPage int, limit int) (*PaginationXML, error) {
+func NewPaginationXML[T any](r *http.Request, items []T, count int64, currentPage int, limit int) (*PaginationXML, error) {
 	pagination, err := NewPagination(r, items, count, currentPage, limit)
 	if err != nil {
 		return nil, err
