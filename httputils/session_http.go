@@ -5,25 +5,31 @@ import (
 	"time"
 )
 
+// SessionHttp stores session cookie details.
 type SessionHttp struct {
-	cookieName string
-	expiration time.Duration //expiration time
+	cookieName string        // Name of the session cookie.
+	expiration time.Duration // Expiration time of the session.
 }
 
-
-func NewSessionHttp(cookieName string,  expiration time.Duration) *SessionHttp {
+// NewSessionHttp creates a new session with a custom cookie name and expiration.
+func NewSessionHttp(cookieName string, expiration time.Duration) *SessionHttp {
 	return &SessionHttp{
 		cookieName: cookieName,
 		expiration: expiration,
 	}
 }
 
-
+// NewSessionHttpDefault creates a new session with default settings.
 func NewSessionHttpDefault() *SessionHttp {
 	return &SessionHttp{
 		cookieName: "default-session",
 		expiration: 15 * time.Minute,
 	}
+}
+
+// SetExpiration updates the session expiration time.
+func (s *SessionHttp) SetExpiration(expiration time.Duration) {
+	s.expiration = expiration
 }
 
 // Set sets a key-value pair in the session.
@@ -50,7 +56,7 @@ func (s *SessionHttp) Get(r *http.Request, key string) (string, error) {
 	return cookie.Value, nil
 }
 
-
+// Remove Session key
 func (s *SessionHttp) Remove(w http.ResponseWriter,  key string) error {
 	cookie := &http.Cookie{
 		Name: key,
@@ -63,7 +69,7 @@ func (s *SessionHttp) Remove(w http.ResponseWriter,  key string) error {
 	return nil
 }
 
-
+// Destroy current session
 func (s *SessionHttp) Destroy(r *http.Request, w http.ResponseWriter) error {
 	for _, cookie := range r.Cookies() {
 		c := &http.Cookie{
@@ -76,9 +82,4 @@ func (s *SessionHttp) Destroy(r *http.Request, w http.ResponseWriter) error {
 		http.SetCookie(w, c)
 	}
 	return nil
-}
-
-// SetExpiration sets the expiration duration for sessions.
-func (s *SessionHttp) SetExpiration(expiration time.Duration)  {
-	s.expiration = expiration
 }
