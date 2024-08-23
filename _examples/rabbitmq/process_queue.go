@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"log"
+	"time"
+	"github.com/ortizdavid/go-nopain/filemanager"
 	"github.com/ortizdavid/go-nopain/pubsub"
 )
 
@@ -12,15 +14,11 @@ type golangMessage struct {
     Boolean bool `json:"boolean"`
 }
 
-var msgSlice []golangMessage
-
-func printMessage(msg golangMessage) error {
-	fmt.Println(msg)
-	return nil
-}
-
-func addMessageToSlice(msg golangMessage) error {
-	msgSlice = append(msgSlice, msg)
+func addMessageToFile(msg golangMessage) error {
+	var filemanager filemanager.FileManager
+	currentTime := time.Now().Format("2006-01-02 15:04:05")
+	newContent := fmt.Sprintf("[%s] %s\n", currentTime, msg.Text)
+	filemanager.WriteFile(".", "messages.txt", newContent)
 	return nil
 }
 
@@ -36,7 +34,7 @@ func processMessageFromQueue() {
 		NoWait:     false,
 		Arguments:  nil,
 	}
-	err := pubsub.ProcessMessageFromQueue(producer, queue, addMessageToSlice)
+	err := pubsub.ProcessMessageFromQueue(producer, queue, addMessageToFile)
 	if err != nil {
 		log.Println(err)
 	}
@@ -45,6 +43,5 @@ func processMessageFromQueue() {
 
 func main() {
 	processMessageFromQueue()
-	fmt.Println(len(msgSlice))
 }
 
