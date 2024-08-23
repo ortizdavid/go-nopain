@@ -15,8 +15,8 @@ type RabbitMQProducer struct {
 }
 
 // NewRabbitMQProducer creates a new RabbitMQProducer instance with custom server configuration.
-func NewRabbitMQProducer(host string, port int, user string, password string) RabbitMQProducer {
-	return RabbitMQProducer{
+func NewRabbitMQProducer(host string, port int, user string, password string) *RabbitMQProducer {
+	return &RabbitMQProducer{
 		ServerRMQ: ServerRMQ{
 			Host:     host,
 			Port:     port,
@@ -27,8 +27,8 @@ func NewRabbitMQProducer(host string, port int, user string, password string) Ra
 }
 
 // NewRabbitMQProducerDefault creates a new RabbitMQProducer instance with default server configuration.
-func NewRabbitMQProducerDefault() RabbitMQProducer {
-	return RabbitMQProducer{
+func NewRabbitMQProducerDefault() *RabbitMQProducer {
+	return &RabbitMQProducer{
 		ServerRMQ: ServerRMQ{
 			Host:     "localhost",
 			Port:     5672,
@@ -39,9 +39,9 @@ func NewRabbitMQProducerDefault() RabbitMQProducer {
 }
 
 // PublishToQueue publishes a message to a RabbitMQ queue.
-func (rmq RabbitMQProducer) PublishToQueue(queue QueueRMQ, objMessage interface{}) error {
+func (producer *RabbitMQProducer) PublishToQueue(queue QueueRMQ, objMessage interface{}) error {
 	// Establish connection to RabbitMQ
-	conn, err := amqp.Dial(serverURI(rmq.ServerRMQ))
+	conn, err := amqp.Dial(serverURI(producer.ServerRMQ))
 	if err != nil {
 		return fmt.Errorf("failed to connect to RabbitMQ: %w", err)
 	}
@@ -83,9 +83,9 @@ func (rmq RabbitMQProducer) PublishToQueue(queue QueueRMQ, objMessage interface{
 }
 
 // PublishToExchange publishes a message to a RabbitMQ exchange.
-func (rmq RabbitMQProducer) PublishToExchange(exchange ExchangeRMQ, routingKey string, objMessage interface{}) error {
+func (producer *RabbitMQProducer) PublishToExchange(exchange ExchangeRMQ, routingKey string, objMessage interface{}) error {
 	// Establish connection to RabbitMQ
-	conn, err := amqp.Dial(serverURI(rmq.ServerRMQ))
+	conn, err := amqp.Dial(serverURI(producer.ServerRMQ))
 	if err != nil {
 		return fmt.Errorf("failed to connect to RabbitMQ: %w", err)
 	}
