@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"log"
-
 	"github.com/ortizdavid/go-nopain/pubsub"
 )
 
@@ -13,11 +12,17 @@ type golangMessage struct {
     Boolean bool `json:"boolean"`
 }
 
+var slices []golangMessage
 
-func main() {
-	processMessageFromExchange()
+func printMessage(msg golangMessage) error {
+	fmt.Println(msg)
+	return nil
 }
 
+func addMessageToSlice(msg golangMessage) error {
+	slices = append(slices, msg)
+	return nil
+}
 
 func processMessageFromExchange() {
 
@@ -37,15 +42,7 @@ func processMessageFromExchange() {
 	}
 }
 
-func printMessage(msg golangMessage) error {
-	fmt.Println(msg)
-	return nil
-}
-
-var slices []golangMessage
-
-func addMessageToSlice(msg golangMessage) error {
-	slices = append(slices, msg)
-	return nil
+func main() {
+	processMessageFromExchange()
 }
 
