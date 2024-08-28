@@ -16,6 +16,19 @@ type Producer struct {
 
 // NewProducer creates a new Producer instance with custom server configuration.
 func NewProducer(config ServerConfig) *Producer {
+	// Basic config
+	if config.Host == "" {
+		panic("host cannot be empty")
+	}
+	if config.Port <= 0 || config.Port > 65535 {
+		panic("invalid port number")
+	}
+	if config.User == "" {
+		panic("user cannot be empty")
+	}
+	if config.Password == "" {
+		panic("password cannot be empty")
+	}
 	return &Producer{
 		config: config,
 	}
