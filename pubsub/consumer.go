@@ -9,13 +9,13 @@ import (
 
 // Consumer represents the  Consumer configuration.
 type Consumer struct {
-	Server Server
+	server Server
 }
 
 // NewConsumer creates a new Consumer instance with custom server configuration.
 func NewConsumer(host string, port int, user string, password string) *Consumer {
 	return &Consumer{
-		Server: Server{
+		server: Server{
 			Host:     host,
 			Port:     port,
 			User:     user,
@@ -27,7 +27,7 @@ func NewConsumer(host string, port int, user string, password string) *Consumer 
 // NewConsumerDefault creates a new Consumer instance with default server configuration.
 func NewConsumerDefault() *Consumer {
 	return &Consumer{
-		Server: Server{
+		server: Server{
 			Host:     "localhost",
 			Port:     5672,
 			User:     "guest",
@@ -40,7 +40,7 @@ func NewConsumerDefault() *Consumer {
 // It establishes a connection to the  server, opens a channel, declares the queue,
 // consumes messages from it, and logs the received messages continuously.
 func (consumer *Consumer) ConsumeFromQueue(queue Queue) error {
-	conn, err := amqp.Dial(serverURI(consumer.Server))
+	conn, err := amqp.Dial(serverURI(consumer.server))
 	if err != nil {
 		return fmt.Errorf("failed to connect to : %w", err)
 	}
@@ -75,7 +75,7 @@ func (consumer *Consumer) ConsumeFromQueue(queue Queue) error {
 // creates a new queue, binds the queue to the exchange with the routing key,
 // consumes messages from the queue, and logs the received messages continuously.
 func (consumer *Consumer) ConsumeFromExchange(exchange Exchange, routingKey string) error {
-	conn, err := amqp.Dial(serverURI(consumer.Server))
+	conn, err := amqp.Dial(serverURI(consumer.server))
 	if err != nil {
 		return fmt.Errorf("failed to connect to : %w", err)
 	}
@@ -119,7 +119,7 @@ func (consumer *Consumer) ConsumeFromExchange(exchange Exchange, routingKey stri
 // It establishes a connection to the  server, opens a channel, declares the queue,
 // and consumes messages from it. Each received message is processed using the provided function.
 func ProcessMessageFromQueue[T any](consumer *Consumer, queue Queue, fn func(T) error) error {
-	conn, err := amqp.Dial(serverURI(consumer.Server))
+	conn, err := amqp.Dial(serverURI(consumer.server))
 	if err != nil {
 		return fmt.Errorf("failed to connect to : %w", err)
 	}
@@ -153,7 +153,7 @@ func ProcessMessageFromQueue[T any](consumer *Consumer, queue Queue, fn func(T) 
 // creates a new queue, binds the queue to the exchange with the routing key,
 // and consumes messages from the queue. Each received message is processed using the provided function.
 func ProcessMessageFromExchange[T any](consumer *Consumer, exchange Exchange, routingKey string, fn func(T) error) error {
-	conn, err := amqp.Dial(serverURI(consumer.Server))
+	conn, err := amqp.Dial(serverURI(consumer.server))
 	if err != nil {
 		return fmt.Errorf("failed to connect to : %w", err)
 	}
