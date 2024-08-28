@@ -2,25 +2,26 @@ package main
 
 import (
 	"log"
+
 	"github.com/ortizdavid/go-nopain/pubsub"
 )
 
 type golangMessage struct {
-	Text string `json:"text"`
-    Number int `json:"number"`
-    Boolean bool `json:"boolean"`
+	Text    string `json:"text"`
+	Number  int    `json:"number"`
+	Boolean bool   `json:"boolean"`
 }
 
-func publishToExchange()  {
+func publishToExchange() {
 	message := golangMessage{
 		Text:    "Message for para Exchange",
 		Number:  82736,
 		Boolean: false,
 	}
 
-	producer := pubsub.NewRabbitMQProducerDefault()
+	producer := pubsub.NewProducerDefault()
 
-	exchange := pubsub.ExchangeRMQ{
+	exchange := pubsub.Exchange{
 		Name:       "golang_exchange",
 		ExType:     pubsub.ExchangeFanout,
 		Durable:    false,
@@ -37,9 +38,6 @@ func publishToExchange()  {
 }
 
 func main() {
-	
+
 	publishToExchange()
 }
-
-
-

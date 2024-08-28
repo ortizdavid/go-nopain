@@ -3,18 +3,19 @@ package pubsub
 import (
 	"fmt"
 	"log"
+
 	amqp "github.com/rabbitmq/amqp091-go"
 )
 
-// RabbitMQConsumer represents the RabbitMQ Consumer configuration.
-type RabbitMQConsumer struct {
-	ServerRMQ ServerRMQ
+// Consumer represents the  Consumer configuration.
+type Consumer struct {
+	Server Server
 }
 
-// NewRabbitMQConsumer creates a new RabbitMQConsumer instance with custom server configuration.
-func NewRabbitMQConsumer(host string, port int, user string, password string) *RabbitMQConsumer {
-	return &RabbitMQConsumer{
-		ServerRMQ: ServerRMQ{
+// NewConsumer creates a new Consumer instance with custom server configuration.
+func NewConsumer(host string, port int, user string, password string) *Consumer {
+	return &Consumer{
+		Server: Server{
 			Host:     host,
 			Port:     port,
 			User:     user,
@@ -23,11 +24,10 @@ func NewRabbitMQConsumer(host string, port int, user string, password string) *R
 	}
 }
 
-
-// NewRabbitMQConsumerDefault creates a new RabbitMQConsumer instance with default server configuration.
-func NewRabbitMQConsumerDefault() *RabbitMQConsumer {
-	return &RabbitMQConsumer{
-		ServerRMQ: ServerRMQ{
+// NewConsumerDefault creates a new Consumer instance with default server configuration.
+func NewConsumerDefault() *Consumer {
+	return &Consumer{
+		Server: Server{
 			Host:     "localhost",
 			Port:     5672,
 			User:     "guest",
@@ -36,14 +36,13 @@ func NewRabbitMQConsumerDefault() *RabbitMQConsumer {
 	}
 }
 
-
 // ConsumeFromQueue consumes messages from the specified queue.
-// It establishes a connection to the RabbitMQ server, opens a channel, declares the queue,
+// It establishes a connection to the  server, opens a channel, declares the queue,
 // consumes messages from it, and logs the received messages continuously.
-func (consumer *RabbitMQConsumer) ConsumeFromQueue(queue QueueRMQ) error {
-	conn, err := amqp.Dial(serverURI(consumer.ServerRMQ))
+func (consumer *Consumer) ConsumeFromQueue(queue Queue) error {
+	conn, err := amqp.Dial(serverURI(consumer.Server))
 	if err != nil {
-		return fmt.Errorf("failed to connect to RabbitMQ: %w", err)
+		return fmt.Errorf("failed to connect to : %w", err)
 	}
 	defer conn.Close()
 	// Open channel
@@ -71,15 +70,14 @@ func (consumer *RabbitMQConsumer) ConsumeFromQueue(queue QueueRMQ) error {
 	return nil
 }
 
-
 // ConsumeFromExchange consumes messages from the specified exchange with the given routing key.
-// It establishes a connection to the RabbitMQ server, opens a channel, declares the exchange,
+// It establishes a connection to the  server, opens a channel, declares the exchange,
 // creates a new queue, binds the queue to the exchange with the routing key,
 // consumes messages from the queue, and logs the received messages continuously.
-func (consumer *RabbitMQConsumer) ConsumeFromExchange(exchange ExchangeRMQ, routingKey string) error {
-	conn, err := amqp.Dial(serverURI(consumer.ServerRMQ))
+func (consumer *Consumer) ConsumeFromExchange(exchange Exchange, routingKey string) error {
+	conn, err := amqp.Dial(serverURI(consumer.Server))
 	if err != nil {
-		return fmt.Errorf("failed to connect to RabbitMQ: %w", err)
+		return fmt.Errorf("failed to connect to : %w", err)
 	}
 	defer conn.Close()
 	// Open channel
@@ -117,49 +115,47 @@ func (consumer *RabbitMQConsumer) ConsumeFromExchange(exchange ExchangeRMQ, rout
 	return nil
 }
 
-
 // ProcessMessageFromQueue consumes messages from the specified queue.
-// It establishes a connection to the RabbitMQ server, opens a channel, declares the queue,
+// It establishes a connection to the  server, opens a channel, declares the queue,
 // and consumes messages from it. Each received message is processed using the provided function.
-func ProcessMessageFromQueue[T any](consumer RabbitMQConsumer, queue QueueRMQ, fn func(T) error) error {
-	conn, err := amqp.Dial(serverURI(consumer.ServerRMQ))
+func ProcessMessageFromQueue[T any](consumer *Consumer, queue Queue, fn func(T) error) error {
+	conn, err := amqp.Dial(serverURI(consumer.Server))
 	if err != nil {
-	  return fmt.Errorf("failed to connect to RabbitMQ: %w", err)
+		return fmt.Errorf("failed to connect to : %w", err)
 	}
 	defer conn.Close()
 	// Open channel
 	ch, err := conn.Channel()
 	if err != nil {
-	  return fmt.Errorf("failed to open a channel: %w", err)
+		return fmt.Errorf("failed to open a channel: %w", err)
 	}
 	defer ch.Close()
 	// Declare queue
 	q, err := declareQueue(ch, queue)
 	if err != nil {
-	  return err
+		return err
 	}
 	// Consume messages from the queue
 	msgs, err := consumeMessages(ch, q)
 	if err != nil {
-	  return err
+		return err
 	}
 	// Process received messages
 	forever := make(chan struct{})
 	processMessages(msgs, fn)
 	<-forever
-  
+
 	return nil
 }
 
-
 // ProcessMessageFromExchange consumes messages from the specified exchange with the given routing key.
-// It establishes a connection to the RabbitMQ server, opens a channel, declares the exchange,
+// It establishes a connection to the  server, opens a channel, declares the exchange,
 // creates a new queue, binds the queue to the exchange with the routing key,
 // and consumes messages from the queue. Each received message is processed using the provided function.
-func ProcessMessageFromExchange[T any](consumer RabbitMQConsumer, exchange ExchangeRMQ, routingKey string, fn func(T) error) error {
-	conn, err := amqp.Dial(serverURI(consumer.ServerRMQ))
+func ProcessMessageFromExchange[T any](consumer *Consumer, exchange Exchange, routingKey string, fn func(T) error) error {
+	conn, err := amqp.Dial(serverURI(consumer.Server))
 	if err != nil {
-		return fmt.Errorf("failed to connect to RabbitMQ: %w", err)
+		return fmt.Errorf("failed to connect to : %w", err)
 	}
 	defer conn.Close()
 	// Open channel
@@ -195,5 +191,3 @@ func ProcessMessageFromExchange[T any](consumer RabbitMQConsumer, exchange Excha
 
 	return nil
 }
-
-

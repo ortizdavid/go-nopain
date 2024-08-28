@@ -4,24 +4,22 @@ import (
 	"testing"
 )
 
-
 type golangMessage struct {
-	Text string `json:"text"`
-    Number int `json:"number"`
-    Boolean bool `json:"boolean"`
+	Text    string `json:"text"`
+	Number  int    `json:"number"`
+	Boolean bool   `json:"boolean"`
 }
 
-
 func TestPublishToQueueWithDefault(t *testing.T) {
-	rmq := NewRabbitMQProducerDefault()
-	
+	rmq := NewProducerDefault()
+
 	message := golangMessage{
 		Text:    "Message with Default",
 		Number:  1097,
 		Boolean: true,
 	}
 
-	queue := QueueRMQ{
+	queue := Queue{
 		Name:       "golang_queue",
 		Durable:    false,
 		Exclusive:  false,
@@ -29,23 +27,22 @@ func TestPublishToQueueWithDefault(t *testing.T) {
 		NoWait:     false,
 		Arguments:  nil,
 	}
-	
+
 	if err := rmq.PublishToQueue(queue, message); err != nil {
 		t.Error(err)
 	}
 }
 
-
 func TestPublishToExchangeDefault(t *testing.T) {
-	rmq := NewRabbitMQProducerDefault()
-	
+	rmq := NewProducerDefault()
+
 	message := golangMessage{
 		Text:    "Message to exchange",
 		Number:  99,
 		Boolean: false,
 	}
 
-	exchange := ExchangeRMQ{
+	exchange := Exchange{
 		Name:       "golang_exchange",
 		ExType:     ExchangeFanout,
 		Durable:    false,

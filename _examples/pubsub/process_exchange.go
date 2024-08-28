@@ -3,13 +3,14 @@ package main
 import (
 	"fmt"
 	"log"
+
 	"github.com/ortizdavid/go-nopain/pubsub"
 )
 
 type golangMessage struct {
-	Text string `json:"text"`
-    Number int `json:"number"`
-    Boolean bool `json:"boolean"`
+	Text    string `json:"text"`
+	Number  int    `json:"number"`
+	Boolean bool   `json:"boolean"`
 }
 
 var slices []golangMessage
@@ -26,8 +27,8 @@ func addMessageToSlice(msg golangMessage) error {
 
 func processMessageFromExchange() {
 
-	rmq := pubsub.NewRabbitMQConsumerDefault()
-	exchange := pubsub.ExchangeRMQ{
+	consumer := pubsub.NewConsumerDefault()
+	exchange := pubsub.Exchange{
 		Name:       "golang_exchange",
 		ExType:     pubsub.ExchangeFanout,
 		Durable:    false,
@@ -36,7 +37,7 @@ func processMessageFromExchange() {
 		NoWait:     false,
 		Arguments:  nil,
 	}
-	err := pubsub.ProcessMessageFromExchange(rmq, exchange, "golang_key", addMessageToSlice)
+	err := pubsub.ProcessMessageFromExchange(*consumer, exchange, "golang_key", addMessageToSlice)
 	if err != nil {
 		log.Println(err)
 	}
@@ -45,4 +46,3 @@ func processMessageFromExchange() {
 func main() {
 	processMessageFromExchange()
 }
-

@@ -4,14 +4,15 @@ import (
 	"fmt"
 	"log"
 	"time"
+
 	"github.com/ortizdavid/go-nopain/filemanager"
 	"github.com/ortizdavid/go-nopain/pubsub"
 )
 
 type golangMessage struct {
-	Text string `json:"text"`
-    Number int `json:"number"`
-    Boolean bool `json:"boolean"`
+	Text    string `json:"text"`
+	Number  int    `json:"number"`
+	Boolean bool   `json:"boolean"`
 }
 
 func addMessageToFile(msg golangMessage) error {
@@ -24,17 +25,17 @@ func addMessageToFile(msg golangMessage) error {
 
 func processMessageFromQueue() {
 
-	producer := pubsub.NewRabbitMQConsumerDefault()
+	consumer := pubsub.NewConsumerDefault()
 
-	queue := pubsub.QueueRMQ{
+	queue := pubsub.Queue{
 		Name:       "golang_queue",
 		Durable:    false,
 		AutoDelete: false,
-		Exclusive:   false,
+		Exclusive:  false,
 		NoWait:     false,
 		Arguments:  nil,
 	}
-	err := pubsub.ProcessMessageFromQueue(producer, queue, addMessageToFile)
+	err := pubsub.ProcessMessageFromQueue(consumer, queue, addMessageToFile)
 	if err != nil {
 		log.Println(err)
 	}
@@ -44,4 +45,3 @@ func processMessageFromQueue() {
 func main() {
 	processMessageFromQueue()
 }
-

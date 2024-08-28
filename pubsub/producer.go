@@ -9,15 +9,15 @@ import (
 	amqp "github.com/rabbitmq/amqp091-go"
 )
 
-// RabbitMQProducer represents the RabbitMQ producer configuration.
-type RabbitMQProducer struct {
-	ServerRMQ ServerRMQ
+// Producer represents the  producer configuration.
+type Producer struct {
+	Server Server
 }
 
-// NewRabbitMQProducer creates a new RabbitMQProducer instance with custom server configuration.
-func NewRabbitMQProducer(host string, port int, user string, password string) *RabbitMQProducer {
-	return &RabbitMQProducer{
-		ServerRMQ: ServerRMQ{
+// NewProducer creates a new Producer instance with custom server configuration.
+func NewProducer(host string, port int, user string, password string) *Producer {
+	return &Producer{
+		Server: Server{
 			Host:     host,
 			Port:     port,
 			User:     user,
@@ -26,10 +26,10 @@ func NewRabbitMQProducer(host string, port int, user string, password string) *R
 	}
 }
 
-// NewRabbitMQProducerDefault creates a new RabbitMQProducer instance with default server configuration.
-func NewRabbitMQProducerDefault() *RabbitMQProducer {
-	return &RabbitMQProducer{
-		ServerRMQ: ServerRMQ{
+// NewProducerDefault creates a new Producer instance with default server configuration.
+func NewProducerDefault() *Producer {
+	return &Producer{
+		Server: Server{
 			Host:     "localhost",
 			Port:     5672,
 			User:     "guest",
@@ -38,12 +38,12 @@ func NewRabbitMQProducerDefault() *RabbitMQProducer {
 	}
 }
 
-// PublishToQueue publishes a message to a RabbitMQ queue.
-func (producer *RabbitMQProducer) PublishToQueue(queue QueueRMQ, objMessage interface{}) error {
-	// Establish connection to RabbitMQ
-	conn, err := amqp.Dial(serverURI(producer.ServerRMQ))
+// PublishToQueue publishes a message to a  queue.
+func (producer *Producer) PublishToQueue(queue Queue, objMessage interface{}) error {
+	// Establish connection to
+	conn, err := amqp.Dial(serverURI(producer.Server))
 	if err != nil {
-		return fmt.Errorf("failed to connect to RabbitMQ: %w", err)
+		return fmt.Errorf("failed to connect to : %w", err)
 	}
 	defer conn.Close()
 	// Open channel
@@ -82,12 +82,12 @@ func (producer *RabbitMQProducer) PublishToQueue(queue QueueRMQ, objMessage inte
 	return nil
 }
 
-// PublishToExchange publishes a message to a RabbitMQ exchange.
-func (producer *RabbitMQProducer) PublishToExchange(exchange ExchangeRMQ, routingKey string, objMessage interface{}) error {
-	// Establish connection to RabbitMQ
-	conn, err := amqp.Dial(serverURI(producer.ServerRMQ))
+// PublishToExchange publishes a message to a  exchange.
+func (producer *Producer) PublishToExchange(exchange Exchange, routingKey string, objMessage interface{}) error {
+	// Establish connection to
+	conn, err := amqp.Dial(serverURI(producer.Server))
 	if err != nil {
-		return fmt.Errorf("failed to connect to RabbitMQ: %w", err)
+		return fmt.Errorf("failed to connect to : %w", err)
 	}
 	defer conn.Close()
 	// Open channel

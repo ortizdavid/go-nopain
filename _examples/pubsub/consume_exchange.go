@@ -1,13 +1,10 @@
 package main
 
-
 import (
-	"fmt"
 	"log"
 
 	"github.com/ortizdavid/go-nopain/pubsub"
 )
-
 
 func main() {
 	consumeFromExchange()
@@ -15,9 +12,9 @@ func main() {
 
 func consumeFromExchange() {
 
-	rmq2 := pubsub.NewRabbitMQConsumerDefault()
+	rmq2 := pubsub.NewConsumerDefault()
 
-	exchange := pubsub.ExchangeRMQ{
+	exchange := pubsub.Exchange{
 		Name:       "golang_exchange",
 		ExType:     pubsub.ExchangeFanout,
 		Durable:    false,

@@ -2,16 +2,17 @@ package main
 
 import (
 	"log"
+
 	"github.com/ortizdavid/go-nopain/pubsub"
 )
 
 type golangMessage struct {
-	Text string `json:"text"`
-    Number int `json:"number"`
-    Boolean bool `json:"boolean"`
+	Text    string `json:"text"`
+	Number  int    `json:"number"`
+	Boolean bool   `json:"boolean"`
 }
 
-func publishToQueue()  {
+func publishToQueue() {
 
 	message := golangMessage{
 		Text:    "New message for queue",
@@ -19,7 +20,7 @@ func publishToQueue()  {
 		Boolean: false,
 	}
 
-	queue := pubsub.QueueRMQ{
+	queue := pubsub.Queue{
 		Name:       "golang_queue",
 		Durable:    false,
 		Exclusive:  false,
@@ -28,7 +29,7 @@ func publishToQueue()  {
 		Arguments:  nil,
 	}
 
-	producer := pubsub.NewRabbitMQProducerDefault()
+	producer := pubsub.NewProducerDefault()
 
 	err := producer.PublishToQueue(queue, message)
 	if err != nil {
@@ -36,9 +37,6 @@ func publishToQueue()  {
 	}
 }
 
-
 func main() {
 	publishToQueue()
 }
-
-

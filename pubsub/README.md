@@ -1,10 +1,7 @@
 # pubsub
 
 Package that Simplifies the interaction with a queue
-Handle Publish and Subscribe to a message broker
-
-## Message brokers
-- [x] RabbitMQ
+Handle Publish and Subscribe to RabbitMQ
 
 ## Features
 - [x] Queue and Exchange configuration (RabbitMQ)
