@@ -123,10 +123,10 @@ func processMessages[T any](msgs <-chan amqp.Delivery, fn func(T) error) {
 }
 
 // serverURI returns the AMQP connection string.
-func serverURI(server Server) string {
+func serverURI(config ServerConfig) string {
 	return fmt.Sprintf("amqp://%s:%s@%s:%d/",
-		server.User,
-		server.Password,
-		server.Host,
-		server.Port)
+		config.User,
+		config.Password,
+		config.Host,
+		config.Port)
 }

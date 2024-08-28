@@ -12,7 +12,7 @@ type Exchange struct {
 }
 
 // Server contains settings for connecting to the  server.
-type Server struct {
+type ServerConfig struct {
 	Host     string
 	Port     int
 	User     string

@@ -11,25 +11,20 @@ import (
 
 // Producer represents the  producer configuration.
 type Producer struct {
-	server Server
+	config ServerConfig
 }
 
 // NewProducer creates a new Producer instance with custom server configuration.
-func NewProducer(host string, port int, user string, password string) *Producer {
+func NewProducer(config ServerConfig) *Producer {
 	return &Producer{
-		server: Server{
-			Host:     host,
-			Port:     port,
-			User:     user,
-			Password: password,
-		},
+		config: config,
 	}
 }
 
 // NewProducerDefault creates a new Producer instance with default server configuration.
 func NewProducerDefault() *Producer {
 	return &Producer{
-		server: Server{
+		config: ServerConfig{
 			Host:     "localhost",
 			Port:     5672,
 			User:     "guest",
@@ -41,7 +36,7 @@ func NewProducerDefault() *Producer {
 // PublishToQueue publishes a message to a  queue.
 func (producer *Producer) PublishToQueue(queue Queue, objMessage interface{}) error {
 	// Establish connection to
-	conn, err := amqp.Dial(serverURI(producer.server))
+	conn, err := amqp.Dial(serverURI(producer.config))
 	if err != nil {
 		return fmt.Errorf("failed to connect to : %w", err)
 	}
@@ -85,7 +80,7 @@ func (producer *Producer) PublishToQueue(queue Queue, objMessage interface{}) er
 // PublishToExchange publishes a message to a  exchange.
 func (producer *Producer) PublishToExchange(exchange Exchange, routingKey string, objMessage interface{}) error {
 	// Establish connection to
-	conn, err := amqp.Dial(serverURI(producer.server))
+	conn, err := amqp.Dial(serverURI(producer.config))
 	if err != nil {
 		return fmt.Errorf("failed to connect to : %w", err)
 	}
