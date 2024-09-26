@@ -13,3 +13,9 @@ func IsValidDateTime(dateTimeStr string) bool {
 	_, err := time.Parse("2006-01-02 15:04:05", dateTimeStr)
 	return err == nil
 }
+
+// IsValidTime checks if a string is a valid time in the format "15:04:05".
+func IsValidTime(timeStr string) bool {
+	_, err := time.Parse("15:04:05", timeStr)
+	return err == nil
+}
