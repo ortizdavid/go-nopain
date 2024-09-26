@@ -2,30 +2,27 @@ package datetime
 
 import "time"
 
-// Today returns the current date and time.
-func Today() time.Time {
-	return time.Now()
-}
-
-// CurrentDate returns the current date in the format "2006-01-02".
+// CurrentDate returns the current date as a formatted string in the format "2006-01-02".
 func CurrentDate() string {
 	return time.Now().Format("2006-01-02")
 }
 
-// CurrentDateTime returns the current date and time in the format "2006-01-02 15:04:05".
+// CurrentDateTime returns the current date and time as a formatted string in the format "2006-01-02 15:04:05".
 func CurrentDateTime() string {
 	return time.Now().Format("2006-01-02 15:04:05")
 }
 
-// CurrentYear returns the current year.
-func CurrentYear() int {
-	currentTime := time.Now()
-	return currentTime.Year()
+// CurrentYear returns the current year as a formatted string.
+func CurrentYear() string {
+	return time.Now().Format("2006")
 }
 
-// LastDateOfYear returns the last date of the current year.
-func LastDateOfYear() time.Time {
-	currentYear := time.Now().Year()
-	lastDateOfYear := time.Date(currentYear, time.December, 31, 0, 0, 0, 0, time.Local)
-	return lastDateOfYear
+// CurrentTime returns the current time as a formatted string in the format "15:04:05".
+func CurrentTime() string {
+	return time.Now().Format("15:04:05")
+}
+
+// CurrentHour returns the current hour as a formatted string in the format "15".
+func CurrentHour() string {
+	return time.Now().Format("15")
 }

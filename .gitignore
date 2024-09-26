@@ -1,2 +1,9 @@
 Files/
 uploads/
+
+*.sql
+*.pdf
+*.xlsx
+*.csv
+*.png
+.*jpeg
