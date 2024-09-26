@@ -2,18 +2,23 @@ package main
 
 import (
 	"fmt"
-
 	"github.com/ortizdavid/go-nopain/datetime"
 )
 
 func main() {
-	valid1 := datetime.IsValidDate("0000-00-00")
-	valid2 := datetime.IsValidDate("2024-01-10")
-	valid3 := datetime.IsValidDate("20000-9870-0")
-	valid4 := datetime.IsValidDate("2034-06-30")
+	// Validations
+	// date
+	fmt.Println("Validating date")
+	fmt.Println("1 == ", datetime.IsValidDate("0000-00-00"))
+	fmt.Println("2 == ", datetime.IsValidDate("2024-09-270"))
 	
-	fmt.Println("Validate 1 == ", valid1)
-	fmt.Println("Validate 2 == ", valid2)
-	fmt.Println("Validate 3 == ", valid3)
-	fmt.Println("Validate 4 == ", valid4)
+	// date time 
+	fmt.Println("Validating date time")
+	fmt.Println("1 == ", datetime.IsValidDateTime("20000-008-10 10:00:2"))
+	fmt.Println("2 == ", datetime.IsValidDateTime("2024-09-27 12:54:09"))
+
+	// time 
+	fmt.Println("Validating time")
+	fmt.Println("1 == ", datetime.IsValidTime("1:00:802"))
+	fmt.Println("2 == ", datetime.IsValidTime("12:54:09"))
 }

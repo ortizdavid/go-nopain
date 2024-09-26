@@ -6,6 +6,6 @@ func TimeAgoStr(fromTimeStr string) string {
 }
 
 // TimeAgoBetweenDatesStr calculates the time difference between two time strings and returns a string representing the duration.
-func TimeAgoBetweenDatesStr(startStr string, endStr string) string {
-	return TimeAgoBetweenDates(StringToDateTime(startStr), StringToDateTime(endStr)) 
+func TimeAgoBetweenStr(startStr string, endStr string) string {
+	return TimeAgoBetween(StringToDateTime(startStr), StringToDateTime(endStr)) 
 }

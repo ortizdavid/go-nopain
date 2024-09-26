@@ -35,7 +35,7 @@ func TimeAgo(fromTime time.Time) string {
 }
 
 // TimeAgoBetweenDates calculates the time difference between two time values and returns a string representing the duration.
-func TimeAgoBetweenDates(start time.Time, end time.Time) string {
+func TimeAgoBetween(start time.Time, end time.Time) string {
 	diff := end.Sub(start)                     // Calculate the difference between the start and end times.
 	return TimeAgo(start) + " to " + TimeAgo(end) + " (" + diff.String() + ")" 
 }
