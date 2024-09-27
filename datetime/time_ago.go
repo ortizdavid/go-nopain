@@ -7,35 +7,35 @@ import (
 
 // TimeAgo calculates the time difference from a given time to the current time and returns a human-readable string.
 func TimeAgo(fromTime time.Time) string {
-	now := time.Now()                       // Get the current time.
-	diff := now.Sub(fromTime)               // Calculate the difference between now and the provided time.
+	now := time.Now()             
+	diff := now.Sub(fromTime) 
 
-	// Calculate the time difference in various units.
-	years := diff.Hours() / 24 / 365
-	months := years * 12
-	days := diff.Hours() / 24
-	hours := diff.Hours()
-	minutes := diff.Minutes()
-	seconds := diff.Seconds()
+	// Calculate the time difference in different units.
+	years := int(diff.Hours() / 24 / 365)
+	months := int(diff.Hours() / 24 / 30) 
+	days := int(diff.Hours() / 24)
+	hours := int(diff.Hours())
+	minutes := int(diff.Minutes())
+	seconds := int(diff.Seconds())
 
 	// Return the appropriate time difference string.
 	if years >= 1 {
-		return fmt.Sprintf("%.0f years ago", years)
+		return fmt.Sprintf("%d years ago", years)
 	} else if months >= 1 {
-		return fmt.Sprintf("%.0f months ago", months)
+		return fmt.Sprintf("%d months ago", months)
 	} else if days >= 1 {
-		return fmt.Sprintf("%.0f days ago", days)
+		return fmt.Sprintf("%d days ago", days)
 	} else if hours >= 1 {
-		return fmt.Sprintf("%.0f hours ago", hours)
+		return fmt.Sprintf("%d hours ago", hours)
 	} else if minutes >= 1 {
-		return fmt.Sprintf("%.0f minutes ago", minutes)
+		return fmt.Sprintf("%d minutes ago", minutes)
 	} else {
-		return fmt.Sprintf("%.0f seconds ago", seconds)
+		return fmt.Sprintf("%d seconds ago", seconds)
 	}
 }
 
 // TimeAgoBetweenDates calculates the time difference between two time values and returns a string representing the duration.
 func TimeAgoBetween(start time.Time, end time.Time) string {
-	diff := end.Sub(start)                     // Calculate the difference between the start and end times.
+	diff := end.Sub(start)                    
 	return TimeAgo(start) + " to " + TimeAgo(end) + " (" + diff.String() + ")" 
 }
