@@ -14,12 +14,12 @@ func SubtractDays(date time.Time, days int) time.Time {
 
 // AddWeeks adds the specified number of weeks to the given date.
 func AddWeeks(date time.Time, weeks int) time.Time {
-    return date.AddDate(0, 0, weeks*7) // Adding weeks by converting to days
+    return date.AddDate(0, 0, weeks*7) 
 }
 
 // SubtractWeeks subtracts the specified number of weeks from the given date.
 func SubtractWeeks(date time.Time, weeks int) time.Time {
-    return date.AddDate(0, 0, -weeks*7) // Subtracting weeks by converting to days
+    return date.AddDate(0, 0, -weeks*7) 
 }
 
 // AddMonths adds the specified number of months to the given date.
