@@ -7,7 +7,7 @@ import (
 
 // StringToDate converts a string date in the format "2006-01-02" to a time.Time object.
 func StringToDate(strDate string) (time.Time, error) {
-	date, err := time.Parse(dateLayout, strDate)
+	date, err := time.Parse(time.DateOnly, strDate)
 	if err != nil {
 		return time.Time{}, fmt.Errorf("error parsing date: %v", err)
 	}

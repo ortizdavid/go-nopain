@@ -14,15 +14,15 @@ func LastDayOfCurrentWeekStr() string {
 
 // LastDayOfCurrentMonthStr returns the last day of the current month as a formatted string.
 func LastDayOfCurrentMonthStr() string {
-	return DateTimeToString(LastDayOfCurrentMonth())
+	return DateToString(LastDayOfCurrentMonth())
 }
 
 // LastDayOfMonthStr returns the last day of the specified month and year as a formatted string.
 func LastDayOfMonthStr(year int, month int) string {
-	return DateTimeToString(LastDayOfMonth(year, time.Month(month)))
+	return DateToString(LastDayOfMonth(year, time.Month(month)))
 }
 
 // LastDayOfWeekStr returns the last day (Sunday) of the specified week and year as a formatted string.
 func LastDayOfWeekStr(year int, week int) string {
-	return DateTimeToString(LastDayOfWeek(year, week))
+	return DateToString(LastDayOfWeek(year, week))
 }

@@ -1,6 +1,6 @@
 # conversion
 
-Package for conversions
+Package for Type conversions
 
 ## Conversions
 - [x] String to number
