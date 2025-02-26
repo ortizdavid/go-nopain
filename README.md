@@ -3,7 +3,7 @@
 **go-nopain** is a comprehensive library offering helper functions designed for real-world systems, aiming to streamline common tasks and simplify development in Go.
 
 **Packages:**
-- [**Publish Subscribe**](/pubsub): Messaging with RabbitMQ.
+- [**Publish Subscribe**](/pubsub): Messaging with most common brokers.
 - [**HTTP Utils**](/httputils): HTTP authentication methods, middlewares, HTTP requests, and responses.
 - [**Serialization**](/serialization): Functions for serializing and deserializing data (JSON, XML, CSV, and ASN.1).
 - [**Mail Management**](/mailer): Managing email messages.
