@@ -27,15 +27,7 @@ func processMessageFromQueue() {
 
 	consumer, _ := pubsub.NewRabbitMQConsumerDefault()
 
-	queue := pubsub.Queue{
-		Name:       "golang_queue",
-		Durable:    false,
-		AutoDelete: false,
-		Exclusive:  false,
-		NoWait:     false,
-		Arguments:  nil,
-	}
-	err := pubsub.ProcessMessageFromQueue(consumer, queue, addMessageToFile)
+	err := pubsub.ProcessMessageFromQueue(consumer, pubsub.DefaultQueue("golang_queue"), addMessageToFile)
 	if err != nil {
 		log.Println(err)
 	}
