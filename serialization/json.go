@@ -8,7 +8,7 @@ import (
 
 // SerializeJson serializes the given object to JSON
 func SerializeJson(obj interface{}) ([]byte, error) {
-	jsonData, err := json.MarshalIndent(obj, "", " ")
+	jsonData, err := json.Marshal(obj)
 	if err != nil {
 		return nil, err
 	}

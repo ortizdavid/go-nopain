@@ -3,7 +3,7 @@ package main
 import (
 	"log"
 
-	"github.com/ortizdavid/go-nopain/pubsub"
+	"github.com/ortizdavid/go-nopain/pubsub/rabbitmq"
 )
 
 type golangMessage struct {
@@ -19,7 +19,7 @@ func publishToExchange() {
 		Boolean: false,
 	}
 
-	producer := pubsub.NewProducerDefault()
+	producer, _ := pubsub.NewRabbitMQProducerDefault()
 
 	exchange := pubsub.Exchange{
 		Name:       "golang_exchange",

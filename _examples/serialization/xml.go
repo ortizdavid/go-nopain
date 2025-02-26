@@ -13,16 +13,12 @@ type person struct {
 	Age     int      `xml:"age"`
 }
 
-
 func main() {
 
 	//jsonSerialization()
 	//xmlSerialization()
 	xmlUnserialization()
-
 }
-
-
 
 func xmlSerialization() {
 	data2 := person{
@@ -41,10 +37,7 @@ func xmlUnserialization()  {
 		<age>23</age>
 	</person>
 	`
-
 	var p person
-
 	serialization.UnserializeXml([]byte(x), &p)
 	fmt.Println(p)
-
 }

@@ -1,12 +1,38 @@
 package pubsub
 
 import (
+	"errors"
 	"fmt"
 	"log"
-
 	"github.com/ortizdavid/go-nopain/serialization"
 	amqp "github.com/rabbitmq/amqp091-go"
 )
+
+// connectionString returns the AMQP connection string.
+func connectionString(config RabbitMQConfig) string {
+	return fmt.Sprintf("amqp://%s:%s@%s:%d/",
+		config.User,
+		config.Password,
+		config.Host,
+		config.Port)
+}
+
+// validate server configurations
+func validateConfig(config RabbitMQConfig) error {
+	if config.Host == "" {
+		return errors.New("host cannot be empty")
+	}
+	if config.Port <= 0 || config.Port > 65535 {
+		return errors.New("invalid port number")
+	}
+	if config.User == "" {
+		return errors.New("user cannot be empty")
+	}
+	if config.Password == "" {
+		return errors.New("password cannot be empty")
+	}
+	return nil
+}
 
 // Declares a queue on the given channel
 func declareQueue(ch *amqp.Channel, queue Queue) (amqp.Queue, error) {
@@ -120,13 +146,4 @@ func processMessages[T any](msgs <-chan amqp.Delivery, fn func(T) error) {
 			log.Printf("Processed message: %+v", message)
 		}
 	}()
-}
-
-// serverURI returns the AMQP connection string.
-func serverURI(config ServerConfig) string {
-	return fmt.Sprintf("amqp://%s:%s@%s:%d/",
-		config.User,
-		config.Password,
-		config.Host,
-		config.Port)
 }

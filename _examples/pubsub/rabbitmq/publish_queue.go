@@ -3,7 +3,7 @@ package main
 import (
 	"log"
 
-	"github.com/ortizdavid/go-nopain/pubsub"
+	"github.com/ortizdavid/go-nopain/pubsub/rabbitmq"
 )
 
 type golangMessage struct {
@@ -29,7 +29,7 @@ func publishToQueue() {
 		Arguments:  nil,
 	}
 
-	producer := pubsub.NewProducerDefault()
+	producer, _ := pubsub.NewRabbitMQProducerDefault()
 
 	err := producer.PublishToQueue(queue, message)
 	if err != nil {

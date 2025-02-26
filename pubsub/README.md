@@ -1,10 +1,15 @@
 # pubsub
 
-Package that Simplifies the interaction with a queue
-Handle Publish and Subscribe to RabbitMQ
+A package that simplifies interaction with message brokers.  
+Supports **RabbitMQ, Kafka, and NATS** for publishing and subscribing to messages.
 
 ## Features
-- [x] Queue and Exchange configuration (RabbitMQ)
-- [x] Publish Messages
-- [x] Subscribe Messages
-- [x] Process Messages from Queue and Exchange
+- [x] **RabbitMQ**: Queue and Exchange configuration, Publish, Subscribe  
+- [x] **Kafka**: Topic-based messaging, High-throughput publishing  
+- [x] **NATS**: Lightweight pub/sub, Streaming support  
+- [x] Process messages efficiently with broker-specific optimizations  
+
+## Supported Brokers
+- **RabbitMQ**: Uses queues and exchanges for routing  
+- **Kafka**: High-performance distributed messaging with topics and partitions  
+- **NATS**: Lightweight messaging with subjects  

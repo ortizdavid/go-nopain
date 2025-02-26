@@ -1,5 +1,13 @@
 package pubsub
 
+// RabbitMQConfig contains settings for connecting to the  server.
+type RabbitMQConfig struct {
+	Host     string
+	Port     int
+	User     string
+	Password string
+}
+
 // Exchange represents the configuration of a  exchange.
 type Exchange struct {
 	Name       string
@@ -9,14 +17,6 @@ type Exchange struct {
 	Internal   bool
 	NoWait     bool
 	Arguments  map[string]interface{}
-}
-
-// Server contains settings for connecting to the  server.
-type ServerConfig struct {
-	Host     string
-	Port     int
-	User     string
-	Password string
 }
 
 // Queue contains settings for configuring  queues.
@@ -48,3 +48,11 @@ const (
 	ExchangeTopic   ExchangeType = "topic"
 	ExchangeHeaders ExchangeType = "headers"
 )
+
+// default config
+var defaultConfig = RabbitMQConfig{
+	Host:     "localhost",
+	Port:     5672,
+	User:     "guest",
+	Password: "guest",
+}

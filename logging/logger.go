@@ -17,5 +17,3 @@ func NewLogger(folderName string, fileName string) *slog.Logger {
 	logger := slog.New(slog.NewJSONHandler(file, nil))
 	return logger
 }
-
-

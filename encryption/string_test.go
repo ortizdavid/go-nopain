@@ -13,7 +13,7 @@ func TestGenerateUUID(t *testing.T) {
 }
 
 func TestGenerateRandomToken(t *testing.T) {
-    token := GenerateRandomToken()
+    token := GenerateRandomToken(100)
     if len(token) != 136 { // 100 bytes when base64 encoded
         t.Errorf("GenerateRandomToken() returned an invalid token: %s", token)
     }

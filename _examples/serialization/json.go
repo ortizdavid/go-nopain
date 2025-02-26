@@ -36,7 +36,6 @@ func jsonUnserialization() {
 		"Boolean": true
 	}
 	`
-
 	var msg message
 
 	err := serialization.UnserializeJson([]byte(j), &msg)

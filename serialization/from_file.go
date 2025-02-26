@@ -38,7 +38,7 @@ func FromXmlFile(xmlFile string, obj interface{}) error {
 
 
 // FromAsnFile deserializes ASN.1 encoded data from the specified file into the given object.
-func FromAsnFile(asnFile string, obj interface{}) error {
+func FromAsn1File(asnFile string, obj interface{}) error {
 	// Read ASN.1 file
 	data, err := os.ReadFile(asnFile)
 	if err != nil {
@@ -54,7 +54,6 @@ func FromAsnFile(asnFile string, obj interface{}) error {
 
 
 // FromCsvFileToJson reads data from the specified CSV file and deserializes it into JSON format.
-// The deserialized JSON data is stored in the provided object.
 func FromCsvFileToJson(csvFile string, obj interface{}) error {
 	// Open the CSV file
 	file, err := os.Open(csvFile)
@@ -67,7 +66,6 @@ func FromCsvFileToJson(csvFile string, obj interface{}) error {
 
 
 // FromCsvFileToXml reads data from the specified CSV file and deserializes it into XML format.
-// The deserialized XML data is stored in the provided object.
 func FromCsvFileToXml(csvFile string, obj interface{}) error {
 	// Open the CSV file
 	file, err := os.Open(csvFile)

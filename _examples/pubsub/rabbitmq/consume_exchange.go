@@ -3,7 +3,7 @@ package main
 import (
 	"log"
 
-	"github.com/ortizdavid/go-nopain/pubsub"
+	"github.com/ortizdavid/go-nopain/pubsub/rabbitmq"
 )
 
 func main() {
@@ -12,7 +12,7 @@ func main() {
 
 func consumeFromExchange() {
 
-	rmq2 := pubsub.NewConsumerDefault()
+	rmq2, _ := pubsub.NewRabbitMQConsumerDefault()
 
 	exchange := pubsub.Exchange{
 		Name:       "golang_exchange",

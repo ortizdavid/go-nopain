@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/ortizdavid/go-nopain/filemanager"
-	"github.com/ortizdavid/go-nopain/pubsub"
+	"github.com/ortizdavid/go-nopain/pubsub/rabbitmq"
 )
 
 type golangMessage struct {
@@ -25,7 +25,7 @@ func addMessageToFile(msg golangMessage) error {
 
 func processMessageFromQueue() {
 
-	consumer := pubsub.NewConsumerDefault()
+	consumer, _ := pubsub.NewRabbitMQConsumerDefault()
 
 	queue := pubsub.Queue{
 		Name:       "golang_queue",

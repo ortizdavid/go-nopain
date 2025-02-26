@@ -73,7 +73,7 @@ func Test_FromAsnFile(t *testing.T) {
 	defer os.Remove(tmpfile.Name())
 
 	var obj TestStruct
-	err = FromAsnFile(tmpfile.Name(), &obj)
+	err = FromAsn1File(tmpfile.Name(), &obj)
 	if err != nil {
 		t.Errorf("FromAsnFile() error = %v", err)
 		return

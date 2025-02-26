@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/ortizdavid/go-nopain/pubsub"
+	"github.com/ortizdavid/go-nopain/pubsub/rabbitmq"
 )
 
 type golangMessage struct {
@@ -27,7 +27,7 @@ func addMessageToSlice(msg golangMessage) error {
 
 func processMessageFromExchange() {
 
-	consumer := pubsub.NewConsumerDefault()
+	consumer, _ := pubsub.NewRabbitMQConsumerDefault()
 	exchange := pubsub.Exchange{
 		Name:       "golang_exchange",
 		ExType:     pubsub.ExchangeFanout,

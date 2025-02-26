@@ -11,7 +11,7 @@ type golangMessage struct {
 }
 
 func TestPublishToQueueWithDefault(t *testing.T) {
-	rmq := NewProducerDefault()
+	rmq, _ := NewRabbitMQProducerDefault()
 
 	message := golangMessage{
 		Text:    "Message with Default",
@@ -34,7 +34,7 @@ func TestPublishToQueueWithDefault(t *testing.T) {
 }
 
 func TestPublishToExchangeDefault(t *testing.T) {
-	rmq := NewProducerDefault()
+	rmq, _ := NewRabbitMQProducerDefault()
 
 	message := golangMessage{
 		Text:    "Message to exchange",
