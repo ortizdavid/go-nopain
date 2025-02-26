@@ -50,9 +50,34 @@ const (
 )
 
 // default config
-var defaultConfig = RabbitMQConfig{
+var DefaultRabbitMQConfig = RabbitMQConfig{
 	Host:     "localhost",
 	Port:     5672,
 	User:     "guest",
 	Password: "guest",
 }
+
+// default queue
+var DefaultQueue = func(name string) Queue{
+	return Queue{
+		Name: name,
+		Durable: false,
+		Exclusive: false,
+		AutoDelete: false,
+		NoWait: false,
+		Arguments: nil,
+	}
+} 
+
+// default exchange
+var DefaultExchange = func(name string) Exchange{
+	return Exchange{
+		Name: name,
+		ExType: ExchangeDirect,
+		Durable: false,
+		AutoDelete: false,
+		Internal: false,
+		NoWait: false,
+		Arguments: nil,
+	}
+} 

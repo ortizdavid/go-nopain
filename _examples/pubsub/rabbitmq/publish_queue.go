@@ -20,18 +20,9 @@ func publishToQueue() {
 		Boolean: false,
 	}
 
-	queue := pubsub.Queue{
-		Name:       "golang_queue",
-		Durable:    false,
-		Exclusive:  false,
-		AutoDelete: false,
-		NoWait:     false,
-		Arguments:  nil,
-	}
-
 	producer, _ := pubsub.NewRabbitMQProducerDefault()
 
-	err := producer.PublishToQueue(queue, message)
+	err := producer.PublishToQueue(pubsub.DefaultQueue("golang_queue"), message)
 	if err != nil {
 		log.Println(err)
 	}

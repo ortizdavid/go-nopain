@@ -3,7 +3,6 @@ package pubsub
 import (
 	"fmt"
 	"log"
-
 	amqp "github.com/rabbitmq/amqp091-go"
 )
 
@@ -39,7 +38,7 @@ func NewRabbitMQConsumer(config RabbitMQConfig) (*RabbitMQConsumer, error) {
 
 // NewRabbitMQConsumerDefault creates a new RabbitMQConsumer instance with default server configuration.
 func NewRabbitMQConsumerDefault() (*RabbitMQConsumer, error) {
-	return NewRabbitMQConsumer(defaultConfig)
+	return NewRabbitMQConsumer(DefaultRabbitMQConfig)
 }
 
 // Close connection and Channel

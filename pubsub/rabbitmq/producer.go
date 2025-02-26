@@ -40,7 +40,7 @@ func NewRabbitMQProducer(config RabbitMQConfig) (*RabbitMQProducer, error) {
 
 // NewRabbitMQProducerDefault creates a new RabbitMQProducer instance with default server configuration.
 func NewRabbitMQProducerDefault() (*RabbitMQProducer, error) {
-	return NewRabbitMQProducer(defaultConfig)
+	return NewRabbitMQProducer(DefaultRabbitMQConfig)
 }
 
 // Close connection and Channel

@@ -21,17 +21,7 @@ func publishToExchange() {
 
 	producer, _ := pubsub.NewRabbitMQProducerDefault()
 
-	exchange := pubsub.Exchange{
-		Name:       "golang_exchange",
-		ExType:     pubsub.ExchangeFanout,
-		Durable:    false,
-		AutoDelete: false,
-		Internal:   false,
-		NoWait:     false,
-		Arguments:  nil,
-	}
-
-	err := producer.PublishToExchange(exchange, "golang_key", message)
+	err := producer.PublishToExchange(pubsub.DefaultExchange("golang_exchange"), "golang_key", message)
 	if err != nil {
 		log.Println(err)
 	}
