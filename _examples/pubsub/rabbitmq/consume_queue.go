@@ -14,7 +14,7 @@ func consumeFromExchange() {
 
 	rmq2, _ := pubsub.NewRabbitMQConsumerDefault()
 
-	err := rmq2.ConsumeFromQueue(pubsub.DefaultQueue("golang_queue"))
+	err := rmq2.ConsumeFromQueue(pubsub.DefaultQueue("dotnet_queue"))
 	if err != nil {
 		log.Println(err)
 	}

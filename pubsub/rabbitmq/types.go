@@ -49,7 +49,7 @@ const (
 	ExchangeHeaders ExchangeType = "headers"
 )
 
-// default config
+// Default config
 var DefaultRabbitMQConfig = RabbitMQConfig{
 	Host:     "localhost",
 	Port:     5672,
@@ -57,7 +57,7 @@ var DefaultRabbitMQConfig = RabbitMQConfig{
 	Password: "guest",
 }
 
-// default queue
+// Default queue
 var DefaultQueue = func(name string) Queue{
 	return Queue{
 		Name: name,
@@ -69,7 +69,7 @@ var DefaultQueue = func(name string) Queue{
 	}
 } 
 
-// default exchange
+// Default exchange
 var DefaultExchange = func(name string) Exchange{
 	return Exchange{
 		Name: name,

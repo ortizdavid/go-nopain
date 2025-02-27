@@ -5,8 +5,8 @@ Supports **RabbitMQ, Kafka, and NATS** for publishing and subscribing to message
 
 ## Features
 - [x] **RabbitMQ**: Queue and Exchange configuration, Publish, Subscribe  
-- [x] **Kafka**: Topic-based messaging, High-throughput publishing  
-- [x] **NATS**: Lightweight pub/sub, Streaming support  
+- [ ] **Kafka**: Topic-based messaging, High-throughput publishing  
+- [ ] **NATS**: Lightweight pub/sub, Streaming support  
 - [x] Process messages efficiently with broker-specific optimizations  
 
 ## Supported Brokers

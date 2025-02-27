@@ -31,7 +31,6 @@ func processMessageFromQueue() {
 	if err != nil {
 		log.Println(err)
 	}
-
 }
 
 func main() {
