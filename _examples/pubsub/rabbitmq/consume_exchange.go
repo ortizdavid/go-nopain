@@ -18,5 +18,4 @@ func consumeFromExchange() {
 	if err != nil {
 		log.Println(err)
 	}
-
 }

@@ -2,18 +2,12 @@ package main
 
 import (
 	"log"
-
-	"github.com/ortizdavid/go-nopain/pubsub/rabbitmq"
+	"github.com/ortizdavid/go-nopain/_examples/pubsub/helpers"
+	pubsub "github.com/ortizdavid/go-nopain/pubsub/rabbitmq"
 )
 
-type golangMessage struct {
-	Text    string `json:"text"`
-	Number  int    `json:"number"`
-	Boolean bool   `json:"boolean"`
-}
-
 func publishToExchange() {
-	message := golangMessage{
+	message := helpers.GolangMessage{
 		Text:    "Message for para Exchange",
 		Number:  82736,
 		Boolean: false,
@@ -28,6 +22,5 @@ func publishToExchange() {
 }
 
 func main() {
-
 	publishToExchange()
 }

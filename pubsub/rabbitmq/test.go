@@ -4,7 +4,7 @@ import (
 	"testing"
 )
 
-type golangMessage struct {
+type GolangMessage struct {
 	Text    string `json:"text"`
 	Number  int    `json:"number"`
 	Boolean bool   `json:"boolean"`
@@ -13,7 +13,7 @@ type golangMessage struct {
 func TestPublishToQueueWithDefault(t *testing.T) {
 	rmq, _ := NewRabbitMQProducerDefault()
 
-	message := golangMessage{
+	message := GolangMessage{
 		Text:    "Message with Default",
 		Number:  1097,
 		Boolean: true,
@@ -27,7 +27,7 @@ func TestPublishToQueueWithDefault(t *testing.T) {
 func TestPublishToExchangeDefault(t *testing.T) {
 	rmq, _ := NewRabbitMQProducerDefault()
 
-	message := golangMessage{
+	message := GolangMessage{
 		Text:    "Message to exchange",
 		Number:  99,
 		Boolean: false,
