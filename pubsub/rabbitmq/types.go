@@ -6,6 +6,7 @@ type RabbitMQConfig struct {
 	Port     int
 	User     string
 	Password string
+	VirtualHost	string
 }
 
 // Exchange represents the configuration of a  exchange.
@@ -55,6 +56,7 @@ var DefaultRabbitMQConfig = RabbitMQConfig{
 	Port:     5672,
 	User:     "guest",
 	Password: "guest",
+	VirtualHost: "/",
 }
 
 // Default queue

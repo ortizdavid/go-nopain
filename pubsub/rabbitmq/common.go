@@ -10,11 +10,12 @@ import (
 
 // connectionString returns the AMQP connection string.
 func connectionString(config RabbitMQConfig) string {
-	return fmt.Sprintf("amqp://%s:%s@%s:%d/",
+	return fmt.Sprintf("amqp://%s:%s@%s:%d/%s",
 		config.User,
 		config.Password,
 		config.Host,
-		config.Port)
+		config.Port,
+		config.VirtualHost)
 }
 
 // validate server configurations

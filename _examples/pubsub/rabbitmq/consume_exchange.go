@@ -14,7 +14,7 @@ func consumeFromExchange() {
 
 	rmq2, _ := pubsub.NewRabbitMQConsumerDefault()
 
-	err := rmq2.ConsumeFromExchange(pubsub.DefaultExchange("golang_exchange"), "golang_key")
+	err := rmq2.ConsumeFromExchange(pubsub.DefaultExchange("user.exchange"), "user.updated")
 	if err != nil {
 		log.Println(err)
 	}
