@@ -32,6 +32,9 @@ func validateConfig(config RabbitMQConfig) error {
 	if config.Password == "" {
 		return errors.New("password cannot be empty")
 	}
+	if config.VirtualHost == "" {
+		return errors.New("vhost cannot be empty")
+	}
 	return nil
 }
 
