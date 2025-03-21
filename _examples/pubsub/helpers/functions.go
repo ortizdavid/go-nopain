@@ -28,7 +28,7 @@ func AddMessageToSlice(msg GolangMessage) error {
 func SaveMessageToFile(msg GolangMessage) error {
 	var filemanager filemanager.FileManager
 	currentTime := time.Now().Format("2006-01-02 15:04:05")
-	newContent := fmt.Sprintf("[%s] %s\n", currentTime, msg.Text)
+	newContent := fmt.Sprintf("[%s] --> %d\t%s\t%v\n", currentTime, msg.Number, msg.Text, msg.Boolean)
 	filemanager.WriteFile(".", "../helpers/messages.txt", newContent)
 	return nil
 }

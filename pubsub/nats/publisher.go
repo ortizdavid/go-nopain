@@ -1,6 +1,8 @@
 package pubsub
 
 import (
+	"bytes"
+	"compress/gzip"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -46,11 +48,16 @@ func NewNatsPublisherDefault() (*NatsPublisher, error) {
 
 // Publish sends a message to a specified subject in NATS
 func (pub *NatsPublisher) Publish(subject string, message interface{}) error {
-	data, err := json.Marshal(message)
-	if err != nil {
+	var buf bytes.Buffer
+	gz := gzip.NewWriter(&buf)
+
+	if err := json.NewEncoder(gz).Encode(message); err != nil {
+		gz.Close()
 		return fmt.Errorf("[!] error encoding message: %v", err)
 	}
-	err = pub.conn.Publish(subject, data)
+	gz.Close()
+
+	err := pub.conn.Publish(subject, buf.Bytes())
 	if err != nil {
 		return fmt.Errorf("error publishing to '%s': %v", subject, err)
 	}

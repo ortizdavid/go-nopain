@@ -17,7 +17,7 @@ func GetPublicMethods(obj interface{}) []string {
 func GetFields(obj interface{}) []string {
 	objType := reflect.TypeOf(obj)
 	if objType.Kind() == reflect.Ptr {
-		objType = objType.Elem() // Dereference the pointer to get the struct type
+		objType = objType.Elem() 
 	}
 	var fields []string
 	for i := 0; i < objType.NumField(); i++ {
@@ -43,5 +43,3 @@ func CallMethod(any interface{}, methodName string, args... interface{}) {
 	}
 	reflect.ValueOf(any).MethodByName(methodName).Call(inputs)
 }
-
-

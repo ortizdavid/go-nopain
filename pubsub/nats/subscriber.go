@@ -1,6 +1,8 @@
 package pubsub
 
 import (
+	"bytes"
+	"compress/gzip"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -46,7 +48,7 @@ func NewNatsSubscriberDefault() (*NatsSubscriber, error) {
 
 // Subscribe listens to messages on a given subject
 func (sub *NatsSubscriber) Subscribe(subject string) error {
-	fmt.Printf("Awaiting messages on subject '%s ...", subject)
+	fmt.Printf("Awaiting messages on subject '%s ...\n", subject)
 	_, err := sub.conn.Subscribe(subject, func(msg *nats.Msg) {
 		fmt.Printf("[x] Received message on '%s': %s\n", subject, string(msg.Data))
 	})
@@ -55,7 +57,7 @@ func (sub *NatsSubscriber) Subscribe(subject string) error {
 
 // SubscribeQueue listens to messages on a subject using a queue group
 func (sub *NatsSubscriber) SubscribeQueue(subject string, queue string) error {
-	fmt.Printf("Awaiting messages on subject '%s, queue '%s' ...", subject, queue)
+	fmt.Printf("Awaiting messages on subject '%s, queue '%s' ...\n", subject, queue)
 	_, err := sub.conn.QueueSubscribe(subject, queue, func(msg *nats.Msg) {
 		fmt.Printf("[x] Received message on subject '%s', queue '%s': %s\n", subject, queue, string(msg.Data))
 	})
@@ -65,9 +67,15 @@ func (sub *NatsSubscriber) SubscribeQueue(subject string, queue string) error {
 // ProcessMessage processes incoming messages and applies a handler function
 func ProcessMessage[T any](subscriber *NatsSubscriber, subject string, fn func(T) error) error {
 	_, err := subscriber.conn.Subscribe(subject, func(msg *nats.Msg) {
-		var message T
-		err := json.Unmarshal(msg.Data, &message)
+		reader, err := gzip.NewReader(bytes.NewReader(msg.Data))
 		if err != nil {
+			fmt.Printf("[!] Error decompressing message on '%s': %v\n", subject, err)
+			return 
+		}
+		defer reader.Close()
+
+		var message T
+		if err := json.NewDecoder(reader).Decode(&message); err != nil {
 			fmt.Printf("[!] Error decoding message on '%s': %v", subject, err)
 			return
 		}
@@ -82,9 +90,15 @@ func ProcessMessage[T any](subscriber *NatsSubscriber, subject string, fn func(T
 // ProcessMessageQueue processes messages from a queue and applies a handler function
 func ProcessMessageQueue[T any](subscriber *NatsSubscriber, subject string, queue string, fn func(T) error) error {
 	_, err := subscriber.conn.QueueSubscribe(subject, queue, func(msg *nats.Msg) {
-		var message T
-		err := json.Unmarshal(msg.Data, &message)
+		reader, err := gzip.NewReader(bytes.NewReader(msg.Data))
 		if err != nil {
+			fmt.Printf("[!] Error decompressing message on '%s': %v\n", subject, err)
+			return 
+		}
+		defer reader.Close()
+
+		var message T
+		if err := json.NewDecoder(reader).Decode(&message); err != nil {
 			fmt.Printf("[!] Error decoding message on '%s': %v", subject, err)
 			return
 		}

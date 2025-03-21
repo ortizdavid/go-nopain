@@ -1,10 +1,12 @@
 package main
 
 import (
+	"fmt"
 	"log"
 
 	"github.com/ortizdavid/go-nopain/_examples/pubsub/helpers"
 	pubsub "github.com/ortizdavid/go-nopain/pubsub/nats"
+	"github.com/ortizdavid/go-nopain/reflection"
 )
 
 func main() {
@@ -18,6 +20,6 @@ func main() {
 	if err != nil {
 		log.Println(err)
 	}
-
 	select {}
+	
 }
