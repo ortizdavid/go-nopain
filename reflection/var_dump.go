@@ -48,8 +48,7 @@ func VarDump(variables ...interface{}) {
 	}
 }
 
-
-// VarDumpBasic basic prints the type and value of multiple variables.
+// VarDumpBasic prints the type and value of multiple variables in a simple format.
 func VarDumpBasic(variables ...interface{}) {
 	for _, variable := range variables {
 		if variable == nil {
