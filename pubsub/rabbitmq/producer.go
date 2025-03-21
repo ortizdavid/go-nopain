@@ -1,10 +1,13 @@
 package pubsub
 
 import (
+	"bytes"
+	"compress/gzip"
 	"context"
 	"encoding/json"
 	"fmt"
 	"time"
+
 	amqp "github.com/rabbitmq/amqp091-go"
 )
 
@@ -61,10 +64,13 @@ func (producer *RabbitMQProducer) PublishToQueue(queue Queue, objMessage interfa
 	if err != nil {
 		return err
 	}
-	// Marshal message to JSON
-	body, err := json.Marshal(objMessage)
-	if err != nil {
-		return fmt.Errorf("failed to serialize message to JSON: %w", err)
+	// Encode message to JSON
+	var buf bytes.Buffer
+	gz := gzip.NewWriter(&buf)
+	defer gz.Close()
+	
+	if err := json.NewEncoder(gz).Encode(objMessage); err != nil {
+		return fmt.Errorf("[!] failed to encode message to JSON: %w", err)
 	}
 	// Create context
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
@@ -77,10 +83,10 @@ func (producer *RabbitMQProducer) PublishToQueue(queue Queue, objMessage interfa
 		false,
 		amqp.Publishing{
 			ContentType: "application/json",
-			Body:        body,
+			Body:        buf.Bytes(),
 		})
 	if err != nil {
-		return fmt.Errorf("failed to publish message: %w", err)
+		return fmt.Errorf("[!] failed to publish message: %w", err)
 	}
 
 	return nil
@@ -94,10 +100,13 @@ func (producer *RabbitMQProducer) PublishToExchange(exchange Exchange, routingKe
 	if err != nil {
 		return err
 	}
-	// Serialize message to JSON
-	body, err := json.Marshal(objMessage)
-	if err != nil {
-		return fmt.Errorf("failed to serialize message to JSON: %w", err)
+	// Encode message to JSON
+	var buf bytes.Buffer
+	gz := gzip.NewWriter(&buf)
+	defer gz.Close()
+
+	if err := json.NewEncoder(gz).Encode(objMessage); err != nil {
+		return fmt.Errorf("[!] failed to encode message to JSON: %w", err)
 	}
 	// Create Context
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
@@ -117,10 +126,10 @@ func (producer *RabbitMQProducer) PublishToExchange(exchange Exchange, routingKe
 		false,
 		amqp.Publishing{
 			ContentType: "application/json",
-			Body:        body,
+			Body:        buf.Bytes(),
 		})
 	if err != nil {
-		return fmt.Errorf("failed to publish message to exchange: %w", err)
+		return fmt.Errorf("[!] failed to publish message to exchange: %w", err)
 	}
 
 	return nil

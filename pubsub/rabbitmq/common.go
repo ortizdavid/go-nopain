@@ -1,10 +1,13 @@
 package pubsub
 
 import (
+	"bytes"
+	"compress/gzip"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"log"
-	"github.com/ortizdavid/go-nopain/serialization"
+
 	amqp "github.com/rabbitmq/amqp091-go"
 )
 
@@ -135,16 +138,21 @@ func logMessages(err error, msgs <-chan amqp.Delivery) {
 // Process received message
 func processMessages[T any](msgs <-chan amqp.Delivery, fn func(T) error) {
 	go func() {
-		for d := range msgs {
-			var message T
-			err := serialization.UnserializeJson(d.Body, &message)
+		for msg := range msgs {
+			reader, err := gzip.NewReader(bytes.NewReader(msg.Body))
 			if err != nil {
-				log.Printf("failed to unserialize message body: %s", err)
+				log.Printf("[!] failed to decompress message body: %v", err)
+				return
+			}
+
+			var message T
+			if err := json.NewDecoder(reader).Decode(&message); err != nil {
+				log.Printf("[!] failed to decode message body: %s", err)
 				continue
 			}
 			err = fn(message)
 			if err != nil {
-				log.Printf("error processing message: %s", err)
+				log.Printf("[!] error processing message: %s", err)
 				continue
 			}
 			log.Printf("Processed message: %+v", message)
