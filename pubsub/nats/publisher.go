@@ -50,12 +50,11 @@ func NewNatsPublisherDefault() (*NatsPublisher, error) {
 func (pub *NatsPublisher) Publish(subject string, message interface{}) error {
 	var buf bytes.Buffer
 	gz := gzip.NewWriter(&buf)
+	defer gz.Close()
 
 	if err := json.NewEncoder(gz).Encode(message); err != nil {
-		gz.Close()
 		return fmt.Errorf("[!] error encoding message: %v", err)
 	}
-	gz.Close()
 
 	err := pub.conn.Publish(subject, buf.Bytes())
 	if err != nil {

@@ -5,22 +5,6 @@ import (
 	"reflect"
 )
 
-// VarDump prints the type and value of multiple variables.
-func VarDump(variables ...interface{}) {
-	for _, variable := range variables {
-
-		if variable == nil {
-			fmt.Printf("Type: nil\nValue: nil\n\n")
-			continue
-		}
-
-		t := reflect.TypeOf(variable)
-		v := reflect.ValueOf(variable)
-
-		fmt.Printf("Type: %s\nValue: %#v\n\n", t, v)
-	}
-}
-
 // InspectStruct prints information about the given object, including its kind, type, name, attributes, and public methods.
 func InspectStruct(obj interface{}) {
 	fmt.Println("Name: ", NameOfType(obj))
