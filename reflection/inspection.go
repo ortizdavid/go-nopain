@@ -8,19 +8,27 @@ import (
 // VarDump prints the type and value of multiple variables.
 func VarDump(variables ...interface{}) {
 	for _, variable := range variables {
+
+		if variable == nil {
+			fmt.Printf("Type: nil\nValue: nil\n\n")
+			continue
+		}
+
 		t := reflect.TypeOf(variable)
 		v := reflect.ValueOf(variable)
-		fmt.Printf("Type: %s\nValue: %v\n\n", t, v)
+
+		fmt.Printf("Type: %s\nValue: %#v\n\n", t, v)
 	}
 }
 
 // InspectStruct prints information about the given object, including its kind, type, name, attributes, and public methods.
 func InspectStruct(obj interface{}) {
-	fmt.Print("\nKind: ", reflect.TypeOf(obj).Kind())
-	fmt.Print("\nType: ", reflect.TypeOf(obj))
-	fmt.Print("\nType Name: ", reflect.TypeOf(obj).Name())
-	fmt.Print("\nAttributes: ", GetFields(obj))
-	fmt.Print("\nPublic Methods: ", GetPublicMethods(obj))
+	fmt.Println("Name: ", NameOfType(obj))
+	fmt.Println("Kind: ", reflect.TypeOf(obj).Kind())
+	fmt.Println("Type: ", reflect.TypeOf(obj))
+	fmt.Println("Type Name: ", reflect.TypeOf(obj).Name())
+	fmt.Println("Attributes: ", GetFields(obj))
+	fmt.Println("Public Methods: ", GetPublicMethods(obj))
 	fmt.Println()
 }
 
