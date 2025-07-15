@@ -3,13 +3,13 @@ package main
 import (
 	"fmt"
 	"log"
-	"github.com/ortizdavid/go-nopain/httputils"
+	"github.com/ortizdavid/go-nopain/httputils/client"
 )
 
 func main() {
 	client := httputils.NewHttpClient()
 
-	url := "https://dog.ceo/api/breeds/image/random"
+	url := "https://jsonplaceholder.typicode.com/todos/1"
 	resp, err := client.Get(url)
 	if err != nil {
 		log.Fatal(err)

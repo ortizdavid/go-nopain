@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
-	"github.com/ortizdavid/go-nopain/httputils"
+	"github.com/ortizdavid/go-nopain/httputils/client"
 )
 
 func main() {

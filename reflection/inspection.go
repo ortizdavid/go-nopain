@@ -45,6 +45,7 @@ func CountTypes(elements ...interface{}) {
 		case float64:
 			countFloats++
 		case int:
+		case int8:
 		case int16:
 		case int32:
 		case int64:

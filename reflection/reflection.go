@@ -4,7 +4,6 @@ import (
 	"reflect"
 )
 
-
 func GetPublicMethods(obj interface{}) []string {
 	objType := reflect.TypeOf(obj)
 	var methods []string

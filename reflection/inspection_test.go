@@ -11,9 +11,7 @@ type structType struct {
 
 type mapType map[string]interface{}
 
-
 func TestVarDump(t *testing.T) {
-	
 	sliceStr := []string{"A", "B", "c"}
 	structObj := structType {
 		id: 1,
