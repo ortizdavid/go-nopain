@@ -1,6 +1,9 @@
 package conversion
 
-import "strconv"
+import (
+	"strconv"
+	"time"
+)
 
 // string -> int or nil
 func StringToIntOrNil(strNumber string) *int {
@@ -112,4 +115,29 @@ func Float64OrNilToString(number *float64) string {
 		return ""
 	}
 	return strconv.FormatFloat(float64(*number), 'f', -1, 64)
+}
+
+// string -> *string
+func StringToPtr(s string) *string {
+	if s == "" {
+		return nil
+	}
+	return &s
+}
+
+// *string -> string
+func PtrToString(p *string) string {
+	if p == nil {
+		return ""
+	}
+	return *p
+}
+
+// formatTimePtr converts *time.Time to *string in RFC3339 format
+func FormatTimePtr(t *time.Time) *string {
+	if t == nil {
+		return nil
+	}
+	formatted := t.Format(time.RFC3339)
+	return &formatted
 }
