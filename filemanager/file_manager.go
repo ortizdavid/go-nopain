@@ -66,9 +66,11 @@ func (fm *FileManager) MoveFile(fileName string, origin string, destination stri
 
 // WriteFile writes content to a file in the specified folder with the given file name.
 func (fm *FileManager) WriteFile(folderName string, fileName string, content string) bool {
-	file, err := os.OpenFile(folderName+"/"+fileName, os.O_APPEND, 0666)
+	file, err := os.OpenFile(folderName+"/"+fileName, os.O_APPEND|os.O_WRONLY, 0666)
 	if err == nil {
-		file.WriteString(content)
+		if _, e := file.WriteString(content); e != nil {
+			log.Fatal(e.Error())
+		}
 		file.Close()
 		return true
 	}
